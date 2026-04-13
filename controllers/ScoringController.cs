@@ -177,7 +177,7 @@ namespace RecouvrementAPI.Controllers
         }
 
         // ==========================================
-        //  FONCTIONS ALGORITHMIQUES STANDARDS PFE
+        //  FONCTIONS ALGORITHMIQUES 
         // ==========================================
 
         private async Task RunScoringAlgorithm(int idDossier)
@@ -272,7 +272,6 @@ namespace RecouvrementAPI.Controllers
             {
                 ClientNom = $"{dossier.Client.Nom} {dossier.Client.Prenom}",
                 ScoreTotal = score.Valeur,
-                ConfianceIa = derniereInt?.ConfianceClient ?? 0, // Affiche la confiance déclarée par le client lors de l'intention
                 DetailRetard = $"{GetRetardLabel(CalculerRetardJours(dossier.Echeances))}",
                 PtsRetard = score.PointsRetard,
                 DetailHistorique = score.PointsHistorique >= 40 ? "Retards fréquents" : "Retards moyens/faibles",

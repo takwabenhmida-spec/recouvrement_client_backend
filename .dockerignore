@@ -1,0 +1,13 @@
+bin/
+obj/
+.git/
+.gitignore
+*.md
+*.postman_collection.json
+*.postman_environment.json
+uploads/
+build_errors.txt
+build_output.txt
+errors.txt
+errors_utf8.txt
+appsettings.Development.json

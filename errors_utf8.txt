@@ -1,0 +1,7 @@
+﻿C:\recouvrement_client\backend\controllers\AuthController.cs(278,28): error CS0246: Le nom de type ou d'espace de noms 'RefreshToken' est introuvable (vous manque-t-il une directive using ou une référence d'assembly ?) [C:\recouvrement_client\backend\RecouvrementAPI.csproj]
+
+ÉCHEC de la build.
+    0 Avertissement(s)
+    1 Erreur(s)
+
+Temps écoulé 00:00:01.64

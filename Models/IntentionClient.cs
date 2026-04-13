@@ -23,7 +23,7 @@ namespace RecouvrementAPI.Models
         public DateTime DateIntention { get; set; }
 
         [Column("date_paiement_prevue")]
-        public DateTime? DatePaiementPrevue { get; set; } //
+        public DateTime? DatePaiementPrevue { get; set; }
 
         // Colonne réelle à ajouter en SQL pour le règlement partiel
         [Column("montant_propose")]
@@ -32,8 +32,7 @@ namespace RecouvrementAPI.Models
         [Column("statut")]
         public string Statut { get; set; } = "En attente"; // "En attente", "Accepté", "Refusé"
 
-        [Column("confiance_client")]
-        public int? ConfianceClient { get; set; } // % de certitude déclaré par le client (ex: il est sûr à 90% de payer)
+        
 
         // PROPRIÉTÉ COMMENTAIRE :
         // Elle n'existe pas en base de données pour cette table (NotMapped)

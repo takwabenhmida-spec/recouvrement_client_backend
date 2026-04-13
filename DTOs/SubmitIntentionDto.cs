@@ -16,9 +16,6 @@ namespace RecouvrementAPI.DTOs
         // Montant que le client propose de payer (optionnel, requis pour paiement_partiel)
         public decimal? MontantPropose { get; set; }
 
-        // Indice de confiance déclaré par le client (0-100%)
-        public int? ConfianceClient { get; set; }
-
         // Commentaire libre du client
         public string Commentaire { get; set; } = string.Empty;
         

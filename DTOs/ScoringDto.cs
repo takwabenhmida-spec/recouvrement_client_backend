@@ -29,7 +29,6 @@ namespace RecouvrementAPI.DTOs
     {
         public string ClientNom { get; set; }
         public decimal ScoreTotal { get; set; }
-        public int ConfianceIa { get; set; } // % de confiance de l'algorithme
         
         public string DetailRetard { get; set; }
         public int PtsRetard { get; set; }

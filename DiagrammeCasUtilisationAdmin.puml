@@ -1,0 +1,62 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+
+actor "Utilisateur Système" as User
+actor "Agent de Banque" as Agent
+actor "Administrateur (Super-Agent)" as Admin
+
+' La règle primordiale d'héritage
+Agent -up-|> User
+Admin -up-|> Agent
+
+rectangle "Système de Recouvrement (Back-Office / API)" {
+
+  usecase "S'authentifier" as UC_Auth
+
+  package "Opérations Communes (Agent & Admin)" {
+    usecase "Consulter les KPIs globaux (Dashboard)" as UC_Dashboard
+    usecase "Gérer les Relances multicanales" as UC_Relances
+    usecase "Traiter les dossiers (Impayés & Fiches)" as UC_TraiterDossiers
+    usecase "Consulter le classement IA (Scores)" as UC_VoirIA
+  }
+
+  package "Opérations Exclusives (Administrateur)" {
+    
+    usecase "Gérer les Utilisateurs\n(Création, Rôles, Activer/Désactiver)" as UC_Utilisateurs
+    
+    usecase "Gestion Back-Office des Clients\n(Création manuelle, Archivage)" as UC_AdminClients
+    
+    usecase "Contrôle des Accès Clients\n(Lister tokens expirés, Renouveler)" as UC_Tokens
+    
+    usecase "Comité Juridique\n(Accepter/Refuser Intentions, Générer PDF)" as UC_Juridique
+    
+    usecase "Reporter la comptabilité\n(Exporter le flux en Excel)" as UC_Rapports
+    
+    usecase "Forcer le recalcul global de l'IA" as UC_RecalculIA
+  }
+}
+
+' Flèches Utilisateur
+User --> UC_Auth
+
+' Flèches Agent
+Agent --> UC_Dashboard
+Agent --> UC_Relances
+Agent --> UC_TraiterDossiers
+Agent --> UC_VoirIA
+
+' Flèches Administrateur
+Admin --> UC_Utilisateurs
+Admin --> UC_AdminClients
+Admin --> UC_Tokens
+Admin --> UC_Juridique
+Admin --> UC_Rapports
+Admin --> UC_RecalculIA
+
+' Inclusions
+UC_Dashboard ..> UC_Auth : <<include>>
+UC_TraiterDossiers ..> UC_Auth : <<include>>
+UC_Utilisateurs ..> UC_Auth : <<include>>
+
+@enduml

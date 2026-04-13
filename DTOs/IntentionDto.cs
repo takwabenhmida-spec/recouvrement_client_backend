@@ -26,8 +26,6 @@ namespace RecouvrementAPI.DTOs
         public int Retard { get; set; }
         public string Statut { get; set; }
         public string TypeIntention { get; set; }
-        public int? ConfianceClient { get; set; } // Déclarée par le client
-        public int ConfianceIa { get; set; } // Calculée par l'IA (100 - Score)
     }
 
     public class IntentionDecisionDto

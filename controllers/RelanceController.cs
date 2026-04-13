@@ -163,6 +163,7 @@ namespace RecouvrementAPI.Controllers
                 
                 // 2. Mise à jour du client
                 dossier.Client.TokenAcces = nouveauToken;
+                dossier.Client.TokenExpireLe = DateTime.Now.AddDays(7);
 
                 // 3. Traçabilité (Création de la relance manuelle)
                 var relance = new RelanceClient

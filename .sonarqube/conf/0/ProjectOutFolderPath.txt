@@ -1,0 +1,1 @@
+C:\recouvrement_client\backend\.sonarqube\out\0

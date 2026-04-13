@@ -25,9 +25,8 @@ namespace RecouvrementAPI.Controllers
             _logger = logger;
         }
 
-        /// <summary>
+       
         /// Ajout d'un nouveau client STB avec un dossier par défaut.
-        /// </summary>
         [HttpPost]
         public async Task<IActionResult> CreateClient([FromBody] CreateClientDto dto)
         {
@@ -48,7 +47,8 @@ namespace RecouvrementAPI.Controllers
                     Email = dto.Email,
                     Telephone = dto.Telephone,
                     IdAgence = dto.IdAgence ?? 1, // Direction Générale par défaut si non spécifié
-                    TokenAcces = "stb_" + Guid.NewGuid().ToString("N")
+                    TokenAcces = "stb_" + Guid.NewGuid().ToString("N"),
+                    TokenExpireLe = DateTime.Now.AddDays(7)
                 };
 
                 _context.Clients.Add(client);
@@ -351,6 +351,147 @@ namespace RecouvrementAPI.Controllers
             {
                 _logger.LogError(ex, $"Erreur lors de la désarchivation du client {idClient}.");
                 return StatusCode(500, new { message = "Une erreur est survenue." });
+            }
+        }
+
+        /// <summary>
+        /// 🔴 Liste les clients dont le token d'accès est EXPIRÉ.
+        /// L'admin utilise cette liste pour savoir à qui renvoyer un nouveau token.
+        /// Route API : GET http://localhost:5203/api/AdminClient/tokens-expires
+        /// </summary>
+        [HttpGet("tokens-expires")]
+        public async Task<IActionResult> GetClientsTokenExpires()
+        {
+            try
+            {
+                var maintenant = DateTime.Now;
+
+                // Chargement en base (EF Core) — comparaison directe sur nullable
+                var clientsRaw = await _context.Clients
+                    .Include(c => c.Dossiers)
+                    .Where(c =>
+                        c.Statut != "Archivé" &&
+                        c.TokenExpireLe.HasValue &&
+                        c.TokenExpireLe.Value < maintenant)
+                    .ToListAsync();
+
+                // Projection en mémoire (C#) — TotalDays n'est pas traduisible en SQL
+                var clientsExpires = clientsRaw
+                    .Select(c => new
+                    {
+                        idClient      = c.IdClient,
+                        nomComplet    = c.Nom + " " + c.Prenom,
+                        email         = c.Email,
+                        telephone     = c.Telephone,
+                        tokenExpireLe = c.TokenExpireLe,
+                        joursExpire   = (int)(maintenant - c.TokenExpireLe!.Value).TotalDays,
+                        nbDossiers    = c.Dossiers?.Count ?? 0
+                    })
+                    .OrderByDescending(c => c.joursExpire)
+                    .ToList();
+
+                return Ok(new
+                {
+                    total   = clientsExpires.Count,
+                    clients = clientsExpires
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erreur lors de la récupération des tokens expirés.");
+                return StatusCode(500, new { message = "Erreur lors de la récupération." });
+            }
+        }
+
+        /// <summary>
+        /// 🔁 RENOUVELLEMENT MANUEL DU TOKEN CLIENT par l'admin.
+        /// Génère un nouveau token et remet l'expiration à +7 jours.
+        /// L'admin doit ensuite envoyer le lien manuellement au client (SMS ou email).
+        /// Route API : POST http://localhost:5203/api/AdminClient/{idClient}/renouveler-token
+        /// </summary>
+        [HttpPost("{idClient}/renouveler-token")]
+        public async Task<IActionResult> RenouvelerTokenClient(int idClient)
+        {
+            try
+            {
+                var client = await _context.Clients.FindAsync(idClient);
+
+                if (client == null)
+                    return NotFound(new { message = "Client introuvable." });
+
+                if (client.Statut == "Archivé")
+                    return BadRequest(new { message = "Impossible de renouveler le token d'un client archivé." });
+
+                // Génération d'un nouveau token UUID unique
+                string nouveauToken = "stb_" + Guid.NewGuid().ToString("N");
+
+                client.TokenAcces    = nouveauToken;
+                client.TokenExpireLe = DateTime.Now.AddDays(7);
+
+                await _context.SaveChangesAsync();
+
+                // Lien à envoyer au client
+                string lien = $"https://stbbank.tn/portail/{nouveauToken}";
+
+                _logger.LogInformation($"Token renouvelé manuellement pour le client {client.IdClient} ({client.Nom} {client.Prenom}). Nouveau lien : {lien}");
+
+                return Ok(new
+                {
+                    message      = $"Token renouvelé avec succès pour {client.Nom} {client.Prenom}.",
+                    lienClient   = lien,
+                    tokenGenere  = nouveauToken,
+                    expireLe     = client.TokenExpireLe,
+                    // Message prêt à copier-coller pour l'envoi SMS ou email
+                    messageSms   = $"[STB BANK] Cher(e) {client.Nom}, accédez à votre espace client sécurisé : {lien} (valable 7 jours)",
+                    messageEmail = $"Bonjour {client.Nom} {client.Prenom},\n\nVotre accès à l'espace client STB a été renouvelé.\nCliquez sur le lien suivant pour accéder à votre dossier :\n{lien}\n\nCe lien est valable 7 jours.\n\nCordialement,\nSTB BANK"
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Erreur renouvellement token client {idClient}.");
+                return StatusCode(500, new { message = "Erreur lors du renouvellement du token." });
+            }
+        }
+
+        /// <summary>
+        /// ✅ L'ADMIN/AGENT ACCEPTE OU REFUSE UNE INTENTION
+        /// Endpoint ajouté ici pour éviter de modifier le IntentionController.
+        /// Route API : PUT http://localhost:5203/api/AdminClient/intention/{id}/decision
+        /// </summary>
+        [HttpPut("intention/{id}/decision")]
+        public async Task<IActionResult> MakeDecision(int id, [FromBody] IntentionDecisionDto decisionDto)
+        {
+            try
+            {
+                var intention = await _context.Intentions.FindAsync(id);
+                if (intention == null)
+                    return NotFound(new { message = "Intention introuvable." });
+
+                if (decisionDto.Decision != "Accepter" && decisionDto.Decision != "Refuser")
+                    return BadRequest(new { message = "La décision doit être 'Accepter' ou 'Refuser'." });
+
+                intention.Statut = decisionDto.Decision == "Accepter" ? "Accepté" : "Refusé";
+
+                _context.HistoriqueActions.Add(new HistoriqueAction
+                {
+                    IdDossier    = intention.IdDossier,
+                    ActionDetail = $"[ADMIN] L'intention (ID: {id}) de type '{intention.TypeIntention}' a été {intention.Statut.ToLower()}.",
+                    Acteur       = "agent",
+                    DateAction   = DateTime.Now
+                });
+
+                await _context.SaveChangesAsync();
+
+                return Ok(new { 
+                    message = $"Intention traitée par l'admin ({intention.Statut}).",
+                    idIntention = id,
+                    nouveauStatut = intention.Statut
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Erreur lors de la décision sur l'intention {id}.");
+                return StatusCode(500, new { message = "Impossible d'appliquer la décision." });
             }
         }
     }

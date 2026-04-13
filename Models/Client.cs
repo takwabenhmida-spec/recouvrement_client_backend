@@ -44,6 +44,9 @@ namespace RecouvrementAPI.Models
 
         [Column("statut")]
         public string Statut { get; set; } = "Actif"; // Actif, Archivé
+
+        [Column("token_expire_le")]
+        public DateTime? TokenExpireLe { get; set; }
         
         // Navigation vers l'agence (ville, nom agence)
         public Agence Agence { get; set; }

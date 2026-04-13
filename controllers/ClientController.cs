@@ -35,10 +35,20 @@ namespace RecouvrementAPI.Controllers
         // ==============================
         private async Task<Client> VerifierToken(string token)
         {
-            return await _context.Clients
+            var client = await _context.Clients
                 .Include(c => c.Agence)
                 .Include(c => c.Dossiers)
                 .FirstOrDefaultAsync(c => c.TokenAcces == token);
+
+            if (client == null) return null;
+
+            // Vérifier si le token est expiré (7 jours)
+            if (client.TokenExpireLe.HasValue && client.TokenExpireLe.Value < DateTime.Now)
+            {
+                return null;
+            }
+
+            return client;
         }
 
         // ==============================
@@ -611,6 +621,14 @@ namespace RecouvrementAPI.Controllers
             if (dossier == null)
                 return NotFound("Dossier introuvable");
 
+            // SÉCURITÉ : Blocage multi-soumission (une seule par jour)
+            bool dejaSoumis = await _context.Intentions.AnyAsync(i =>
+                i.IdDossier == dossier.IdDossier &&
+                i.DateIntention.Date == DateTime.Today);
+
+            if (dejaSoumis)
+                return BadRequest(new { message = "Vous avez déjà soumis une réponse aujourd'hui. Veuillez contacter votre agence pour toute modification." });
+
             // 1. Création de l'intention sécurisée
             var intention = new IntentionClient
             {
@@ -619,7 +637,7 @@ namespace RecouvrementAPI.Controllers
                 DateIntention = DateTime.Now,
                 DatePaiementPrevue = dto.DatePaiementPrevue,
                 MontantPropose = dto.MontantPropose,
-                ConfianceClient = dto.ConfianceClient,
+               
                 Statut = "En attente"
             };
 
@@ -753,7 +771,6 @@ namespace RecouvrementAPI.Controllers
                             if (intention.MontantPropose.HasValue)
                                 inner.Item().Text($"• Montant proposé : {intention.MontantPropose.Value:F3} TND");
 
-                            inner.Item().Text($"• Indice de confiance déclaré : {intention.ConfianceClient ?? 0}%");
                         });
 
                         col.Item().PaddingTop(20).Text("Informations Importantes :").Bold();

@@ -7,13 +7,10 @@ using RecouvrementAPI.Models;
 
 namespace RecouvrementAPI.Controllers
 {
-    /// <summary>
-    /// Contrôleur gérant les formulaires de "Réponse d'intention" du client.
-    /// Route API de base : /api/Intention
-    /// </summary>
-    [Route("api/[controller]")]
+    // Contrôleur qui gère les réponses du client face à son dossier impayé
+    // Route de base : http://localhost:5203/api/intention
     [ApiController]
-    [Authorize]
+    [Route("api/intention")]
     public class IntentionController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
@@ -25,11 +22,276 @@ namespace RecouvrementAPI.Controllers
             _logger = logger;
         }
 
-        /// <summary>
-        /// Renvoie la vue tableau de bord des intentions (KPIs et Liste).
-        /// Route externe API : GET http://localhost:5203/api/Intention/dashboard
-        /// </summary>
+        // ==============================
+        // POST api/intention
+        // Appelé quand le client valide son choix sur le portail Angular
+        // Reçoit un objet JSON : { idDossier, typeIntention, commentaire, ... }
+        //
+        // Types acceptés :
+        //   - paiement_immediat    → Règlement total immédiat
+        //   - paiement_partiel     → Règlement partiel (montantPropose requis)
+        //   - promesse_paiement    → Engagement futur (datePaiementPrevue requis)
+        //   - demande_consolidation→ Demande de regroupement de dettes
+        //   - demande_echeance     → Demande d'échéancier de paiement
+        //   - reclamation          → Contestation de la dette
+        // ==============================
+        [HttpPost]
+        [AllowAnonymous] // Le client s'authentifie par TokenAcces, pas par JWT
+        public async Task<IActionResult> AjouterIntention([FromBody] IntentionClient intention)
+        {
+            // Vérification 1 : le body JSON n'est pas null
+            if (intention == null)
+                return BadRequest(new { message = "Données manquantes." });
+
+            // Vérification 2 : le type d'intention est obligatoire
+            if (string.IsNullOrEmpty(intention.TypeIntention))
+                return BadRequest(new { message = "Le type d'intention est requis." });
+
+            // Vérification 3 : le dossier existe dans la BDD
+            var dossier = await _context.Dossiers.FindAsync(intention.IdDossier);
+            if (dossier == null)
+                return NotFound(new { message = "Dossier introuvable." });
+
+            // SÉCURITÉ : Blocage multi-soumission
+            // Un client ne peut soumettre qu'UNE SEULE intention par jour (toutes types confondus)
+            bool dejaSoumis = await _context.Intentions.AnyAsync(i =>
+                i.IdDossier == intention.IdDossier &&
+                i.DateIntention.Date == DateTime.Today);
+
+            if (dejaSoumis)
+                return BadRequest(new
+                {
+                    message = "Vous avez déjà soumis une réponse aujourd'hui. Veuillez contacter votre agence pour toute modification."
+                });
+
+            // Date remplie automatiquement côté serveur
+            intention.DateIntention = DateTime.Now;
+            intention.Statut = "En attente";
+
+            // Commentaire optionnel
+            string commentairePart = string.IsNullOrEmpty(intention.Commentaire)
+                ? ""
+                : $" Commentaire : {intention.Commentaire}";
+
+            // ==============================
+            // CAS 1 : Règlement TOTAL immédiat
+            // ==============================
+            if (intention.TypeIntention == "paiement_immediat")
+            {
+                _context.Communications.Add(new Communication
+                {
+                    IdDossier = intention.IdDossier,
+                    Message = $"Le client a indiqué vouloir effectuer un règlement total immédiat.{commentairePart}",
+                    Origine = "systeme",
+                    DateEnvoi = DateTime.Now
+                });
+
+                _context.HistoriqueActions.Add(new HistoriqueAction
+                {
+                    IdDossier = intention.IdDossier,
+                    ActionDetail = "Client : intention de règlement total immédiat déclarée.",
+                    Acteur = "client",
+                    DateAction = DateTime.Now
+                });
+            }
+
+            // ==============================
+            // CAS 2 : Règlement PARTIEL
+            // Le client propose de payer une partie du montant
+            // MontantPropose est obligatoire
+            // ==============================
+            else if (intention.TypeIntention == "paiement_partiel")
+            {
+                if (!intention.MontantPropose.HasValue || intention.MontantPropose <= 0)
+                    return BadRequest(new { message = "Un montant proposé valide est requis pour un paiement partiel." });
+
+                if (intention.MontantPropose >= dossier.MontantImpaye)
+                    return BadRequest(new { message = "Le montant partiel doit être inférieur au montant total impayé. Utilisez 'Règlement total' à la place." });
+
+                _context.Communications.Add(new Communication
+                {
+                    IdDossier = intention.IdDossier,
+                    Message = $"Le client propose un règlement partiel de {intention.MontantPropose:F3} TND (sur {dossier.MontantImpaye:F3} TND dus).{commentairePart}",
+                    Origine = "systeme",
+                    DateEnvoi = DateTime.Now
+                });
+
+                _context.HistoriqueActions.Add(new HistoriqueAction
+                {
+                    IdDossier = intention.IdDossier,
+                    ActionDetail = $"Règlement partiel proposé : {intention.MontantPropose:F3} TND.",
+                    Acteur = "client",
+                    DateAction = DateTime.Now
+                });
+            }
+
+            // ==============================
+            // CAS 3 : Promesse de paiement
+            // Le client s'engage à payer à une date future
+            // DatePaiementPrevue est obligatoire
+            // ==============================
+            else if (intention.TypeIntention == "promesse_paiement")
+            {
+                if (!intention.DatePaiementPrevue.HasValue)
+                    return BadRequest(new { message = "Une date de paiement prévue est requise pour une promesse de paiement." });
+
+                if (intention.DatePaiementPrevue.Value.Date <= DateTime.Today)
+                    return BadRequest(new { message = "La date de paiement promise doit être dans le futur." });
+
+                // Crée une nouvelle échéance avec la date promise
+                _context.Echeances.Add(new Echeance
+                {
+                    IdDossier = dossier.IdDossier,
+                    Montant = dossier.MontantImpaye,
+                    DateEcheance = intention.DatePaiementPrevue.Value,
+                    Statut = "impaye"
+                });
+
+                _context.Communications.Add(new Communication
+                {
+                    IdDossier = intention.IdDossier,
+                    Message = $"Le client a promis un paiement pour le {intention.DatePaiementPrevue.Value:dd/MM/yyyy}.{commentairePart}",
+                    Origine = "systeme",
+                    DateEnvoi = DateTime.Now
+                });
+
+                _context.HistoriqueActions.Add(new HistoriqueAction
+                {
+                    IdDossier = intention.IdDossier,
+                    ActionDetail = $"Promesse de paiement prévue le {intention.DatePaiementPrevue.Value:dd/MM/yyyy}.",
+                    Acteur = "client",
+                    DateAction = DateTime.Now
+                });
+            }
+
+            // ==============================
+            // CAS 4 : Demande de CONSOLIDATION
+            // Le client demande un regroupement / restructuration de ses dettes
+            // ==============================
+            else if (intention.TypeIntention == "demande_consolidation")
+            {
+                _context.Communications.Add(new Communication
+                {
+                    IdDossier = intention.IdDossier,
+                    Message = $"Le client demande une consolidation (restructuration) de sa dette.{commentairePart}",
+                    Origine = "systeme",
+                    DateEnvoi = DateTime.Now
+                });
+
+                _context.HistoriqueActions.Add(new HistoriqueAction
+                {
+                    IdDossier = intention.IdDossier,
+                    ActionDetail = "Demande de consolidation/restructuration de dette soumise.",
+                    Acteur = "client",
+                    DateAction = DateTime.Now
+                });
+            }
+
+            // ==============================
+            // CAS 5 : Demande d'ÉCHÉANCIER
+            // Le client demande un plan de paiement échelonné
+            // ==============================
+            else if (intention.TypeIntention == "demande_echeance")
+            {
+                _context.Communications.Add(new Communication
+                {
+                    IdDossier = intention.IdDossier,
+                    Message = $"Le client demande un échéancier de paiement.{commentairePart}",
+                    Origine = "systeme",
+                    DateEnvoi = DateTime.Now
+                });
+
+                _context.HistoriqueActions.Add(new HistoriqueAction
+                {
+                    IdDossier = intention.IdDossier,
+                    ActionDetail = "Demande d'échéancier de paiement soumise.",
+                    Acteur = "client",
+                    DateAction = DateTime.Now
+                });
+            }
+
+            // ==============================
+            // CAS 6 : Réclamation
+            // Le client conteste sa dette → dossier passe en "contentieux"
+            // ==============================
+            else if (intention.TypeIntention == "reclamation")
+            {
+                // Changement de statut automatique
+                dossier.StatutDossier = "contentieux";
+
+                _context.Communications.Add(new Communication
+                {
+                    IdDossier = intention.IdDossier,
+                    Message = $"Le client a soumis une réclamation. Dossier passé en contentieux.{commentairePart}",
+                    Origine = "systeme",
+                    DateEnvoi = DateTime.Now
+                });
+
+                _context.HistoriqueActions.Add(new HistoriqueAction
+                {
+                    IdDossier = intention.IdDossier,
+                    ActionDetail = "Réclamation soumise — dossier passé en contentieux.",
+                    Acteur = "client",
+                    DateAction = DateTime.Now
+                });
+            }
+            else
+            {
+                return BadRequest(new
+                {
+                    message = "Type d'intention invalide.",
+                    typesAcceptes = new[] {
+                        "paiement_immediat",
+                        "paiement_partiel",
+                        "promesse_paiement",
+                        "demande_consolidation",
+                        "demande_echeance",
+                        "reclamation"
+                    }
+                });
+            }
+
+            // Ajout de l'intention dans le contexte
+            _context.Intentions.Add(intention);
+
+            // Sauvegarde tout en BDD en une seule transaction :
+            // intention + communication + historique + éventuel statut dossier
+            await _context.SaveChangesAsync();
+
+            return Ok(new
+            {
+                message = "Intention enregistrée avec succès. L'agent traitera votre demande dans les meilleurs délais.",
+                type = intention.TypeIntention,
+                idIntention = intention.IdIntention
+            });
+        }
+
+        // ==============================
+        // GET api/intention/{idDossier}
+        // Récupère l'historique des intentions d'un dossier
+        // Utilisé par l'agent dans le back-office
+        // ==============================
+        [HttpGet("{idDossier}")]
+        [Authorize]
+        public async Task<IActionResult> GetIntentions(int idDossier)
+        {
+            var intentions = await _context.Intentions
+                .Where(i => i.IdDossier == idDossier)
+                .OrderByDescending(i => i.DateIntention)
+                .ToListAsync();
+
+            if (!intentions.Any())
+                return NotFound(new { message = "Aucune intention trouvée pour ce dossier." });
+
+            return Ok(intentions);
+        }
+
+        // ==============================
+        // GET api/intention/dashboard
+        // Tableau de bord agent : KPIs + liste paginée des intentions
+        // ==============================
         [HttpGet("dashboard")]
+        [Authorize]
         public async Task<ActionResult<IntentionDashboardResponseDto>> GetDashboard(
             [FromQuery] string typeIntention = "Tous",
             [FromQuery] string statut = "Tous",
@@ -47,29 +309,24 @@ namespace RecouvrementAPI.Controllers
                     .Include(i => i.Dossier)
                         .ThenInclude(d => d.Communications)
                     .Include(i => i.Dossier)
-                        .ThenInclude(d => d.ScoresRisque) // Requis pour calculer la confiance IA
+                        .ThenInclude(d => d.ScoresRisque)
                     .AsQueryable();
 
-                // Calculs des KPIs (Top des tuiles)
                 var currentMonth = DateTime.Now.Month;
                 var currentYear = DateTime.Now.Year;
-                
+
                 var allIntentionsForKpi = await intentionsQuery.ToListAsync();
 
-                int totalRecues = allIntentionsForKpi.Count(i => i.DateIntention.Month == currentMonth && i.DateIntention.Year == currentYear);
-                int nonTraitees = allIntentionsForKpi.Count(i => i.Statut == "En attente");
-                int paiementImmediat = allIntentionsForKpi.Count(i => i.TypeIntention == "paiement_immediat" && i.Statut == "En attente");
-                int reclamations = allIntentionsForKpi.Count(i => i.TypeIntention == "reclamation");
+                int totalRecues        = allIntentionsForKpi.Count(i => i.DateIntention.Month == currentMonth && i.DateIntention.Year == currentYear);
+                int nonTraitees        = allIntentionsForKpi.Count(i => i.Statut == "En attente");
+                int paiementImmediat   = allIntentionsForKpi.Count(i => i.TypeIntention == "paiement_immediat" && i.Statut == "En attente");
+                int reclamations       = allIntentionsForKpi.Count(i => i.TypeIntention == "reclamation");
 
-                // Filtres Datatable
                 if (!string.IsNullOrEmpty(typeIntention) && typeIntention != "Tous")
-                {
                     intentionsQuery = intentionsQuery.Where(i => i.TypeIntention == typeIntention);
-                }
+
                 if (!string.IsNullOrEmpty(statut) && statut != "Tous")
-                {
                     intentionsQuery = intentionsQuery.Where(i => i.Statut == statut);
-                }
 
                 int totalItems = await intentionsQuery.CountAsync();
                 int totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
@@ -80,10 +337,8 @@ namespace RecouvrementAPI.Controllers
                     .Take(pageSize)
                     .ToListAsync();
 
-                var items = intentionsList.Select(i => 
+                var items = intentionsList.Select(i =>
                 {
-                    // Recherche du texte libre inséré par le client
-                    // On prend la dernière communication reçue de source client sur ce dossier avant/le moment de l'intention
                     var commClient = i.Dossier.Communications
                         .Where(c => c.Origine == "client" && c.DateEnvoi >= i.DateIntention.AddHours(-1))
                         .OrderByDescending(c => c.DateEnvoi)
@@ -91,24 +346,20 @@ namespace RecouvrementAPI.Controllers
 
                     return new IntentionItemDto
                     {
-                        IdIntention = i.IdIntention,
-                        IdDossier = i.IdDossier,
-                        Client = $"{i.Dossier.Client.Nom} {i.Dossier.Client.Prenom}",
-                        DateSoumission = i.DateIntention,
-                        MontantDu = i.Dossier.MontantImpaye,
-                        Agence = i.Dossier.Client.Agence?.Ville ?? "Non affecté",
-                        TypeCredit = i.Dossier.TypeEmprunt,
-                        CommentaireClient = i.MontantPropose.HasValue 
-                            ? $"Montant proposé: {i.MontantPropose} TND. {commClient?.Message}" 
+                        IdIntention       = i.IdIntention,
+                        IdDossier         = i.IdDossier,
+                        Client            = $"{i.Dossier.Client.Nom} {i.Dossier.Client.Prenom}",
+                        DateSoumission    = i.DateIntention,
+                        MontantDu         = i.Dossier.MontantImpaye,
+                        Agence            = i.Dossier.Client.Agence?.Ville ?? "Non affecté",
+                        TypeCredit        = i.Dossier.TypeEmprunt,
+                        CommentaireClient = i.MontantPropose.HasValue
+                            ? $"Montant proposé: {i.MontantPropose} TND. {commClient?.Message}"
                             : commClient?.Message ?? "Aucun commentaire fourni",
-                        Canal = "Email+SMS", // Standard fallback
-                        Retard = CalculerJoursRetard(i.Dossier.Echeances),
-                        Statut = i.Statut ?? "En attente",
-                        TypeIntention = i.TypeIntention,
-                        ConfianceClient = i.ConfianceClient,
-                        // IA Confidence: If score is 0-30 (Safe) -> Confidence is high (e.g. 90%+). 
-                        // Formula: 100 - Score
-                        ConfianceIa = (int)(100 - (i.Dossier.ScoresRisque?.OrderByDescending(s => s.DateCalcul).FirstOrDefault()?.Valeur ?? 25))
+                        Canal             = "Email+SMS",
+                        Retard            = CalculerJoursRetard(i.Dossier.Echeances),
+                        Statut            = i.Statut ?? "En attente",
+                        TypeIntention     = i.TypeIntention
                     };
                 }).ToList();
 
@@ -116,14 +367,14 @@ namespace RecouvrementAPI.Controllers
                 {
                     Kpis = new IntentionKpiDto
                     {
-                        TotalRecues = totalRecues,
-                        NonTraitees = nonTraitees,
+                        TotalRecues      = totalRecues,
+                        NonTraitees      = nonTraitees,
                         PaiementImmediat = paiementImmediat,
-                        Reclamations = reclamations
+                        Reclamations     = reclamations
                     },
-                    Items = items,
-                    TotalItems = totalItems,
-                    TotalPages = totalPages,
+                    Items       = items,
+                    TotalItems  = totalItems,
+                    TotalPages  = totalPages,
                     CurrentPage = page
                 });
             }
@@ -134,50 +385,18 @@ namespace RecouvrementAPI.Controllers
             }
         }
 
-        /// <summary>
-        /// Accepter ou refuser une intention en attente.
-        /// Route externe API : PUT http://localhost:5203/api/Intention/{id}/decision
-        /// </summary>
-        [HttpPut("{id}/decision")]
-        public async Task<IActionResult> MakeDecision(int id, [FromBody] IntentionDecisionDto decisionDto)
+        
+
+        // Calcule le nombre de jours de retard sur les échéances impayées
+        private static int CalculerJoursRetard(IEnumerable<Echeance> echeances)
         {
-            try
-            {
-                var intention = await _context.Intentions.FindAsync(id);
-                if (intention == null) return NotFound(new { message = "Intention introuvable." });
-
-                if (decisionDto.Decision != "Accepter" && decisionDto.Decision != "Refuser")
-                    return BadRequest(new { message = "La décision doit être 'Accepter' ou 'Refuser'." });
-
-                intention.Statut = decisionDto.Decision == "Accepter" ? "Accepté" : "Refusé";
-
-                _context.HistoriqueActions.Add(new HistoriqueAction
-                {
-                    IdDossier = intention.IdDossier,
-                    ActionDetail = $"L'intention de type '{intention.TypeIntention}' a été {intention.Statut.ToLower()}.",
-                    Acteur = "agent", 
-                    DateAction = DateTime.Now
-                });
-
-                await _context.SaveChangesAsync();
-
-                return Ok(new { message = $"Intention traitée ({intention.Statut})." });
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Erreur décision intention.");
-                return StatusCode(500, new { message = "Impossible d'appliquer la décision." });
-            }
-        }
-
-        private int CalculerJoursRetard(IEnumerable<Echeance> echeances)
-        {
+            var limit = DateTime.UtcNow;
             var echeancesDepassees = echeances
-                .Where(e => e.Statut == "impaye" && e.DateEcheance < DateTime.Now)
+                .Where(e => e.Statut == "impaye" && e.DateEcheance < limit)
                 .ToList();
 
             if (!echeancesDepassees.Any()) return 0;
-            return (int)(DateTime.Now - echeancesDepassees.Min(e => e.DateEcheance)).TotalDays;
+            return (int)(limit - echeancesDepassees.Min(e => e.DateEcheance)).TotalDays;
         }
     }
 }

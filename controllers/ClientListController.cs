@@ -130,22 +130,23 @@ namespace RecouvrementAPI.Controllers
         /// Fonction métier interne qui repère l'échéance impayée la plus lointaine vis à vis d'aujourd'hui.
         /// Renvoi le retard strict accumulé (en #jours).
         /// </summary>
-        private int CalculerJoursRetard(IEnumerable<Echeance> echeances)
+        private static int CalculerJoursRetard(IEnumerable<Echeance> echeances)
         {
+            var limit = DateTime.UtcNow;
             var echeancesImpayeesDepassees = echeances
-                .Where(e => e.Statut == "impaye" && e.DateEcheance < DateTime.Now)
+                .Where(e => e.Statut == "impaye" && e.DateEcheance < limit)
                 .ToList();
 
             if (!echeancesImpayeesDepassees.Any()) return 0; // Dossier propre à l'heure H
 
-            // Soustraire DateEcheance min (la plus vieille) depuis DateTime.Now
-            return (int)(DateTime.Now - echeancesImpayeesDepassees.Min(e => e.DateEcheance)).TotalDays;
+            // Soustraire DateEcheance min (la plus vieille) depuis limit
+            return (int)(limit - echeancesImpayeesDepassees.Min(e => e.DateEcheance)).TotalDays;
         }
 
         /// <summary>
         /// Assistant de formatage UI pour affichage propre. (Ex: "contentieux" devient "Contentieux")
         /// </summary>
-        private string CapitalizeFirstLetter(string str)
+        private static string CapitalizeFirstLetter(string str)
         {
             if (string.IsNullOrEmpty(str)) return str;
             return char.ToUpper(str[0]) + str.Substring(1).ToLower();
