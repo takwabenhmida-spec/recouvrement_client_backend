@@ -58,25 +58,19 @@
             },
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
-              "version": "[10.0.3, )"
+              "version": "[9.0.1, )"
             },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
-              "version": "[10.0.5, )"
+              "version": "[9.0.1, )"
             },
-            "Microsoft.EntityFrameworkCore.Design": {
-              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
-              "suppressParent": "All",
-              "target": "Package",
-              "version": "[10.0.5, )"
-            },
-            "MySql.EntityFrameworkCore": {
+            "Pomelo.EntityFrameworkCore.MySql": {
               "target": "Package",
               "version": "[9.0.0, )"
             },
             "QuestPDF": {
               "target": "Package",
-              "version": "[2026.2.4, )"
+              "version": "[2026.2.2, )"
             }
           },
           "imports": [

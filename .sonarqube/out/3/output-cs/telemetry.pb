@@ -1,1 +1,0 @@
-^RQC:\recouvrement_client\backend\RecouvrementAPI.Tests\RecouvrementAPI.Tests.csprojòCSharp14

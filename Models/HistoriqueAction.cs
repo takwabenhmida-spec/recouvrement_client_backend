@@ -15,15 +15,15 @@ namespace RecouvrementAPI.Models
         public int IdDossier { get; set; }
 
         [Column("action_detail")]
-        public string ActionDetail { get; set; }
+        public string ActionDetail { get; set; } = null!;
 
         // client / agent / systeme
         [Column("acteur")]
-        public string Acteur { get; set; }
+        public string Acteur { get; set; } = null!;
 
         [Column("date_action")]
         public DateTime DateAction { get; set; }
 
-        public DossierRecouvrement Dossier { get; set; }
+        public DossierRecouvrement Dossier { get; set; } = null!;
     }
 }

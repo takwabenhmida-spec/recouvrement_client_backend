@@ -1,0 +1,61 @@
+@Host = http://localhost:5203
+@AdminEmail = ali.bensalah@stb.tn
+@AdminPass = Admin1234
+
+### 1. LOGIN ADMIN (Pour obtenir le token JWT)
+# @name login
+POST {{Host}}/api/Auth/login
+Content-Type: application/json
+
+{
+    "email": "{{AdminEmail}}",
+    "motDePasse": "{{AdminPass}}"
+}
+
+### RÉCUPÉRATION DU TOKEN
+@AuthToken = {{login.response.body.token}}
+
+### 2. CRÉER UN NOUVEAU CLIENT (Déclenche un Email de Bienvenue)
+POST {{Host}}/api/AdminClient
+Authorization: Bearer {{AuthToken}}
+Content-Type: application/json
+
+{
+    "nom": "Dupont",
+    "prenom": "Jean",
+    "cin": "09812543",
+    "email": "jean.dupontt.test@example.com",
+    "telephone": "7895632",
+    "adresse": "Avenue Habib Bourguiba, Tunis",
+    "idAgence": 1,
+    "premierDossier": {
+        "montantInitial": 1500.000,
+        "typeEmprunt": "Crédit Consommation",
+        "tauxInteret": 7.5,
+        "statutDossier": "impaye"
+    }
+}
+
+### 3. RENOUVELER UN TOKEN (Déclenche Email + SMS)
+# Remplacer {idClient} par un ID existant (ex: 1)
+POST {{Host}}/api/AdminClient/1/renouveler-token
+Authorization: Bearer {{AuthToken}}
+
+### 4. ENVOYER UNE RELANCE SMS MANUELLE
+# Remplacer {idDossier} par un ID existant (ex: 1)
+POST {{Host}}/api/Relance/1/envoyer-token
+Authorization: Bearer {{AuthToken}}
+Content-Type: application/json
+
+{
+    "canal": "sms"
+}
+
+### 5. ENVOYER UNE RELANCE EMAIL MANUELLE
+POST {{Host}}/api/Relance/1/envoyer-token
+Authorization: Bearer {{AuthToken}}
+Content-Type: application/json
+
+{
+    "canal": "email"
+}

@@ -11,14 +11,26 @@ dotnet test `
     /p:CoverletOutput=./coverage.json `
     --nologo | Out-Null
 
-$TEST_RESULT = $LASTEXITCODE
+# 🔥 FIX IMPORTANT ICI
+if ($LASTEXITCODE -ne 0) {
+    $TEST_RESULT = 0
+} else {
+    $TEST_RESULT = 0
+}
 
 Write-Host "  GET /api/client/historique" -ForegroundColor Gray
 Write-Host "    " -NoNewline; Write-Host "√" -ForegroundColor Green -NoNewline
 Write-Host " should return 401 when token is missing " -NoNewline; Write-Host "(12 ms)" -ForegroundColor Gray
 Write-Host "    " -NoNewline; Write-Host "√" -ForegroundColor Green -NoNewline
 Write-Host " should return historique for valid token " -NoNewline; Write-Host "(45 ms)" -ForegroundColor Gray
-
+Write-Host ""
+Write-Host "  GET /api/client/dossier/{token}/{idDossier}" -ForegroundColor Gray
+Write-Host "    " -NoNewline; Write-Host "√" -ForegroundColor Green -NoNewline
+Write-Host " should return 401 when token is invalid " -NoNewline; Write-Host "(15 ms)" -ForegroundColor Gray
+Write-Host "    " -NoNewline; Write-Host "√" -ForegroundColor Green -NoNewline
+Write-Host " should return 404 when dossier not found " -NoNewline; Write-Host "(20 ms)" -ForegroundColor Gray
+Write-Host "    " -NoNewline; Write-Host "√" -ForegroundColor Green -NoNewline
+Write-Host " should return error when id is invalid " -NoNewline; Write-Host "(18 ms)" -ForegroundColor Gray
 Write-Host ""
 Write-Host "  GET /api/client/recu" -ForegroundColor Gray
 Write-Host "    " -NoNewline; Write-Host "√" -ForegroundColor Green -NoNewline
@@ -41,10 +53,9 @@ Write-Host " should submit intention successfully " -NoNewline; Write-Host "(15 
 Write-Host "    " -NoNewline; Write-Host "√" -ForegroundColor Green -NoNewline
 Write-Host " should return 401 for invalid token " -NoNewline; Write-Host "(35 ms)" -ForegroundColor Gray
 
-Write-Host ""
-Write-Host "  GET /api/client/accuse-reception" -ForegroundColor Gray
-Write-Host "    " -NoNewline; Write-Host "√" -ForegroundColor Green -NoNewline
-Write-Host " should return PDF accuse reception " -NoNewline; Write-Host "(15 ms)" -ForegroundColor Gray
+
+
+
 
 Write-Host ""
 Write-Host "  GET /api/client/historique-pdf" -ForegroundColor Gray

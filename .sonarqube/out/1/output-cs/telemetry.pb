@@ -1,1 +1,1 @@
-^RQC:\recouvrement_client\backend\RecouvrementAPI.Tests\RecouvrementAPI.Tests.csprojòCSharp14
+BR5C:\recouvrement_client\backend\RecouvrementAPI.csprojòCSharp14

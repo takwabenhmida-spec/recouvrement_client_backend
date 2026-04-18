@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Authorization;
+using RecouvrementAPI;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RecouvrementAPI.Data;
 using RecouvrementAPI.DTOs;
 using RecouvrementAPI.Models;
+using RecouvrementAPI.Helpers;
 
 namespace RecouvrementAPI.Controllers
 {
@@ -46,9 +48,9 @@ namespace RecouvrementAPI.Controllers
                     .Where(d => d.Client.Statut != "Archivé") // Masquer les clients archivés
                     .AsQueryable();
 
-                if (!string.IsNullOrEmpty(etatDossier) && etatDossier != "Tous")
+                if (!string.IsNullOrEmpty(etatDossier) && !string.Equals(etatDossier, "Tous", StringComparison.OrdinalIgnoreCase))
                 {
-                    query = query.Where(d => d.StatutDossier == etatDossier.ToLower());
+                    query = query.Where(d => string.Equals(d.StatutDossier, etatDossier, StringComparison.OrdinalIgnoreCase));
                 }
 
                 if (!string.IsNullOrEmpty(recherche))
@@ -62,7 +64,7 @@ namespace RecouvrementAPI.Controllers
                 var tousDossiers = await query.ToListAsync();
 
                 var dossiersScores = tousDossiers
-                    .Where(d => d.ScoresRisque != null && d.ScoresRisque.Any())
+                    .Where(d => d.ScoresRisque != null && d.ScoresRisque.Count > 0)
                     .Select(d => new
                     {
                         Dossier = d,
@@ -70,30 +72,30 @@ namespace RecouvrementAPI.Controllers
                     })
                     .ToList();
 
-                int risqueEleve = dossiersScores.Count(x => x.DernierScore.Valeur > 60);
-                int risqueMoyen = dossiersScores.Count(x => x.DernierScore.Valeur >= 30 && x.DernierScore.Valeur <= 60);
-                int risqueFaible = dossiersScores.Count(x => x.DernierScore.Valeur < 30);
+                int risqueEleve = dossiersScores.Count(x => x.DernierScore.ScoreTotal > 60);
+                int risqueMoyen = dossiersScores.Count(x => x.DernierScore.ScoreTotal >= 30 && x.DernierScore.ScoreTotal <= 60);
+                int risqueFaible = dossiersScores.Count(x => x.DernierScore.ScoreTotal < 30);
 
                 var items = dossiersScores
-                    .OrderByDescending(x => x.DernierScore.Valeur) // Plus risqués en haut
+                    .OrderByDescending(x => x.DernierScore.ScoreTotal) // Plus risqués en haut
                     .Skip((page - 1) * pageSize)
                     .Take(pageSize)
                     .Select(x => new ScoringItemDto
                     {
                         IdDossier = x.Dossier.IdDossier,
                         Client = $"{x.Dossier.Client.Nom} {x.Dossier.Client.Prenom.Substring(0, 1)}.",
-                        RetardTexte = GetRetardLabel(CalculerRetardJours(x.Dossier.Echeances)),
+                        RetardTexte = GetRetardLabel(RecouvrementHelper.CalculerJoursRetard(x.Dossier.Echeances)),
                         PointsRetard = x.DernierScore.PointsRetard,
                         PointsHistorique = x.DernierScore.PointsHistorique,
                         PointsGarantie = x.DernierScore.PointsGarantie,
                         PointsIntention = x.DernierScore.PointsIntention,
-                        ScoreTotal = x.DernierScore.Valeur,
+                        ScoreTotal = x.DernierScore.ScoreTotal,
                         Niveau = x.DernierScore.Niveau
                     })
                     .ToList();
 
                 // On sélectionne par défaut le client le plus risqué (score élevé) pour le mettre de côté dans le panel détails
-                var topScore = dossiersScores.OrderByDescending(x => x.DernierScore.Valeur).FirstOrDefault();
+                var topScore = dossiersScores.OrderByDescending(x => x.DernierScore.ScoreTotal).FirstOrDefault();
                 ScoringDetailsDto detailsActif = null;
 
                 if (topScore != null)
@@ -114,7 +116,7 @@ namespace RecouvrementAPI.Controllers
                     TotalItems = dossiersScores.Count,
                     TotalPages = (int)Math.Ceiling(dossiersScores.Count / (double)pageSize),
                     CurrentPage = page,
-                    DetailActif = detailsActif
+                    DetailActif = detailsActif!
                 });
             }
             catch (Exception ex)
@@ -138,11 +140,33 @@ namespace RecouvrementAPI.Controllers
                 .Include(d => d.Intentions.OrderByDescending(i => i.DateIntention))
                 .FirstOrDefaultAsync(d => d.IdDossier == id);
 
-            if (dossier == null || !dossier.ScoresRisque.Any())
+            if (dossier == null || dossier.ScoresRisque.Count == 0)
                 return NotFound(new { message = "Dossier ou score introuvable" });
 
             var dernierScore = dossier.ScoresRisque.OrderByDescending(s => s.DateCalcul).First();
             return Ok(ConstruireDetailsDto(dernierScore, dossier));
+        }
+
+        /// <summary>
+        /// Mini IA de recommandation contextuelle selon l'etat reel du dossier.
+        /// Route: GET /api/Scoring/{id}/recommandation-ia
+        /// </summary>
+        [HttpGet("{id}/recommandation-ia")]
+        public async Task<ActionResult<ScoringAiRecommendationDto>> GetRecommandationIA(int id)
+        {
+            var dossier = await _context.Dossiers
+                .Include(d => d.Client)
+                .Include(d => d.ScoresRisque)
+                .Include(d => d.Echeances)
+                .Include(d => d.Garanties)
+                .Include(d => d.Intentions.OrderByDescending(i => i.DateIntention))
+                .FirstOrDefaultAsync(d => d.IdDossier == id);
+
+            if (dossier == null || dossier.ScoresRisque.Count == 0)
+                return NotFound(new { message = "Dossier ou score introuvable" });
+
+            var score = dossier.ScoresRisque.OrderByDescending(s => s.DateCalcul).First();
+            return Ok(ConstruireRecommandationIA(score, dossier));
         }
 
         /// <summary>
@@ -193,52 +217,14 @@ namespace RecouvrementAPI.Controllers
 
             if (dossier == null) return;
 
-            int ptsRetard = 0;
-            int ptsHistorique = 0;
-            int ptsGarantie = 0;
-            int ptsIntention = 0;
+            int retardJours = RecouvrementHelper.CalculerJoursRetard(dossier.Echeances);
+            int ptsRetard = GetPointsRetard(retardJours);
 
-            int retardJours = CalculerRetardJours(dossier.Echeances);
-            if (retardJours < 30) ptsRetard = 10;
-            else if (retardJours <= 90) ptsRetard = 30;
-            else ptsRetard = 50;
+            int ptsHistorique = GetPointsHistorique(dossier.Client);
 
-            var totalEcheancesImpayees = dossier.Client.Dossiers
-                .SelectMany(d => d.Echeances)
-                .Count(e => e.Statut == "impaye" && e.DateEcheance < DateTime.Now);
-                
-            if (totalEcheancesImpayees == 0) ptsHistorique = 5;
-            else if (totalEcheancesImpayees <= 3) ptsHistorique = 20;
-            else ptsHistorique = 40;
+            int ptsGarantie = GetPointsGarantie(dossier.Garanties);
 
-            if (!dossier.Garanties.Any()) 
-            {
-                ptsGarantie = 40;
-            }
-            else 
-            {
-                if (dossier.Garanties.Any(g => g.TypeGarantie == "hypotheque" || g.TypeGarantie == "salaire"))
-                {
-                    ptsGarantie = 5;
-                }
-                else 
-                {
-                    ptsGarantie = 20;
-                }
-            }
-
-            var derniereIntention = dossier.Intentions.FirstOrDefault();
-            if (derniereIntention == null)
-            {
-                ptsIntention = 20; 
-            }
-            else
-            {
-                if (derniereIntention.TypeIntention == "paiement_immediat") ptsIntention = -20;
-                else if (derniereIntention.TypeIntention == "promesse_paiement") ptsIntention = -10;
-                else if (derniereIntention.TypeIntention == "reclamation" || derniereIntention.TypeIntention == "demande_consolidation") ptsIntention = 0;
-                else ptsIntention = 20;
-            }
+            int ptsIntention = GetPointsIntention(dossier.Intentions.FirstOrDefault()!);
 
             int scoreCalcule = ptsRetard + ptsHistorique + ptsGarantie + ptsIntention;
             if (scoreCalcule < 0) scoreCalcule = 0;
@@ -251,13 +237,13 @@ namespace RecouvrementAPI.Controllers
             _context.ScoresRisque.Add(new ScoreRisque
             {
                 IdDossier = dossier.IdDossier,
-                Valeur = scoreCalcule,
+                ScoreTotal = scoreCalcule,
                 PointsRetard = ptsRetard,
                 PointsHistorique = ptsHistorique,
                 PointsGarantie = ptsGarantie,
                 PointsIntention = ptsIntention,
                 Niveau = niveau,
-                DateCalcul = DateTime.Now
+                DateCalcul = DateTime.UtcNow
             });
 
             await _context.SaveChangesAsync();
@@ -271,8 +257,8 @@ namespace RecouvrementAPI.Controllers
             return new ScoringDetailsDto
             {
                 ClientNom = $"{dossier.Client.Nom} {dossier.Client.Prenom}",
-                ScoreTotal = score.Valeur,
-                DetailRetard = $"{GetRetardLabel(CalculerRetardJours(dossier.Echeances))}",
+                ScoreTotal = score.ScoreTotal,
+                DetailRetard = $"{GetRetardLabel(RecouvrementHelper.CalculerJoursRetard(dossier.Echeances))}",
                 PtsRetard = score.PointsRetard,
                 DetailHistorique = score.PointsHistorique >= 40 ? "Retards fréquents" : "Retards moyens/faibles",
                 PtsHistorique = score.PointsHistorique,
@@ -285,10 +271,10 @@ namespace RecouvrementAPI.Controllers
             };
         }
 
-        private string GenererTexteRecommandation(ScoreRisque score, DossierRecouvrement dossier, string derniereIntention)
+        private static string GenererTexteRecommandation(ScoreRisque score, DossierRecouvrement dossier, string derniereIntention)
         {
-            var retardTexte = GetRetardLabel(CalculerRetardJours(dossier.Echeances));
-            var points = score.Valeur;
+            var retardTexte = GetRetardLabel(RecouvrementHelper.CalculerJoursRetard(dossier.Echeances));
+            var points = score.ScoreTotal;
 
             // Logique intelligente pour générer un bloc de texte complet comme sur la maquette :
             if (score.Niveau == "Élevé")
@@ -318,18 +304,110 @@ Analyse : Comportement rassurant ({points} pts).
 Action requise : *Suivi automatisé standard*. Ne pas interférer manuellement, laissez les e-mails s'envoyer seuls.";
         }
 
-        private int CalculerRetardJours(IEnumerable<Echeance> echeances)
+        private static int GetPointsRetard(int retardJours)
         {
-            var impayees = echeances.Where(e => e.Statut == "impaye" && e.DateEcheance < DateTime.Now).ToList();
-            if (!impayees.Any()) return 0;
-            return (int)(DateTime.Now - impayees.Min(e => e.DateEcheance)).TotalDays;
+            if (retardJours < 30) return 10;
+            if (retardJours <= 90) return 30;
+            return 50;
         }
 
-        private string GetRetardLabel(int jours)
+        private static int GetPointsHistorique(Client client)
+        {
+            var totalEcheancesImpayees = client.Dossiers
+                .SelectMany(d => d.Echeances)
+                .Count(e => e.Statut == "impaye" && e.DateEcheance < DateTime.UtcNow);
+
+            if (totalEcheancesImpayees == 0) return 5;
+            if (totalEcheancesImpayees <= 3) return 20;
+            return 40;
+        }
+
+        private static int GetPointsGarantie(IEnumerable<Garantie> garanties)
+        {
+            if (!garanties.Any()) return 40;
+            if (garanties.Any(g => string.Equals(g.TypeGarantie, "hypotheque", StringComparison.OrdinalIgnoreCase) || 
+                                    string.Equals(g.TypeGarantie, "salaire", StringComparison.OrdinalIgnoreCase))) return 5;
+            return 20;
+        }
+
+        private static int GetPointsIntention(IntentionClient derniereIntention)
+        {
+            if (derniereIntention == null) return 20;
+            return derniereIntention.TypeIntention switch
+            {
+                "paiement_immediat" => -20,
+                "promesse_paiement" => -10,
+                "reclamation" or "demande_consolidation" => 0,
+                _ => 20
+            };
+        }
+
+        // Logic moved to RecouvrementHelper
+
+        private static string GetRetardLabel(int jours)
         {
             if (jours == 0) return "Aucun retard";
             if (jours < 30) return $"{jours} jours";
             return $"{jours / 30} mois";
         }
+
+        private static ScoringAiRecommendationDto ConstruireRecommandationIA(ScoreRisque score, DossierRecouvrement dossier)
+        {
+            int retardJours = RecouvrementHelper.CalculerJoursRetard(dossier.Echeances);
+            var derniereIntention = dossier.Intentions.FirstOrDefault()?.TypeIntention ?? "non_specifiee";
+
+            var dto = new ScoringAiRecommendationDto
+            {
+                IdDossier = dossier.IdDossier,
+                ClientNom = $"{dossier.Client.Nom} {dossier.Client.Prenom}",
+                ScoreTotal = score.ScoreTotal,
+                NiveauRisque = score.Niveau,
+                Resume = GenererTexteRecommandation(score, dossier, derniereIntention.Replace("_", " ")),
+                Confiance = CalculerConfiance(score, dossier)
+            };
+
+            if (score.Niveau == "Élevé")
+            {
+                dto.PrioriteTraitement = "Urgente (24h)";
+                dto.ActionsRecommandees.Add("Contacter le client aujourd hui (appel + email)");
+                dto.ActionsRecommandees.Add("Preparer pre-escalade juridique si absence de retour sous 7 jours");
+                dto.ActionsRecommandees.Add("Valider possibilite de plan de paiement supervise");
+            }
+            else if (score.Niveau == "Moyen")
+            {
+                dto.PrioriteTraitement = "Haute (72h)";
+                dto.ActionsRecommandees.Add("Lancer sequence amiable (appel + relance ecrite)");
+                dto.ActionsRecommandees.Add("Proposer echeancier adapte au reste a payer");
+                dto.ActionsRecommandees.Add("Reevaluer le score apres nouvelle interaction client");
+            }
+            else
+            {
+                dto.PrioriteTraitement = "Normale (7 jours)";
+                dto.ActionsRecommandees.Add("Maintenir suivi automatise");
+                dto.ActionsRecommandees.Add("Programmer rappel preventif avant prochaine echeance");
+            }
+
+            dto.Justifications.Add($"Retard observe: {retardJours} jours");
+            dto.Justifications.Add($"Intention client recente: {derniereIntention}");
+            dto.Justifications.Add($"Statut dossier: {dossier.StatutDossier}");
+            dto.Justifications.Add($"Presence garanties: {(dossier.Garanties.Any() ? "oui" : "non")}");
+
+            return dto;
+        }
+
+        private static int CalculerConfiance(ScoreRisque score, DossierRecouvrement dossier)
+        {
+            int confiance = 60;
+
+            if (dossier.Echeances.Any()) confiance += 10;
+            if (dossier.Intentions.Any()) confiance += 10;
+            if (dossier.Garanties.Any()) confiance += 5;
+            if (score.DateCalcul > DateTime.UtcNow.AddDays(-30)) confiance += 10;
+
+            if (confiance > 95) confiance = 95;
+            if (confiance < 0) confiance = 0;
+            return confiance;
+        }
     }
 }
+

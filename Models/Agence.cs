@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace RecouvrementAPI.Models
 {
@@ -10,6 +11,7 @@ namespace RecouvrementAPI.Models
         // Clé primaire unique pour chaque agence
         [Key]
         [Column("id_agence")]
+        [JsonRequired]
         public int IdAgence { get; set; }
 
         

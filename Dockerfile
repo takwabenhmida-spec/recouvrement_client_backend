@@ -9,7 +9,8 @@ COPY RecouvrementAPI.csproj .
 RUN dotnet restore
 
 # Copier tout le code source et compiler en mode Release
-COPY . .
+# NOTE : Assurez-vous d'avoir un fichier .dockerignore à côté de ce Dockerfile
+
 RUN dotnet publish -c Release -o /app/publish
 
 # ============================================================
@@ -18,14 +19,17 @@ RUN dotnet publish -c Release -o /app/publish
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
 WORKDIR /app
 
-# Copier uniquement les fichiers compilés (pas le code source)
+# Copier uniquement les fichiers compilés
 COPY --from=build /app/publish .
 
-# Créer le dossier uploads pour les éventuels fichiers
-RUN mkdir -p /app/uploads
+# Créer le dossier uploads et ajuster les permissions pour l'utilisateur non-root
+RUN mkdir -p /app/uploads && chown -R $APP_UID:$APP_UID /app/uploads
 
 # Exposer le port de l'API
 EXPOSE 5203
+
+# Utiliser l'utilisateur non-privilégié (Correctif Security Hotspot)
+USER $APP_UID
 
 # Lancer l'API au démarrage du conteneur
 ENTRYPOINT ["dotnet", "RecouvrementAPI.dll"]

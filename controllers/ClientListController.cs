@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using RecouvrementAPI.Data;
 using RecouvrementAPI.DTOs;
 using RecouvrementAPI.Models;
+using RecouvrementAPI.Helpers;
 
 namespace RecouvrementAPI.Controllers
 {
@@ -46,20 +47,20 @@ namespace RecouvrementAPI.Controllers
                     .Include(d => d.Client)
                         .ThenInclude(c => c.Agence)
                     .Include(d => d.Echeances)
-                    .Where(d => d.Client.Statut != "Archivé") // EXCLURE LES ARCHIVES
+                    .Where(d => d.Client.Statut != AppConstants.ClientStatut.Archive) // EXCLURE LES ARCHIVES
                     .AsQueryable();
 
                 // ---------------------------------------------------------------------------------
                 // BLOC KPI HEADER : Ils sont calculés GLOBALEMENT sans être altérés par la pagination
                 // (Conforme aux wireframes UI : le top board montre la globalité parc analytique)
                 // ---------------------------------------------------------------------------------
-                var totalClients = await _context.Clients.CountAsync(c => c.Statut != "Archivé");
-                var dossiersActifs = _context.Dossiers.Where(d => d.Client.Statut != "Archivé");
+                var totalClients = await _context.Clients.CountAsync(c => c.Statut != AppConstants.ClientStatut.Archive);
+                var dossiersActifs = _context.Dossiers.Where(d => d.Client.Statut != AppConstants.ClientStatut.Archive);
 
                 var montantEmprunte = await dossiersActifs.SumAsync(d => d.MontantInitial);
-                var contentieux = await dossiersActifs.CountAsync(d => d.StatutDossier == "contentieux");
-                var amiable = await dossiersActifs.CountAsync(d => d.StatutDossier == "aimable");
-                var regularise = await dossiersActifs.CountAsync(d => d.StatutDossier == "regularise");
+                var contentieux = await dossiersActifs.CountAsync(d => d.StatutDossier == AppConstants.DossierStatut.Contentieux);
+                var amiable = await dossiersActifs.CountAsync(d => d.StatutDossier == AppConstants.DossierStatut.Amiable);
+                var regularise = await dossiersActifs.CountAsync(d => d.StatutDossier == AppConstants.DossierStatut.Regularise);
 
                 // ---------------------------------------------------------------------------------
                 // ALGORITHME DE FILTRAGE : Agit *seulement* sur la Datatable et non les KPI 
@@ -98,7 +99,7 @@ namespace RecouvrementAPI.Controllers
                     Agence = d.Client.Agence?.Ville ?? "Inconnue", // Gestion de l'association nulle
                     TypeCredit = d.TypeEmprunt,
                     MontantDu = d.MontantImpaye,
-                    Retard = CalculerJoursRetard(d.Echeances), // Calcul du retard en jours selon les écheances
+                    Retard = RecouvrementHelper.CalculerJoursRetard(d.Echeances), // Calcul du retard en jours selon les écheances
                     Statut = CapitalizeFirstLetter(d.StatutDossier)
                 }).ToList();
 
@@ -126,22 +127,7 @@ namespace RecouvrementAPI.Controllers
             }
         }
 
-        /// <summary>
-        /// Fonction métier interne qui repère l'échéance impayée la plus lointaine vis à vis d'aujourd'hui.
-        /// Renvoi le retard strict accumulé (en #jours).
-        /// </summary>
-        private static int CalculerJoursRetard(IEnumerable<Echeance> echeances)
-        {
-            var limit = DateTime.UtcNow;
-            var echeancesImpayeesDepassees = echeances
-                .Where(e => e.Statut == "impaye" && e.DateEcheance < limit)
-                .ToList();
-
-            if (!echeancesImpayeesDepassees.Any()) return 0; // Dossier propre à l'heure H
-
-            // Soustraire DateEcheance min (la plus vieille) depuis limit
-            return (int)(limit - echeancesImpayeesDepassees.Min(e => e.DateEcheance)).TotalDays;
-        }
+        // Logic moved to RecouvrementHelper
 
         /// <summary>
         /// Assistant de formatage UI pour affichage propre. (Ex: "contentieux" devient "Contentieux")

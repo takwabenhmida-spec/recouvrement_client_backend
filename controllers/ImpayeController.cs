@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using RecouvrementAPI.Data;
 using RecouvrementAPI.DTOs;
 using RecouvrementAPI.Models;
+using RecouvrementAPI.Helpers;
 
 namespace RecouvrementAPI.Controllers
 {
@@ -43,28 +44,22 @@ namespace RecouvrementAPI.Controllers
                 var dossiers = await _context.Dossiers
                     .Include(d => d.Client)
                     .Include(d => d.Echeances)
-                    .Where(d => d.Client.Statut != "Archivé") // Masquer les clients archivés
+                    .Where(d => d.Client.Statut != AppConstants.ClientStatut.Archive) // Masquer les clients archivés
                     .ToListAsync();
 
                 // Transforme la structure BD en format orienté Gestion d'Impayé Financier
                 var mappedItems = dossiers.Select(d => 
                 {
-                    var retard = CalculerJoursRetard(d.Echeances);
+                    var retard = RecouvrementHelper.CalculerJoursRetard(d.Echeances);
                     
-                    // LÉGISLATION FINANCIÈRE IMPLÉMENTÉE :
-                    // On ne demande/calcule de l'intérêt accumulé QUE si le dossier a dépassé légalement le cap fatidique des 90 Jours
-                    decimal interets = 0;
-                    if (retard >= 90)
-                    {
-                        // Formule PFE : Montant Restant * (Taux% en décimal) * (fraction de l'année correspondant au retard)
-                        interets = d.MontantImpaye * (d.TauxInteret / 100m) * (retard / 365m);
-                    }
+                    // LÉGISLATION FINANCIÈRE IMPLÉMENTÉE (Centralisée dans RecouvrementHelper)
+                    decimal interets = RecouvrementHelper.CalculerInteretsRetard(d.MontantImpaye, d.TauxInteret, retard);
 
                     var dejaPaye = d.MontantInitial - d.MontantImpaye;
 
                     // On retient la date du bascule d'impayé la plus ancienne
                     var premiereEcheance = d.Echeances
-                        .Where(e => e.Statut == "impaye")
+                        .Where(e => e.Statut == AppConstants.EcheanceStatut.Impaye)
                         .OrderBy(e => e.DateEcheance)
                         .Select(e => (DateTime?)e.DateEcheance)
                         .FirstOrDefault();
@@ -104,11 +99,11 @@ namespace RecouvrementAPI.Controllers
                 // Calcul du Tableau des KPIs ("Total impayé", "Intérêts dus..." )
                 // Ces valeurs illustrent le portefeuille global dans la base pour éviter des confusions
                 // -------------------------------------------------------------
-                var totalImpaye = dossiers.Where(d => d.StatutDossier != "regularise").Sum(d => d.MontantImpaye);
+                var totalImpaye = dossiers.Where(d => d.StatutDossier != AppConstants.DossierStatut.Regularise).Sum(d => d.MontantImpaye);
                 
                 // Recalcul en temps réel de tous les intérêts dépassant 90j au global
                 var totalInteretsDus = mappedItems.Where(i => i.Retard >= 90).Sum(i => i.Interets);
-                var totalFrais = dossiers.Where(d => d.StatutDossier != "regularise").Sum(d => d.FraisDossier);
+                var totalFrais = dossiers.Where(d => d.StatutDossier != AppConstants.DossierStatut.Regularise).Sum(d => d.FraisDossier);
                 var dejaRecupere = dossiers.Sum(d => d.MontantInitial - d.MontantImpaye);
                 var totalInitial = dossiers.Sum(d => d.MontantInitial);
 
@@ -148,15 +143,6 @@ namespace RecouvrementAPI.Controllers
             }
         }
 
-        // Utilitaire de calcul partagé
-        private int CalculerJoursRetard(IEnumerable<Echeance> echeances)
-        {
-            var echeancesDepassees = echeances
-                .Where(e => e.Statut == "impaye" && e.DateEcheance < DateTime.Now)
-                .ToList();
-
-            if (!echeancesDepassees.Any()) return 0;
-            return (int)(DateTime.Now - echeancesDepassees.Min(e => e.DateEcheance)).TotalDays;
-        }
+        // Logic moved to RecouvrementHelper
     }
 }

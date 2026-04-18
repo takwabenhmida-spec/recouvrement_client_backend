@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ProjectInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.sonarsource.com/msbuild/integration/2015/1">
-  <ProjectName>RecouvrementAPI.Tests</ProjectName>
+  <ProjectName>RecouvrementAPI</ProjectName>
   <ProjectLanguage>C#</ProjectLanguage>
-  <ProjectType>Test</ProjectType>
-  <ProjectGuid>f5a8e8a1-8c5f-4e7b-9a9a-6b8e8e8e8e8e</ProjectGuid>
-  <FullPath>C:\recouvrement_client\backend\RecouvrementAPI.Tests\RecouvrementAPI.Tests.csproj</FullPath>
+  <ProjectType>Product</ProjectType>
+  <ProjectGuid>5f82d74a-e4b0-4f0b-a0a9-2c40c6b8f794</ProjectGuid>
+  <FullPath>C:\recouvrement_client\backend\RecouvrementAPI.csproj</FullPath>
   <IsExcluded>false</IsExcluded>
   <AnalysisResultFiles>
     <AnalysisResultFile Id="FilesToAnalyze" Location="C:\recouvrement_client\backend\.sonarqube\conf\1\FilesToAnalyze.txt" />

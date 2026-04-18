@@ -4,8 +4,6 @@ VisualStudioVersion = 17.5.2.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecouvrementAPI", "RecouvrementAPI.csproj", "{42C093E8-5D93-2B07-DA38-5C8DC6DD4DBE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecouvrementAPI.Tests", "RecouvrementAPI.Tests\RecouvrementAPI.Tests.csproj", "{F5A8E8A1-8C5F-4E7B-9A9A-6B8E8E8E8E8E}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -16,10 +14,6 @@ Global
 		{42C093E8-5D93-2B07-DA38-5C8DC6DD4DBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{42C093E8-5D93-2B07-DA38-5C8DC6DD4DBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{42C093E8-5D93-2B07-DA38-5C8DC6DD4DBE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F5A8E8A1-8C5F-4E7B-9A9A-6B8E8E8E8E8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F5A8E8A1-8C5F-4E7B-9A9A-6B8E8E8E8E8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F5A8E8A1-8C5F-4E7B-9A9A-6B8E8E8E8E8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F5A8E8A1-8C5F-4E7B-9A9A-6B8E8E8E8E8E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

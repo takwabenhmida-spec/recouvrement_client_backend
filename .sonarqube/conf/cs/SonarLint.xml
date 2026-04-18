@@ -3,7 +3,7 @@
   <Settings>
     <Setting>
       <Key>sonar.cs.opencover.reportsPaths</Key>
-      <Value>RecouvrementAPI.Tests/coverage.opencover.xml</Value>
+      <Value>C:\recouvrement_client\backend\RecouvrementAPI.Tests\coverage.opencover.xml</Value>
     </Setting>
     <Setting>
       <Key>sonar.cs.ignoreHeaderComments</Key>

@@ -20,10 +20,10 @@ namespace RecouvrementAPI.Models
         public DateTime DateEcheance { get; set; } // Date de paiement prévue
 
         [Column("statut")]
-        public string Statut { get; set; } 
+        public string Statut { get; set; } = null!;
         // impaye / paye / partiel
 
-        public DossierRecouvrement Dossier { get; set; } 
+        public DossierRecouvrement Dossier { get; set; } = null!;
         // Navigation vers le dossier
     }
 }

@@ -1,33 +1,73 @@
 param (
     [string]$SonarProjectKey = "RecouvrementAPI",
-    [string]$SonarHostUrl = "http://localhost:9000",
-    [string]$SonarLoginToken = "sqp_8a04d2d6c4a020ce94ec1ba6b5937c848e0e9839"
+    [string]$SonarHostUrl    = "http://localhost:9000",
+    [string]$SonarLoginToken = $env:SONAR_TOKEN
 )
 
-Write-Host "=============================================" -ForegroundColor Cyan
-Write-Host "   Début de l'analyse SonarQube" -ForegroundColor Cyan
-Write-Host "=============================================" -ForegroundColor Cyan
+# Définit la variable d'environnement pour que les tests puissent se connecter à la DB locale
+$env:DB_PASSWORD = "takwa2004"
 
-# Étape 1 : Démarrer le scanner SonarQube
-Write-Host "`n[1/4] Démarrage du scanner SonarQube..." -ForegroundColor Yellow
-dotnet sonarscanner begin /k:$SonarProjectKey /d:sonar.host.url=$SonarHostUrl /d:sonar.token=$SonarLoginToken /d:sonar.cs.opencover.reportsPaths="RecouvrementAPI.Tests/coverage.opencover.xml" /d:sonar.exclusions="appsettings.json,docker-compose.yml"
+Write-Host "=== SonarQube Analysis ===" -ForegroundColor Cyan
 
-# Étape 2 : Reconstruire le projet
-Write-Host "`n[2/4] Compilation du projet..." -ForegroundColor Yellow
+# Vérification du token
+if ([string]::IsNullOrEmpty($SonarLoginToken)) {
+    Write-Host "ERREUR : Le token SonarQube est manquant !" -ForegroundColor Red
+    Write-Host "Définissez la variable d'environnement : " -ForegroundColor Yellow
+    Write-Host '  $env:SONAR_TOKEN = "votre_token"' -ForegroundColor Yellow
+    Write-Host "Ou passez-le en argument : " -ForegroundColor Yellow
+    Write-Host '  .\Run-SonarAnalysis.ps1 -SonarLoginToken "votre_token"' -ForegroundColor Yellow
+    exit 1
+}
+
+# ✅ FIX — Chemin absolu et fixe pour le rapport de couverture
+$TestProject   = "$PSScriptRoot\RecouvrementAPI.Tests"
+$CoveragePath  = "$TestProject\coverage.opencover.xml"
+
+Write-Host "Chemin couverture : $CoveragePath" -ForegroundColor Gray
+
+# 1. Start Sonar — avec chemin ABSOLU
+dotnet sonarscanner begin `
+    /k:$SonarProjectKey `
+    /d:sonar.host.url=$SonarHostUrl `
+    /d:sonar.token=$SonarLoginToken `
+    /d:sonar.cs.opencover.reportsPaths="$CoveragePath"
+
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "Erreur : SonarQube begin a échoué." -ForegroundColor Red
+    exit 1
+}
+
+# 2. Build
 dotnet build --no-incremental
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "Erreur : Build échoué." -ForegroundColor Red
+    exit 1
+}
 
-# Étape 3 : Exécuter les tests avec couverture de code
-Write-Host "`n[3/4] Exécution des tests et génération de la couverture..." -ForegroundColor Yellow
-dotnet test `
+# 3. Test + Coverage — sortie dans le dossier du projet de tests
+dotnet test $TestProject `
     /p:CollectCoverage=true `
     /p:CoverletOutputFormat=opencover `
-    /p:CoverletOutput="./coverage.opencover.xml"
+    /p:CoverletOutput="$CoveragePath"
 
-# Étape 4 : Fin du scanner et envoi des résultats
-Write-Host "`n[4/4] Finalisation de l'analyse et envoi à SonarQube..." -ForegroundColor Yellow
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "Attention : certains tests ont échoué." -ForegroundColor Yellow
+}
+
+# ✅ Vérification que le fichier a bien été généré
+if (Test-Path $CoveragePath) {
+    Write-Host "Rapport de couverture généré : $CoveragePath" -ForegroundColor Green
+} else {
+    Write-Host "ERREUR : Le rapport de couverture n'a pas été généré !" -ForegroundColor Red
+    Write-Host "Vérifiez que Coverlet est installé dans le projet de tests." -ForegroundColor Yellow
+    exit 1
+}
+
+# 4. End Sonar
 dotnet sonarscanner end /d:sonar.token=$SonarLoginToken
 
-Write-Host "`n=============================================" -ForegroundColor Green
-Write-Host " Analyse terminée !" -ForegroundColor Green
-Write-Host "Allez sur $SonarHostUrl pour voir les résultats." -ForegroundColor Green
-Write-Host "=============================================" -ForegroundColor Green
+# 5. Cleanup pour VSCode
+Write-Host "Nettoyage des fichiers temporaires pour VSCode..." -ForegroundColor Cyan
+dotnet clean > $null
+
+Write-Host "=== Analyse terminée ===" -ForegroundColor Cyan

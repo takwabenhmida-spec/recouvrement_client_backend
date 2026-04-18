@@ -26,11 +26,11 @@ namespace RecouvrementAPI.DTOs
     public class CreateDossierDto
     {
         [Required]
-        public decimal MontantInitial { get; set; }
+        public decimal? MontantInitial { get; set; }
         [Required]
         public string TypeEmprunt { get; set; } // Consommation, Immobilier, Auto
         [Required]
-        public decimal TauxInteret { get; set; }
+        public decimal? TauxInteret { get; set; }
         [Required]
         public string StatutDossier { get; set; } // aimable, contentieux
     }

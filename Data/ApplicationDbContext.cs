@@ -63,6 +63,13 @@ namespace RecouvrementAPI.Data
                 .WithMany(a => a.Clients)
                 .HasForeignKey(c => c.IdAgence);
 
+            // UtilisateurBack → Agence (évite la FK fantôme AgenceIdAgence)
+            modelBuilder.Entity<UtilisateurBack>()
+                .HasOne(u => u.Agence)
+                .WithMany()
+                .HasForeignKey(u => u.IdAgence)
+                .IsRequired(false);
+
             // Dossier → Client (Un client peut avoir plusieurs dossiers)
             modelBuilder.Entity<DossierRecouvrement>()
                 .HasOne(d => d.Client)

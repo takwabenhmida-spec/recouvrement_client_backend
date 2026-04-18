@@ -1,57 +1,54 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Collections.Generic;
-
+using System.Text.Json.Serialization;
 namespace RecouvrementAPI.Models
 {
-    // Table "client" : stocke les informations personnelles des clients
     [Table("client")]
     public class Client
     {
         [Key]
         [Column("id_client")]
+        [JsonRequired]
         public int IdClient { get; set; }
 
         [Column("id_agence")]
+        [JsonRequired]
         public int IdAgence { get; set; }
 
         [Required]
         [Column("nom")]
-        public string Nom { get; set; }
+        public string Nom { get; set; } = null!;
 
         [Required]
         [Column("prenom")]
-        public string Prenom { get; set; }
+        public string Prenom { get; set; } = null!;
 
         [Column("telephone")]
-        public string Telephone { get; set; }
-        // Numéro de téléphone pour envoi SMS du token
+        public string Telephone { get; set; } = null!;
 
         [Column("email")]
-        public string Email { get; set; }
-        // Email pour envoi du lien token
+        public string Email { get; set; } = null!;
 
         [Column("token_acces")]
-        public string TokenAcces { get; set; }
-        // Token UUID unique → généré avec UUID() dans MySQL
-        
+        public string TokenAcces { get; set; } = null!;
+
         [Column("cin")]
-        [MaxLength(20)]
-        public string CIN { get; set; }
+        public string CIN { get; set; } = null!;
 
         [Column("adresse")]
-        public string Adresse { get; set; }
+        public string Adresse { get; set; } = null!;
 
         [Column("statut")]
-        public string Statut { get; set; } = "Actif"; // Actif, Archivé
+        public string Statut { get; set; } = null!;
 
         [Column("token_expire_le")]
         public DateTime? TokenExpireLe { get; set; }
-        
-        // Navigation vers l'agence (ville, nom agence)
-        public Agence Agence { get; set; }
 
-        // Navigation vers les dossiers du client
-        public ICollection<DossierRecouvrement> Dossiers { get; set; }
+        // Navigation
+        public Agence Agence { get; set; } = null!;
+
+        public ICollection<DossierRecouvrement> Dossiers { get; set; } = new List<DossierRecouvrement>();
     }
 }

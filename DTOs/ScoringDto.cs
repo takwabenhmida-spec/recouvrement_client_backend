@@ -55,4 +55,17 @@ namespace RecouvrementAPI.DTOs
         public int CurrentPage { get; set; }
         public ScoringDetailsDto DetailActif { get; set; } // Pour le panneau latéral droit de la maquette
     }
+
+    public class ScoringAiRecommendationDto
+    {
+        public int IdDossier { get; set; }
+        public string ClientNom { get; set; }
+        public decimal ScoreTotal { get; set; }
+        public string NiveauRisque { get; set; }
+        public string PrioriteTraitement { get; set; }
+        public string Resume { get; set; }
+        public List<string> Justifications { get; set; } = new();
+        public List<string> ActionsRecommandees { get; set; } = new();
+        public int Confiance { get; set; }
+    }
 }

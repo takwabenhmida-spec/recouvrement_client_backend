@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
+using RecouvrementAPI;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RecouvrementAPI.Data;
@@ -71,7 +72,7 @@ namespace RecouvrementAPI.Controllers
                     IdAgence = u.IdAgence,
                     Agence = u.Agence?.Ville ?? "Siège",
                     DerniereConnexion = FormatDerniereConnexion(u.DerniereConnexion),
-                    Statut = u.Statut ?? "Actif"
+                    Statut = AppConstants.UserStatut.Active
                 }).ToList();
 
                 return Ok(new UtilisateurListResponseDto
@@ -110,7 +111,7 @@ namespace RecouvrementAPI.Controllers
                     MotDePasse = BCrypt.Net.BCrypt.HashPassword(dto.MotDePasse), // Sécurité oblige
                     Role = dto.Role,
                     IdAgence = dto.IdAgence,
-                    Statut = "Actif"
+                    Statut = AppConstants.UserStatut.Active
                 };
 
                 _context.UtilisateursBack.Add(nouveau);
@@ -137,7 +138,7 @@ namespace RecouvrementAPI.Controllers
                 var user = await _context.UtilisateursBack.FindAsync(id);
                 if (user == null) return NotFound(new { message = "Agent introuvable." });
 
-                user.Statut = user.Statut == "Actif" ? "Inactif" : "Actif";
+                user.Statut = user.Statut == AppConstants.UserStatut.Active ? AppConstants.UserStatut.Inactive : AppConstants.UserStatut.Active;
                 await _context.SaveChangesAsync();
 
                 return Ok(new { message = $"Le compte agent est désormais {user.Statut}." });
@@ -179,7 +180,7 @@ namespace RecouvrementAPI.Controllers
         }
 
         // Utilitaire pour afficher "Aujourd'hui 09:30" ou "Hier 17:00" sur la plateforme Angular
-        private string FormatDerniereConnexion(DateTime? dateConnexion)
+        private static string FormatDerniereConnexion(DateTime? dateConnexion)
         {
             if (!dateConnexion.HasValue) return "Jamais";
             

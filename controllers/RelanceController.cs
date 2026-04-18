@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
+using RecouvrementAPI;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RecouvrementAPI.Data;
@@ -19,11 +20,19 @@ namespace RecouvrementAPI.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly ILogger<RelanceController> _logger;
+        private readonly RecouvrementAPI.Services.IEmailService _emailService;
+        private readonly RecouvrementAPI.Services.ISmsService _smsService;
 
-        public RelanceController(ApplicationDbContext context, ILogger<RelanceController> logger)
+        public RelanceController(
+            ApplicationDbContext context, 
+            ILogger<RelanceController> logger,
+            RecouvrementAPI.Services.IEmailService emailService,
+            RecouvrementAPI.Services.ISmsService smsService)
         {
             _context = context;
             _logger = logger;
+            _emailService = emailService;
+            _smsService = smsService;
         }
 
         /// <summary>
@@ -46,33 +55,15 @@ namespace RecouvrementAPI.Controllers
                     .Include(r => r.Communications) // Requis car si un client envoie un motif partiel, on le lie
                     .ToListAsync();
 
-                // -------------------------------------------------------------
-                // Calcul Analytics (Dashboard Top KPI) - Analyse comportementale
-                // -------------------------------------------------------------
+                // 1. Calcul Analytics (Dashboard Top KPI)
                 int totalEnvoyees = relances.Count;
-                int enAttente = relances.Count(r => r.Statut == "envoye" || r.Statut == "sans_reponse");
-                int formulairesSoumis = relances.Count(r => r.Statut == "repondu");
+                int formulairesSoumis = relances.Count(r => r.Statut == AppConstants.RelanceStatut.Replied);
+                int enAttente = totalEnvoyees - formulairesSoumis;
                 
                 decimal tauxReponse = totalEnvoyees > 0 ? (decimal)formulairesSoumis / totalEnvoyees * 100 : 0;
 
-                // Ventilation ultra-précise par moyen de diffusions
-                var canaux = new RelanceCanalStatDto
-                {
-                    // Bloc Appels physiques
-                    Appels = relances.Count(r => r.Moyen == "appel"),
-                    AppelsDecroches = relances.Count(r => r.Moyen == "appel" && r.Statut == "repondu"),
-                    AppelsNonJoignables = relances.Count(r => r.Moyen == "appel" && (r.Statut == "envoye" || r.Statut == "sans_reponse")),
-
-                    // Bloc SMS Gateway automatisés
-                    SmsEnvoyes = relances.Count(r => r.Moyen == "sms"),
-                    SmsRepondus = relances.Count(r => r.Moyen == "sms" && r.Statut == "repondu"),
-                    SmsEnAttente = relances.Count(r => r.Moyen == "sms" && (r.Statut == "envoye" || r.Statut == "sans_reponse")),
-
-                    // Bloc Campagnes E-mails
-                    EmailsEnvoyes = relances.Count(r => r.Moyen == "email"),
-                    EmailsRepondus = relances.Count(r => r.Moyen == "email" && r.Statut == "repondu"),
-                    EmailsEnAttente = relances.Count(r => r.Moyen == "email" && (r.Statut == "envoye" || r.Statut == "sans_reponse"))
-                };
+                // 2. Ventilation par canaux
+                var canaux = CalculerStatsCanaux(relances);
 
                 // -------------------------------------------------------------
                 // Assemblage de la Table d'audit paginée
@@ -106,15 +97,14 @@ namespace RecouvrementAPI.Controllers
                         Canal = r.Moyen,
                         
                         // Sécurité: masquage partiel du token JWT client (ex. 6fE8a1b2...)
-                        Token = string.IsNullOrEmpty(r.Dossier.Client.TokenAcces) ? "" : 
-                                (r.Dossier.Client.TokenAcces.Length > 8 ? r.Dossier.Client.TokenAcces.Substring(0, 8) + "..." : r.Dossier.Client.TokenAcces),
+                        Token = FormatToken(r.Dossier.Client.TokenAcces),
                         
                         Statut = r.Statut,
                         
                         // Détection heuristique si le client a répondu, on interroge la sous-table Communications
                         // Ceci permet d'afficher en direct le "Demande d'échéancier" ou "Paiement en cours"
-                        Reponse = r.Statut == "repondu" ? 
-                            (r.Communications.OrderByDescending(c => c.DateEnvoi).FirstOrDefault(c => c.Origine == "client")?.Message ?? "Demande soumise") 
+                        Reponse = r.Statut == AppConstants.RelanceStatut.Replied ? 
+                            (r.Communications.OrderByDescending(c => c.DateEnvoi).FirstOrDefault(c => c.Origine == AppConstants.ClientActor)?.Message ?? "Demande soumise") 
                             : "Aucune"
                     }).ToList();
 
@@ -170,7 +160,7 @@ namespace RecouvrementAPI.Controllers
                 {
                     IdDossier = dossier.IdDossier,
                     Moyen = req.Canal ?? "sms", // Par défaut on simule un sms
-                    Statut = "envoye",
+                    Statut = AppConstants.RelanceStatut.Sent,
                     DateRelance = DateTime.Now,
                     Contenu = $"Envoi {req.Canal} manuel depuis interface"
                 };
@@ -179,15 +169,33 @@ namespace RecouvrementAPI.Controllers
 
                 await _context.SaveChangesAsync();
 
-                // 4. Construction de la simulation pour la démo
+                // 4. Construction et Envoi Réel
                 string lien = $"https://stbbank.tn/portail/{nouveauToken}";
-                string messageSimulation = req.Canal == "sms"
-                    ? $"[SIMULATION SMS] STB BANK: Cher {dossier.Client.Nom}, veuillez régler votre retard d'urgence via : {lien}"
-                    : $"[SIMULATION E-MAIL] Objet: STB BANK - Action Requise. Bonjour, voici votre accès sécurisé: {lien}";
+                string messageSimulation = "";
 
-                // Logger dans le backend réel pour la maquette console
-                _logger.LogInformation($"[MOCK ENVOI TOKEN] Dossier: {idDossier} | Lien: {lien}");
+                if (req.Canal == "sms")
+                {
+                    messageSimulation = $"[ENVOI SMS] STB BANK: Cher {dossier.Client.Nom}, veuillez régler votre retard via : {lien}";
+                    if (!string.IsNullOrEmpty(dossier.Client.Telephone))
+                    {
+                        await _smsService.SendSmsAsync(dossier.Client.Telephone, messageSimulation);
+                    }
+                }
+                else if (req.Canal == "email")
+                {
+                    messageSimulation = $"[ENVOI E-MAIL] STB BANK - Action Requise. Accès sécurisé : {lien}";
+                    if (!string.IsNullOrEmpty(dossier.Client.Email))
+                    {
+                        await _emailService.SendEmailAsync(dossier.Client.Email, "STB BANK - Rappel de Paiement", messageSimulation);
+                    }
+                }
 
+                // Logger dans le backend
+                if (_logger.IsEnabled(LogLevel.Information))
+                {
+                    _logger.LogInformation("[ENVOI TOKEN CANAL: {Canal}] Dossier: {DossierId} | Client: {Client}", req.Canal, idDossier, dossier.Client.Nom);
+                }
+                
                 return Ok(new EnvoiTokenResponseDto
                 {
                     Message = messageSimulation,
@@ -200,6 +208,30 @@ namespace RecouvrementAPI.Controllers
                 _logger.LogError(ex, "Erreur lors de la génération du token.");
                 return StatusCode(500, new { message = "Impossible d'expédier le lien d'accès." });
             }
+        }
+
+        private static RelanceCanalStatDto CalculerStatsCanaux(List<RelanceClient> relances)
+        {
+            return new RelanceCanalStatDto
+            {
+                Appels = relances.Count(r => r.Moyen == "appel"),
+                AppelsDecroches = relances.Count(r => r.Moyen == "appel" && r.Statut == AppConstants.RelanceStatut.Replied),
+                AppelsNonJoignables = relances.Count(r => r.Moyen == "appel" && r.Statut != AppConstants.RelanceStatut.Replied),
+
+                SmsEnvoyes = relances.Count(r => r.Moyen == "sms"),
+                SmsRepondus = relances.Count(r => r.Moyen == "sms" && r.Statut == AppConstants.RelanceStatut.Replied),
+                SmsEnAttente = relances.Count(r => r.Moyen == "sms" && r.Statut != AppConstants.RelanceStatut.Replied),
+
+                EmailsEnvoyes = relances.Count(r => r.Moyen == "email"),
+                EmailsRepondus = relances.Count(r => r.Moyen == "email" && r.Statut == AppConstants.RelanceStatut.Replied),
+                EmailsEnAttente = relances.Count(r => r.Moyen == "email" && r.Statut != AppConstants.RelanceStatut.Replied)
+            };
+        }
+
+        private static string FormatToken(string token)
+        {
+            if (string.IsNullOrEmpty(token)) return "";
+            return token.Length > 8 ? string.Concat(token.AsSpan(0, 8), "...") : token;
         }
     }
 }

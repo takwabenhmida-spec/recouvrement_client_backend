@@ -1,9 +1,9 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RecouvrementAPI.Models
 {
-    // Table score_risque
     [Table("score_risque")]
     public class ScoreRisque
     {
@@ -14,8 +14,8 @@ namespace RecouvrementAPI.Models
         [Column("id_dossier")]
         public int IdDossier { get; set; }
 
-        [Column("valeur")]
-        public decimal Valeur { get; set; }
+        [Column("score_total")]
+        public int ScoreTotal{ get; set; }
 
         [Column("points_retard")]
         public int PointsRetard { get; set; }
@@ -29,13 +29,12 @@ namespace RecouvrementAPI.Models
         [Column("points_intention")]
         public int PointsIntention { get; set; }
 
-        [Column("niveau")]
-        [MaxLength(20)]
-        public string Niveau { get; set; } // Faible, Moyen, Élevé
+        [Column("niveau_risque")]
+        public string Niveau { get; set; } = null!;
 
         [Column("date_calcul")]
         public DateTime DateCalcul { get; set; }
 
-        public DossierRecouvrement Dossier { get; set; }
+        public DossierRecouvrement Dossier { get; set; } = null!;
     }
 }

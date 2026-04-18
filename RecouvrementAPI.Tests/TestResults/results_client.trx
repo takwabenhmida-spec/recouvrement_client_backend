@@ -1,0 +1,451 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="706095ec-7948-47f8-a16e-ab3fdb276731" name="1000TEK@TAKWABH15 2026-04-18 18:14:29" runUser="TAKWABH15\1000TEK" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-04-18T18:14:29.2219790+01:00" queuing="2026-04-18T18:14:29.2219793+01:00" start="2026-04-18T18:14:27.3088117+01:00" finish="2026-04-18T18:14:32.9138203+01:00" />
+  <TestSettings name="default" id="e7b92e80-c778-4227-b591-4d0ac9d245c9">
+    <Deployment runDeploymentRoot="1000TEK_TAKWABH15_2026-04-18_18_14_29" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="4964416c-6a37-4b1e-9796-a8537746c395" testId="3f772aad-38c1-41fa-012c-5ebd1acc1962" testName="RecouvrementAPI.Tests.EspaceClientApiTests.Post_RepondreRelance_ShouldReturnError_WhenIdRelanceInvalid" computerName="TAKWABH15" duration="00:00:00.0379269" startTime="2026-04-18T18:14:30.7730404+01:00" endTime="2026-04-18T18:14:30.8106231+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4964416c-6a37-4b1e-9796-a8537746c395" />
+    <UnitTestResult executionId="dfc7f748-c271-4f95-b9d5-09788a514e25" testId="391db10a-43eb-13ec-b297-10a2266eb855" testName="RecouvrementAPI.Tests.ModelCoverageTests.Client_Coverage" computerName="TAKWABH15" duration="00:00:00.0014108" startTime="2026-04-18T18:14:29.1695150+01:00" endTime="2026-04-18T18:14:29.1695505+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="dfc7f748-c271-4f95-b9d5-09788a514e25" />
+    <UnitTestResult executionId="6ff4d2f6-7188-47bc-a542-35573a31eb20" testId="cd4c6202-9998-3701-f3c2-882f070561ac" testName="RecouvrementAPI.Tests.ModelCoverageTests.Echeance_Coverage" computerName="TAKWABH15" duration="00:00:00.0008678" startTime="2026-04-18T18:14:29.1684847+01:00" endTime="2026-04-18T18:14:29.1685144+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6ff4d2f6-7188-47bc-a542-35573a31eb20" />
+    <UnitTestResult executionId="659b9c08-4b9c-4718-8248-2cc46bd194fe" testId="4a4b975d-0887-05d8-0d23-b20c037afd51" testName="RecouvrementAPI.Tests.ModelCoverageTests.IntentionClient_Coverage" computerName="TAKWABH15" duration="00:00:00.0013379" startTime="2026-04-18T18:14:29.1920572+01:00" endTime="2026-04-18T18:14:29.1920934+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="659b9c08-4b9c-4718-8248-2cc46bd194fe" />
+    <UnitTestResult executionId="aacc569d-6a01-4e9c-8475-712a23132a9e" testId="3d71ddfe-a7b4-858e-ba6a-278f166f11a4" testName="RecouvrementAPI.Tests.EspaceClientApiTests.Get_Recu_ShouldReturnUnauthorized_WhenTokenInvalid" computerName="TAKWABH15" duration="00:00:00.0031993" startTime="2026-04-18T18:14:32.3167791+01:00" endTime="2026-04-18T18:14:32.3224127+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="aacc569d-6a01-4e9c-8475-712a23132a9e" />
+    <UnitTestResult executionId="788df62c-42f5-4b48-a96a-343f20a20144" testId="036681b7-aab9-2f1c-c2a0-796152e10b73" testName="RecouvrementAPI.Tests.EspaceClientApiTests.Post_ClientIntention_ShouldReturnError_WhenInvalidType" computerName="TAKWABH15" duration="00:00:00.0839145" startTime="2026-04-18T18:14:30.6444025+01:00" endTime="2026-04-18T18:14:30.7283156+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="788df62c-42f5-4b48-a96a-343f20a20144" />
+    <UnitTestResult executionId="bb4e8d45-1aec-44c7-a01d-7fbbe6ce71c8" testId="56a13047-2018-9cde-ec2d-65f941b80ecc" testName="RecouvrementAPI.Tests.EspaceClientApiTests.Post_Intention_ShouldReturnError_WhenDossierNotFound" computerName="TAKWABH15" duration="00:00:00.0041655" startTime="2026-04-18T18:14:32.0586861+01:00" endTime="2026-04-18T18:14:32.0626175+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="bb4e8d45-1aec-44c7-a01d-7fbbe6ce71c8" />
+    <UnitTestResult executionId="9aaf480a-d422-42b7-8523-7cf4e13f9590" testId="d10ed4c7-c620-3ca1-50ad-03f569b715d5" testName="RecouvrementAPI.Tests.EspaceClientApiTests.Get_Historique_ShouldReturnUnauthorized_WhenTokenExpired" computerName="TAKWABH15" duration="00:00:00.0028527" startTime="2026-04-18T18:14:31.8913281+01:00" endTime="2026-04-18T18:14:31.8940762+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9aaf480a-d422-42b7-8523-7cf4e13f9590" />
+    <UnitTestResult executionId="be1d2d7a-097b-40ee-8de7-a8f4cc498ed6" testId="e91666bb-4002-d0fa-09a7-08b8cf1c68d1" testName="RecouvrementAPI.Tests.ModelCoverageTests.DossierRecouvrement_Coverage" computerName="TAKWABH15" duration="00:00:00.0137696" startTime="2026-04-18T18:14:29.1465129+01:00" endTime="2026-04-18T18:14:29.1505872+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="be1d2d7a-097b-40ee-8de7-a8f4cc498ed6" />
+    <UnitTestResult executionId="55d72a6d-b2dd-4a66-97f4-fb8c1d2d4e91" testId="55102797-55b0-4867-2a93-719e2178a152" testName="RecouvrementAPI.Tests.ModelCoverageTests.Communication_Coverage" computerName="TAKWABH15" duration="00:00:00.0010045" startTime="2026-04-18T18:14:29.1907762+01:00" endTime="2026-04-18T18:14:29.1908373+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="55d72a6d-b2dd-4a66-97f4-fb8c1d2d4e91" />
+    <UnitTestResult executionId="9d05fa93-60cf-48c5-a8f7-c9a5c14aff71" testId="9aad6ec7-36ce-b90c-674d-4d38dc1c0fc2" testName="RecouvrementAPI.Tests.EspaceClientApiTests.Post_RepondreRelance_ShouldReturnError_WhenInvalidData" computerName="TAKWABH15" duration="00:00:00.0024897" startTime="2026-04-18T18:14:31.2826931+01:00" endTime="2026-04-18T18:14:31.2848948+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9d05fa93-60cf-48c5-a8f7-c9a5c14aff71" />
+    <UnitTestResult executionId="aa5aebfa-3864-4a4f-8a9f-218f3f28cee3" testId="0f8a295a-8a44-43eb-3c55-c8a995b3ea2e" testName="RecouvrementAPI.Tests.EspaceClientApiTests.Post_Message_ShouldReturnOk_WhenValidTokenAndBody" computerName="TAKWABH15" duration="00:00:00.0061738" startTime="2026-04-18T18:14:32.3657978+01:00" endTime="2026-04-18T18:14:32.3705038+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="aa5aebfa-3864-4a4f-8a9f-218f3f28cee3" />
+    <UnitTestResult executionId="5c3ee5b8-56ab-4ed7-976f-6665dd91717c" testId="165614c6-b17d-11a7-9352-6b8340311548" testName="RecouvrementAPI.Tests.EspaceClientApiTests.Get_DossierPrecis_ShouldReturnUnauthorized_WhenTokenInvalid" computerName="TAKWABH15" duration="00:00:00.0025502" startTime="2026-04-18T18:14:32.3616066+01:00" endTime="2026-04-18T18:14:32.3639322+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5c3ee5b8-56ab-4ed7-976f-6665dd91717c" />
+    <UnitTestResult executionId="79155999-82d8-481f-8db0-676bff8555af" testId="ebf3d0ac-32fe-447f-b793-68826ee49b30" testName="RecouvrementAPI.Tests.EspaceClientApiTests.Get_AccuseReception_TokenExpired" computerName="TAKWABH15" duration="00:00:00.0033549" startTime="2026-04-18T18:14:31.2790472+01:00" endTime="2026-04-18T18:14:31.2820783+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="79155999-82d8-481f-8db0-676bff8555af" />
+    <UnitTestResult executionId="77b423a0-0698-457d-b095-b3e04d22eff1" testId="f32f2b79-95da-2702-8370-41f52167024c" testName="RecouvrementAPI.Tests.EspaceClientApiTests.Get_AccuseReception_Success" computerName="TAKWABH15" duration="00:00:00.0344806" startTime="2026-04-18T18:14:32.3232568+01:00" endTime="2026-04-18T18:14:32.3573305+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="77b423a0-0698-457d-b095-b3e04d22eff1" />
+    <UnitTestResult executionId="4f588890-f59f-420c-9618-c926971e56a5" testId="518384f5-5c5a-ba47-d33d-9f0e2d0b39da" testName="RecouvrementAPI.Tests.EspaceClientApiTests.Post_Intention_ShouldReturnBadRequest_WhenMontantPartielTropEleve" computerName="TAKWABH15" duration="00:00:00.0037564" startTime="2026-04-18T18:14:32.3041967+01:00" endTime="2026-04-18T18:14:32.3075535+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4f588890-f59f-420c-9618-c926971e56a5" />
+    <UnitTestResult executionId="5869e957-04a2-4f20-8166-0000ebf12d32" testId="5eb6887b-0a46-6afa-6573-e45e8ceafd7a" testName="RecouvrementAPI.Tests.EspaceClientApiTests.Get_Recu_ShouldReturnNotFound_WhenDossierDoesNotBelongToClient" computerName="TAKWABH15" duration="00:00:00.0050801" startTime="2026-04-18T18:14:32.0205509+01:00" endTime="2026-04-18T18:14:32.0244878+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5869e957-04a2-4f20-8166-0000ebf12d32" />
+    <UnitTestResult executionId="1d3906c9-6bd3-44ea-a344-cefaaef590ae" testId="eaa4eea5-1857-9082-7895-eb128262e0e2" testName="RecouvrementAPI.Tests.EspaceClientApiTests.Get_Recu_ShouldReturnUnauthorized_WhenTokenExpired" computerName="TAKWABH15" duration="00:00:00.0033133" startTime="2026-04-18T18:14:31.8743421+01:00" endTime="2026-04-18T18:14:31.8766572+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1d3906c9-6bd3-44ea-a344-cefaaef590ae" />
+    <UnitTestResult executionId="7c422b96-ab84-420b-85ff-903ba4bd145f" testId="c5ff1492-1d1d-c770-990f-300970d30733" testName="RecouvrementAPI.Tests.EspaceClientApiTests.Get_DossierPrecis_ShouldReturnUnauthorized_WhenTokenEmpty" computerName="TAKWABH15" duration="00:00:00.0106249" startTime="2026-04-18T18:14:31.2459466+01:00" endTime="2026-04-18T18:14:31.2559210+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7c422b96-ab84-420b-85ff-903ba4bd145f" />
+    <UnitTestResult executionId="f05f97da-81e3-4ebd-a14b-c94f47c3a6fe" testId="df688cfb-c218-52aa-d4da-432e99b518ee" testName="RecouvrementAPI.Tests.ModelCoverageTests.UtilisateurBack_Coverage" computerName="TAKWABH15" duration="00:00:00.0014346" startTime="2026-04-18T18:14:29.1915822+01:00" endTime="2026-04-18T18:14:29.1916231+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f05f97da-81e3-4ebd-a14b-c94f47c3a6fe" />
+    <UnitTestResult executionId="f689fcb0-b2f9-427e-abfc-a84c52af0538" testId="539f54dd-e045-a6b1-9fa7-0d12ec6ac9b1" testName="RecouvrementAPI.Tests.EspaceClientApiTests.Post_Intention_ShouldReturnBadRequest_WhenIdDossierInvalid" computerName="TAKWABH15" duration="00:00:00.0046457" startTime="2026-04-18T18:14:31.2271039+01:00" endTime="2026-04-18T18:14:31.2312672+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f689fcb0-b2f9-427e-abfc-a84c52af0538" />
+    <UnitTestResult executionId="ec7d81f4-818d-4955-932d-83d99de7fde2" testId="d3b39cd5-aa4f-89be-8223-96b720859ac5" testName="RecouvrementAPI.Tests.EspaceClientApiTests.Post_Message_ShouldReturnBadRequest_WhenBodyEmpty" computerName="TAKWABH15" duration="00:00:00.0081454" startTime="2026-04-18T18:14:31.9827683+01:00" endTime="2026-04-18T18:14:31.9903119+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ec7d81f4-818d-4955-932d-83d99de7fde2" />
+    <UnitTestResult executionId="ba9bb5e3-f5fe-495c-972e-57123b3bcdc0" testId="44201923-d8d5-58d0-6790-5c00d68eff2c" testName="RecouvrementAPI.Tests.EspaceClientApiTests.Post_Intention_ShouldReturnBadRequest_WhenAlreadySubmittedToday" computerName="TAKWABH15" duration="00:00:00.0049600" startTime="2026-04-18T18:14:32.3083814+01:00" endTime="2026-04-18T18:14:32.3129360+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ba9bb5e3-f5fe-495c-972e-57123b3bcdc0" />
+    <UnitTestResult executionId="ac6ab9ea-2f29-495c-a757-0bb5066d0fef" testId="212b1b9a-136a-a1f4-ae1d-65902acf962e" testName="RecouvrementAPI.Tests.EspaceClientApiTests.Post_Intention_ShouldReturnBadRequest_WhenDatePromessePassee" computerName="TAKWABH15" duration="00:00:00.0031660" startTime="2026-04-18T18:14:31.2854694+01:00" endTime="2026-04-18T18:14:31.2884019+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ac6ab9ea-2f29-495c-a757-0bb5066d0fef" />
+    <UnitTestResult executionId="3cc5cb5b-4478-4b5a-bc0d-d28d579bfa46" testId="49bf6644-2f67-abe8-a799-a2830d35ff41" testName="RecouvrementAPI.Tests.EspaceClientApiTests.Post_Intention_Success_PromessePaiement" computerName="TAKWABH15" duration="00:00:00.0127940" startTime="2026-04-18T18:14:31.2386428+01:00" endTime="2026-04-18T18:14:31.2447684+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3cc5cb5b-4478-4b5a-bc0d-d28d579bfa46" />
+    <UnitTestResult executionId="a9b1f4ba-d12a-42f3-8acc-a0bfaf888b70" testId="28b2d328-d31f-7153-63ce-4b5c5acda889" testName="RecouvrementAPI.Tests.EspaceClientApiTests.Post_Intention_ShouldReturnBadRequest_WhenMontantPartielMissing" computerName="TAKWABH15" duration="00:00:00.0033445" startTime="2026-04-18T18:14:32.3581950+01:00" endTime="2026-04-18T18:14:32.3610063+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a9b1f4ba-d12a-42f3-8acc-a0bfaf888b70" />
+    <UnitTestResult executionId="43043308-384e-46b3-aa0a-ffd613a0b56e" testId="bc1c0795-5904-4b2b-5088-96ac1d63f078" testName="RecouvrementAPI.Tests.EspaceClientApiTests.Post_Intention_ShouldReturnBadRequest_WhenTypeMissing" computerName="TAKWABH15" duration="00:00:00.0039335" startTime="2026-04-18T18:14:32.2997415+01:00" endTime="2026-04-18T18:14:32.3033703+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="43043308-384e-46b3-aa0a-ffd613a0b56e" />
+    <UnitTestResult executionId="d4e723c2-1605-4c45-b790-1a487efc13f8" testId="d48dd383-cde7-0f8a-c05d-4e262e6dac09" testName="RecouvrementAPI.Tests.EspaceClientApiTests.Get_HistoriquePdf_Success" computerName="TAKWABH15" duration="00:00:00.0874347" startTime="2026-04-18T18:14:31.8946414+01:00" endTime="2026-04-18T18:14:31.9819105+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d4e723c2-1605-4c45-b790-1a487efc13f8" />
+    <UnitTestResult executionId="91f5df1c-3967-479b-b9c9-df18cc359756" testId="733e9e93-48f2-96b2-efef-a7fc213d0658" testName="RecouvrementAPI.Tests.EspaceClientApiTests.Get_Historique_ShouldReturnUnauthorized_WhenTokenInvalid" computerName="TAKWABH15" duration="00:00:01.5199988" startTime="2026-04-18T18:14:29.1492831+01:00" endTime="2026-04-18T18:14:30.6425514+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="91f5df1c-3967-479b-b9c9-df18cc359756" />
+    <UnitTestResult executionId="f0957618-e6b0-4e37-8ff1-86383e4dac10" testId="078d5ab2-c794-cc63-46df-6a4738d34f0c" testName="RecouvrementAPI.Tests.EspaceClientApiTests.Get_DossierPrecis_ShouldReturnNotFound_WhenDossierInexistant" computerName="TAKWABH15" duration="00:00:00.0029540" startTime="2026-04-18T18:14:32.0663599+01:00" endTime="2026-04-18T18:14:32.0688160+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f0957618-e6b0-4e37-8ff1-86383e4dac10" />
+    <UnitTestResult executionId="730c2204-e59b-486d-8eb5-ce090deb0bf9" testId="30c41d92-2dda-fc87-bde7-8c9161586d69" testName="RecouvrementAPI.Tests.EspaceClientApiTests.Get_DossierPrecis_Success" computerName="TAKWABH15" duration="00:00:00.0151653" startTime="2026-04-18T18:14:31.9979382+01:00" endTime="2026-04-18T18:14:32.0129307+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="730c2204-e59b-486d-8eb5-ce090deb0bf9" />
+    <UnitTestResult executionId="bc961f5b-a0ed-418d-887e-436ace560eae" testId="2c4f2dfb-3183-69c2-3bd8-020fdebe9578" testName="RecouvrementAPI.Tests.EspaceClientApiTests.Post_Intention_ShouldReturnBadRequest_WhenBodyIsEmpty" computerName="TAKWABH15" duration="00:00:00.0025106" startTime="2026-04-18T18:14:32.3135251+01:00" endTime="2026-04-18T18:14:32.3159114+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="bc961f5b-a0ed-418d-887e-436ace560eae" />
+    <UnitTestResult executionId="dceb6c45-fb6d-4094-9c02-5beaed774dae" testId="f65a4136-47f5-daac-9535-f94a729b3f94" testName="RecouvrementAPI.Tests.EspaceClientApiTests.Get_DossierPrecis_ShouldReturnNotFound_WhenValidTokenButWrongDossier" computerName="TAKWABH15" duration="00:00:00.0168835" startTime="2026-04-18T18:14:31.2565766+01:00" endTime="2026-04-18T18:14:31.2733199+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="dceb6c45-fb6d-4094-9c02-5beaed774dae" />
+    <UnitTestResult executionId="45355311-98e9-488d-81fa-6a74adbec46c" testId="00e32492-ca78-f795-9b15-cdc57ff9038e" testName="RecouvrementAPI.Tests.EspaceClientApiTests.Post_Intention_Success_PaiementPartiel" computerName="TAKWABH15" duration="00:00:00.0369867" startTime="2026-04-18T18:14:30.7291953+01:00" endTime="2026-04-18T18:14:30.7658446+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="45355311-98e9-488d-81fa-6a74adbec46c" />
+    <UnitTestResult executionId="00f6b1d0-95e0-4705-8761-5b39401cbc5a" testId="b3c6c4fb-8cc7-d9a2-1f2a-6968a49de2cb" testName="RecouvrementAPI.Tests.EspaceClientApiTests.Get_DossierPrecis_ShouldReturnError_WhenIdDossierInvalid" computerName="TAKWABH15" duration="00:00:00.0024938" startTime="2026-04-18T18:14:32.0633362+01:00" endTime="2026-04-18T18:14:32.0655347+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="00f6b1d0-95e0-4705-8761-5b39401cbc5a" />
+    <UnitTestResult executionId="cb7c6546-2d64-43eb-81e2-50f7dc22c319" testId="0d9a2766-4d49-c7da-18e8-d8a773380d69" testName="RecouvrementAPI.Tests.EspaceClientApiTests.Get_Historique_ShouldReturnOk_WhenTokenValid" computerName="TAKWABH15" duration="00:00:00.0250968" startTime="2026-04-18T18:14:32.0301519+01:00" endTime="2026-04-18T18:14:32.0547814+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="cb7c6546-2d64-43eb-81e2-50f7dc22c319" />
+    <UnitTestResult executionId="62e52a1d-f229-431c-93a4-70fecd122c8c" testId="547d661d-ec25-b1bc-beaa-6458205cda7e" testName="RecouvrementAPI.Tests.EspaceClientApiTests.Get_Recu_WithIdDossier_Success" computerName="TAKWABH15" duration="00:00:00.0202838" startTime="2026-04-18T18:14:32.0696292+01:00" endTime="2026-04-18T18:14:32.0897675+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="62e52a1d-f229-431c-93a4-70fecd122c8c" />
+    <UnitTestResult executionId="29d04e51-2d7e-4c71-8da0-5f9c052ed9f8" testId="0ecb801e-05e3-3b57-0d08-30af5fc65327" testName="RecouvrementAPI.Tests.EspaceClientApiTests.Post_Message_ShouldReturnError_WhenTokenMissing" computerName="TAKWABH15" duration="00:00:00.0029811" startTime="2026-04-18T18:14:32.0560073+01:00" endTime="2026-04-18T18:14:32.0580525+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="29d04e51-2d7e-4c71-8da0-5f9c052ed9f8" />
+    <UnitTestResult executionId="51b6206c-22c3-444c-8e55-40c832ab6a2c" testId="b15b54c2-e5a8-b842-df3b-7c37da00c8fe" testName="RecouvrementAPI.Tests.EspaceClientApiTests.BackOffice_Intention_GetHistory_ShouldReturnOk" computerName="TAKWABH15" duration="00:00:00.1965284" startTime="2026-04-18T18:14:31.6898058+01:00" endTime="2026-04-18T18:14:31.8729062+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="51b6206c-22c3-444c-8e55-40c832ab6a2c" />
+    <UnitTestResult executionId="c24f443b-1f9e-43ac-8c2f-b6d4fc8c00bd" testId="85a2bdd7-b7cc-84f4-ce4b-f5d7dbdb970c" testName="RecouvrementAPI.Tests.EspaceClientApiTests.Post_Intention_Success_Echeance" computerName="TAKWABH15" duration="00:00:00.0077772" startTime="2026-04-18T18:14:32.0913637+01:00" endTime="2026-04-18T18:14:32.0981006+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c24f443b-1f9e-43ac-8c2f-b6d4fc8c00bd" />
+    <UnitTestResult executionId="ceb6aa23-ac16-4b00-bb17-4c8dcae6c0a2" testId="b71c4e11-4d3e-86b1-4467-c1563c349401" testName="RecouvrementAPI.Tests.EspaceClientApiTests.Get_Historique_ShouldReturn401_WhenTokenMissing" computerName="TAKWABH15" duration="00:00:00.0022150" startTime="2026-04-18T18:14:31.9912121+01:00" endTime="2026-04-18T18:14:31.9930437+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ceb6aa23-ac16-4b00-bb17-4c8dcae6c0a2" />
+    <UnitTestResult executionId="aed74004-77c6-41da-8070-a9c7e3ce5f26" testId="eae65bd6-bc9d-efb8-baaa-b9afd706a0ee" testName="RecouvrementAPI.Tests.EspaceClientApiTests.Get_AccuseReception_NotFound" computerName="TAKWABH15" duration="00:00:00.0320559" startTime="2026-04-18T18:14:30.8411713+01:00" endTime="2026-04-18T18:14:30.8727549+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="aed74004-77c6-41da-8070-a9c7e3ce5f26" />
+    <UnitTestResult executionId="9ce22941-4ca8-45d6-a96e-4f47217ab4ea" testId="43c3772f-f5ce-cdf0-15fa-59d9b8d5dcca" testName="RecouvrementAPI.Tests.ModelCoverageTests.HistoriqueAction_Coverage" computerName="TAKWABH15" duration="00:00:00.0010508" startTime="2026-04-18T18:14:29.1688180+01:00" endTime="2026-04-18T18:14:29.1688470+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9ce22941-4ca8-45d6-a96e-4f47217ab4ea" />
+    <UnitTestResult executionId="31a44050-6ba4-4fe4-acd0-071d24d75134" testId="ded8ff7d-0ddb-8756-b95b-0fd2ce91e627" testName="RecouvrementAPI.Tests.EspaceClientApiTests.Get_Recu_ShouldShowInterestsRetard_WhenRetardOver90Days" computerName="TAKWABH15" duration="00:00:00.3870395" startTime="2026-04-18T18:14:31.2889723+01:00" endTime="2026-04-18T18:14:31.6758339+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="31a44050-6ba4-4fe4-acd0-071d24d75134" />
+    <UnitTestResult executionId="9d3a9b1d-885d-4a29-9fc3-8496fccc8027" testId="7ea8a8cb-0e0a-6549-fdea-174c92570c1a" testName="RecouvrementAPI.Tests.EspaceClientApiTests.Post_Intention_ShouldReturnUnauthorized_WhenTokenExpired" computerName="TAKWABH15" duration="00:00:00.0038038" startTime="2026-04-18T18:14:31.9938513+01:00" endTime="2026-04-18T18:14:31.9973923+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9d3a9b1d-885d-4a29-9fc3-8496fccc8027" />
+    <UnitTestResult executionId="57427587-3da9-4af2-b6a9-82ebfe075fe2" testId="a931d0f6-483b-546c-80e1-c8db566edbe9" testName="RecouvrementAPI.Tests.EspaceClientApiTests.Post_Intention_ShouldReturnBadRequest_WhenMontantPartielInvalide" computerName="TAKWABH15" duration="00:00:00.0045455" startTime="2026-04-18T18:14:31.2739353+01:00" endTime="2026-04-18T18:14:31.2783368+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="57427587-3da9-4af2-b6a9-82ebfe075fe2" />
+    <UnitTestResult executionId="7ea2e021-cd53-436c-b4a3-ecb3237896cf" testId="9676311f-d6f7-ca45-ed14-6608ce9400d0" testName="RecouvrementAPI.Tests.ModelCoverageTests.ScoreRisque_Coverage" computerName="TAKWABH15" duration="00:00:00.0012386" startTime="2026-04-18T18:14:29.1659501+01:00" endTime="2026-04-18T18:14:29.1660486+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7ea2e021-cd53-436c-b4a3-ecb3237896cf" />
+    <UnitTestResult executionId="0b025ed0-a1cb-44c1-959e-4c431689156e" testId="e4dcf5ed-f16f-9ef3-526f-383362bac5aa" testName="RecouvrementAPI.Tests.ModelCoverageTests.RelanceClient_Coverage" computerName="TAKWABH15" duration="00:00:00.0009306" startTime="2026-04-18T18:14:29.1681172+01:00" endTime="2026-04-18T18:14:29.1681540+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0b025ed0-a1cb-44c1-959e-4c431689156e" />
+    <UnitTestResult executionId="e2b8c463-0f87-4ecd-94a6-38a05d35e6d4" testId="c5bdc52c-f1cc-264b-f1f4-60369f69a0c2" testName="RecouvrementAPI.Tests.EspaceClientApiTests.Post_Intention_ShouldReturnBadRequest_WhenDatePromesseMissing" computerName="TAKWABH15" duration="00:00:00.0038818" startTime="2026-04-18T18:14:32.3714698+01:00" endTime="2026-04-18T18:14:32.3747841+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e2b8c463-0f87-4ecd-94a6-38a05d35e6d4" />
+    <UnitTestResult executionId="f069e754-ddde-4950-8aac-1c6276ae6fc9" testId="9d73b7aa-19c4-b54b-185a-3fd488088c28" testName="RecouvrementAPI.Tests.ModelCoverageTests.Garantie_Coverage" computerName="TAKWABH15" duration="00:00:00.0006748" startTime="2026-04-18T18:14:29.1924642+01:00" endTime="2026-04-18T18:14:29.1924966+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f069e754-ddde-4950-8aac-1c6276ae6fc9" />
+    <UnitTestResult executionId="eb6a644e-6d42-455e-8d21-773e5e700d72" testId="06528522-40ef-bcbc-763b-f5ba03cd4d89" testName="RecouvrementAPI.Tests.EspaceClientApiTests.Post_Intention_ShouldReturnOk_WhenReclamation" computerName="TAKWABH15" duration="00:00:00.0056946" startTime="2026-04-18T18:14:32.0137924+01:00" endTime="2026-04-18T18:14:32.0189432+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="eb6a644e-6d42-455e-8d21-773e5e700d72" />
+    <UnitTestResult executionId="6c3fef90-4986-4930-b2c3-5081fd950ff7" testId="0d149786-7ff3-0a5e-fb51-803cd9cfdeda" testName="RecouvrementAPI.Tests.EspaceClientApiTests.Post_RepondreRelance_ShouldReturnOk_WhenValidTokenAndRelance" computerName="TAKWABH15" duration="00:00:00.0242894" startTime="2026-04-18T18:14:30.8167338+01:00" endTime="2026-04-18T18:14:30.8403453+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6c3fef90-4986-4930-b2c3-5081fd950ff7" />
+    <UnitTestResult executionId="62157a31-c7d3-42c7-ba62-0169cb330e63" testId="79051cb5-de07-6536-3f6d-f0b2639b291f" testName="RecouvrementAPI.Tests.ModelCoverageTests.Agence_Coverage" computerName="TAKWABH15" duration="00:00:00.0005846" startTime="2026-04-18T18:14:29.1676114+01:00" endTime="2026-04-18T18:14:29.1676641+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="62157a31-c7d3-42c7-ba62-0169cb330e63" />
+    <UnitTestResult executionId="ceb0191f-ba3f-47fe-8148-c78ae3e0c922" testId="6917a68b-895d-448c-e2d2-565714983477" testName="RecouvrementAPI.Tests.EspaceClientApiTests.Get_HistoriquePdf_NotFound" computerName="TAKWABH15" duration="00:00:00.0110124" startTime="2026-04-18T18:14:31.8807119+01:00" endTime="2026-04-18T18:14:31.8907268+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ceb0191f-ba3f-47fe-8148-c78ae3e0c922" />
+    <UnitTestResult executionId="53725cc3-e1c2-43f2-ada7-96e3a92d616b" testId="41f05c2f-f623-a1bb-f88e-e653845aba48" testName="RecouvrementAPI.Tests.EspaceClientApiTests.Post_Intention_ShouldReturnOk_WhenValid" computerName="TAKWABH15" duration="00:00:00.0057240" startTime="2026-04-18T18:14:30.7671075+01:00" endTime="2026-04-18T18:14:30.7719265+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="53725cc3-e1c2-43f2-ada7-96e3a92d616b" />
+    <UnitTestResult executionId="a938298a-a112-40e2-9a14-ec5cc1351ccf" testId="b02be361-db2a-f1d5-c289-1ed01b13915e" testName="RecouvrementAPI.Tests.EspaceClientApiTests.Post_Intention_ShouldReturnBadRequest_WhenTypeInvalid" computerName="TAKWABH15" duration="00:00:00.0047267" startTime="2026-04-18T18:14:30.8128996+01:00" endTime="2026-04-18T18:14:30.8156477+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a938298a-a112-40e2-9a14-ec5cc1351ccf" />
+    <UnitTestResult executionId="25c81f9e-f873-4abe-8782-3e9fea996308" testId="e05b9039-fc43-c417-17d3-57f0962d5f4e" testName="RecouvrementAPI.Tests.EspaceClientApiTests.BackOffice_Intention_Dashboard_ShouldReturnOk" computerName="TAKWABH15" duration="00:00:00.3529375" startTime="2026-04-18T18:14:30.8735654+01:00" endTime="2026-04-18T18:14:31.2261975+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="25c81f9e-f873-4abe-8782-3e9fea996308" />
+    <UnitTestResult executionId="64159c13-b6f3-47b8-b4f5-49e082d43843" testId="b2114199-4b90-0cbc-ae6c-1dd12fcbfef6" testName="RecouvrementAPI.Tests.ModelCoverageTests.HistoriquePaiement_Coverage" computerName="TAKWABH15" duration="00:00:00.0008307" startTime="2026-04-18T18:14:29.1691922+01:00" endTime="2026-04-18T18:14:29.1692237+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="64159c13-b6f3-47b8-b4f5-49e082d43843" />
+    <UnitTestResult executionId="206487d7-e6d6-4524-b3de-cc3dffa6aba1" testId="8bdbda7c-bf61-478d-f43d-c72aa40e6d6e" testName="RecouvrementAPI.Tests.EspaceClientApiTests.BackOffice_Intention_Add_ShouldReturnOk" computerName="TAKWABH15" duration="00:00:00.2004147" startTime="2026-04-18T18:14:32.1002137+01:00" endTime="2026-04-18T18:14:32.2990055+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="206487d7-e6d6-4524-b3de-cc3dffa6aba1" />
+    <UnitTestResult executionId="95c89b02-2958-40ba-87f5-4a453083c485" testId="e7efd876-b836-1488-8506-e719a46f35ba" testName="RecouvrementAPI.Tests.EspaceClientApiTests.Post_Intention_Success_Consolidation" computerName="TAKWABH15" duration="00:00:00.0043705" startTime="2026-04-18T18:14:32.0251348+01:00" endTime="2026-04-18T18:14:32.0291982+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="95c89b02-2958-40ba-87f5-4a453083c485" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="RecouvrementAPI.Tests.EspaceClientApiTests.Get_Recu_WithIdDossier_Success" storage="c:\recouvrement_client\backend\recouvrementapi.tests\bin\debug\net10.0\recouvrementapi.tests.dll" id="547d661d-ec25-b1bc-beaa-6458205cda7e">
+      <Execution id="62e52a1d-f229-431c-93a4-70fecd122c8c" />
+      <TestMethod codeBase="C:\recouvrement_client\backend\RecouvrementApi.Tests\bin\Debug\net10.0\RecouvrementAPI.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="RecouvrementAPI.Tests.EspaceClientApiTests" name="Get_Recu_WithIdDossier_Success" />
+    </UnitTest>
+    <UnitTest name="RecouvrementAPI.Tests.EspaceClientApiTests.Get_Historique_ShouldReturnOk_WhenTokenValid" storage="c:\recouvrement_client\backend\recouvrementapi.tests\bin\debug\net10.0\recouvrementapi.tests.dll" id="0d9a2766-4d49-c7da-18e8-d8a773380d69">
+      <Execution id="cb7c6546-2d64-43eb-81e2-50f7dc22c319" />
+      <TestMethod codeBase="C:\recouvrement_client\backend\RecouvrementApi.Tests\bin\Debug\net10.0\RecouvrementAPI.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="RecouvrementAPI.Tests.EspaceClientApiTests" name="Get_Historique_ShouldReturnOk_WhenTokenValid" />
+    </UnitTest>
+    <UnitTest name="RecouvrementAPI.Tests.EspaceClientApiTests.Post_Intention_Success_PromessePaiement" storage="c:\recouvrement_client\backend\recouvrementapi.tests\bin\debug\net10.0\recouvrementapi.tests.dll" id="49bf6644-2f67-abe8-a799-a2830d35ff41">
+      <Execution id="3cc5cb5b-4478-4b5a-bc0d-d28d579bfa46" />
+      <TestMethod codeBase="C:\recouvrement_client\backend\RecouvrementApi.Tests\bin\Debug\net10.0\RecouvrementAPI.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="RecouvrementAPI.Tests.EspaceClientApiTests" name="Post_Intention_Success_PromessePaiement" />
+    </UnitTest>
+    <UnitTest name="RecouvrementAPI.Tests.EspaceClientApiTests.Get_Recu_ShouldReturnUnauthorized_WhenTokenExpired" storage="c:\recouvrement_client\backend\recouvrementapi.tests\bin\debug\net10.0\recouvrementapi.tests.dll" id="eaa4eea5-1857-9082-7895-eb128262e0e2">
+      <Execution id="1d3906c9-6bd3-44ea-a344-cefaaef590ae" />
+      <TestMethod codeBase="C:\recouvrement_client\backend\RecouvrementApi.Tests\bin\Debug\net10.0\RecouvrementAPI.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="RecouvrementAPI.Tests.EspaceClientApiTests" name="Get_Recu_ShouldReturnUnauthorized_WhenTokenExpired" />
+    </UnitTest>
+    <UnitTest name="RecouvrementAPI.Tests.EspaceClientApiTests.Post_Intention_ShouldReturnBadRequest_WhenIdDossierInvalid" storage="c:\recouvrement_client\backend\recouvrementapi.tests\bin\debug\net10.0\recouvrementapi.tests.dll" id="539f54dd-e045-a6b1-9fa7-0d12ec6ac9b1">
+      <Execution id="f689fcb0-b2f9-427e-abfc-a84c52af0538" />
+      <TestMethod codeBase="C:\recouvrement_client\backend\RecouvrementApi.Tests\bin\Debug\net10.0\RecouvrementAPI.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="RecouvrementAPI.Tests.EspaceClientApiTests" name="Post_Intention_ShouldReturnBadRequest_WhenIdDossierInvalid" />
+    </UnitTest>
+    <UnitTest name="RecouvrementAPI.Tests.EspaceClientApiTests.Post_RepondreRelance_ShouldReturnOk_WhenValidTokenAndRelance" storage="c:\recouvrement_client\backend\recouvrementapi.tests\bin\debug\net10.0\recouvrementapi.tests.dll" id="0d149786-7ff3-0a5e-fb51-803cd9cfdeda">
+      <Execution id="6c3fef90-4986-4930-b2c3-5081fd950ff7" />
+      <TestMethod codeBase="C:\recouvrement_client\backend\RecouvrementApi.Tests\bin\Debug\net10.0\RecouvrementAPI.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="RecouvrementAPI.Tests.EspaceClientApiTests" name="Post_RepondreRelance_ShouldReturnOk_WhenValidTokenAndRelance" />
+    </UnitTest>
+    <UnitTest name="RecouvrementAPI.Tests.EspaceClientApiTests.Post_Intention_Success_Consolidation" storage="c:\recouvrement_client\backend\recouvrementapi.tests\bin\debug\net10.0\recouvrementapi.tests.dll" id="e7efd876-b836-1488-8506-e719a46f35ba">
+      <Execution id="95c89b02-2958-40ba-87f5-4a453083c485" />
+      <TestMethod codeBase="C:\recouvrement_client\backend\RecouvrementApi.Tests\bin\Debug\net10.0\RecouvrementAPI.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="RecouvrementAPI.Tests.EspaceClientApiTests" name="Post_Intention_Success_Consolidation" />
+    </UnitTest>
+    <UnitTest name="RecouvrementAPI.Tests.ModelCoverageTests.DossierRecouvrement_Coverage" storage="c:\recouvrement_client\backend\recouvrementapi.tests\bin\debug\net10.0\recouvrementapi.tests.dll" id="e91666bb-4002-d0fa-09a7-08b8cf1c68d1">
+      <Execution id="be1d2d7a-097b-40ee-8de7-a8f4cc498ed6" />
+      <TestMethod codeBase="C:\recouvrement_client\backend\RecouvrementApi.Tests\bin\Debug\net10.0\RecouvrementAPI.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="RecouvrementAPI.Tests.ModelCoverageTests" name="DossierRecouvrement_Coverage" />
+    </UnitTest>
+    <UnitTest name="RecouvrementAPI.Tests.EspaceClientApiTests.Get_DossierPrecis_ShouldReturnNotFound_WhenDossierInexistant" storage="c:\recouvrement_client\backend\recouvrementapi.tests\bin\debug\net10.0\recouvrementapi.tests.dll" id="078d5ab2-c794-cc63-46df-6a4738d34f0c">
+      <Execution id="f0957618-e6b0-4e37-8ff1-86383e4dac10" />
+      <TestMethod codeBase="C:\recouvrement_client\backend\RecouvrementApi.Tests\bin\Debug\net10.0\RecouvrementAPI.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="RecouvrementAPI.Tests.EspaceClientApiTests" name="Get_DossierPrecis_ShouldReturnNotFound_WhenDossierInexistant" />
+    </UnitTest>
+    <UnitTest name="RecouvrementAPI.Tests.EspaceClientApiTests.BackOffice_Intention_GetHistory_ShouldReturnOk" storage="c:\recouvrement_client\backend\recouvrementapi.tests\bin\debug\net10.0\recouvrementapi.tests.dll" id="b15b54c2-e5a8-b842-df3b-7c37da00c8fe">
+      <Execution id="51b6206c-22c3-444c-8e55-40c832ab6a2c" />
+      <TestMethod codeBase="C:\recouvrement_client\backend\RecouvrementApi.Tests\bin\Debug\net10.0\RecouvrementAPI.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="RecouvrementAPI.Tests.EspaceClientApiTests" name="BackOffice_Intention_GetHistory_ShouldReturnOk" />
+    </UnitTest>
+    <UnitTest name="RecouvrementAPI.Tests.EspaceClientApiTests.Post_Intention_Success_PaiementPartiel" storage="c:\recouvrement_client\backend\recouvrementapi.tests\bin\debug\net10.0\recouvrementapi.tests.dll" id="00e32492-ca78-f795-9b15-cdc57ff9038e">
+      <Execution id="45355311-98e9-488d-81fa-6a74adbec46c" />
+      <TestMethod codeBase="C:\recouvrement_client\backend\RecouvrementApi.Tests\bin\Debug\net10.0\RecouvrementAPI.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="RecouvrementAPI.Tests.EspaceClientApiTests" name="Post_Intention_Success_PaiementPartiel" />
+    </UnitTest>
+    <UnitTest name="RecouvrementAPI.Tests.EspaceClientApiTests.Get_HistoriquePdf_NotFound" storage="c:\recouvrement_client\backend\recouvrementapi.tests\bin\debug\net10.0\recouvrementapi.tests.dll" id="6917a68b-895d-448c-e2d2-565714983477">
+      <Execution id="ceb0191f-ba3f-47fe-8148-c78ae3e0c922" />
+      <TestMethod codeBase="C:\recouvrement_client\backend\RecouvrementApi.Tests\bin\Debug\net10.0\RecouvrementAPI.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="RecouvrementAPI.Tests.EspaceClientApiTests" name="Get_HistoriquePdf_NotFound" />
+    </UnitTest>
+    <UnitTest name="RecouvrementAPI.Tests.ModelCoverageTests.ScoreRisque_Coverage" storage="c:\recouvrement_client\backend\recouvrementapi.tests\bin\debug\net10.0\recouvrementapi.tests.dll" id="9676311f-d6f7-ca45-ed14-6608ce9400d0">
+      <Execution id="7ea2e021-cd53-436c-b4a3-ecb3237896cf" />
+      <TestMethod codeBase="C:\recouvrement_client\backend\RecouvrementApi.Tests\bin\Debug\net10.0\RecouvrementAPI.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="RecouvrementAPI.Tests.ModelCoverageTests" name="ScoreRisque_Coverage" />
+    </UnitTest>
+    <UnitTest name="RecouvrementAPI.Tests.ModelCoverageTests.RelanceClient_Coverage" storage="c:\recouvrement_client\backend\recouvrementapi.tests\bin\debug\net10.0\recouvrementapi.tests.dll" id="e4dcf5ed-f16f-9ef3-526f-383362bac5aa">
+      <Execution id="0b025ed0-a1cb-44c1-959e-4c431689156e" />
+      <TestMethod codeBase="C:\recouvrement_client\backend\RecouvrementApi.Tests\bin\Debug\net10.0\RecouvrementAPI.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="RecouvrementAPI.Tests.ModelCoverageTests" name="RelanceClient_Coverage" />
+    </UnitTest>
+    <UnitTest name="RecouvrementAPI.Tests.EspaceClientApiTests.Post_Intention_Success_Echeance" storage="c:\recouvrement_client\backend\recouvrementapi.tests\bin\debug\net10.0\recouvrementapi.tests.dll" id="85a2bdd7-b7cc-84f4-ce4b-f5d7dbdb970c">
+      <Execution id="c24f443b-1f9e-43ac-8c2f-b6d4fc8c00bd" />
+      <TestMethod codeBase="C:\recouvrement_client\backend\RecouvrementApi.Tests\bin\Debug\net10.0\RecouvrementAPI.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="RecouvrementAPI.Tests.EspaceClientApiTests" name="Post_Intention_Success_Echeance" />
+    </UnitTest>
+    <UnitTest name="RecouvrementAPI.Tests.EspaceClientApiTests.Get_Recu_ShouldReturnUnauthorized_WhenTokenInvalid" storage="c:\recouvrement_client\backend\recouvrementapi.tests\bin\debug\net10.0\recouvrementapi.tests.dll" id="3d71ddfe-a7b4-858e-ba6a-278f166f11a4">
+      <Execution id="aacc569d-6a01-4e9c-8475-712a23132a9e" />
+      <TestMethod codeBase="C:\recouvrement_client\backend\RecouvrementApi.Tests\bin\Debug\net10.0\RecouvrementAPI.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="RecouvrementAPI.Tests.EspaceClientApiTests" name="Get_Recu_ShouldReturnUnauthorized_WhenTokenInvalid" />
+    </UnitTest>
+    <UnitTest name="RecouvrementAPI.Tests.EspaceClientApiTests.Post_RepondreRelance_ShouldReturnError_WhenIdRelanceInvalid" storage="c:\recouvrement_client\backend\recouvrementapi.tests\bin\debug\net10.0\recouvrementapi.tests.dll" id="3f772aad-38c1-41fa-012c-5ebd1acc1962">
+      <Execution id="4964416c-6a37-4b1e-9796-a8537746c395" />
+      <TestMethod codeBase="C:\recouvrement_client\backend\RecouvrementApi.Tests\bin\Debug\net10.0\RecouvrementAPI.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="RecouvrementAPI.Tests.EspaceClientApiTests" name="Post_RepondreRelance_ShouldReturnError_WhenIdRelanceInvalid" />
+    </UnitTest>
+    <UnitTest name="RecouvrementAPI.Tests.EspaceClientApiTests.Post_Intention_ShouldReturnBadRequest_WhenTypeMissing" storage="c:\recouvrement_client\backend\recouvrementapi.tests\bin\debug\net10.0\recouvrementapi.tests.dll" id="bc1c0795-5904-4b2b-5088-96ac1d63f078">
+      <Execution id="43043308-384e-46b3-aa0a-ffd613a0b56e" />
+      <TestMethod codeBase="C:\recouvrement_client\backend\RecouvrementApi.Tests\bin\Debug\net10.0\RecouvrementAPI.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="RecouvrementAPI.Tests.EspaceClientApiTests" name="Post_Intention_ShouldReturnBadRequest_WhenTypeMissing" />
+    </UnitTest>
+    <UnitTest name="RecouvrementAPI.Tests.EspaceClientApiTests.Post_Intention_ShouldReturnBadRequest_WhenTypeInvalid" storage="c:\recouvrement_client\backend\recouvrementapi.tests\bin\debug\net10.0\recouvrementapi.tests.dll" id="b02be361-db2a-f1d5-c289-1ed01b13915e">
+      <Execution id="a938298a-a112-40e2-9a14-ec5cc1351ccf" />
+      <TestMethod codeBase="C:\recouvrement_client\backend\RecouvrementApi.Tests\bin\Debug\net10.0\RecouvrementAPI.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="RecouvrementAPI.Tests.EspaceClientApiTests" name="Post_Intention_ShouldReturnBadRequest_WhenTypeInvalid" />
+    </UnitTest>
+    <UnitTest name="RecouvrementAPI.Tests.ModelCoverageTests.Client_Coverage" storage="c:\recouvrement_client\backend\recouvrementapi.tests\bin\debug\net10.0\recouvrementapi.tests.dll" id="391db10a-43eb-13ec-b297-10a2266eb855">
+      <Execution id="dfc7f748-c271-4f95-b9d5-09788a514e25" />
+      <TestMethod codeBase="C:\recouvrement_client\backend\RecouvrementApi.Tests\bin\Debug\net10.0\RecouvrementAPI.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="RecouvrementAPI.Tests.ModelCoverageTests" name="Client_Coverage" />
+    </UnitTest>
+    <UnitTest name="RecouvrementAPI.Tests.ModelCoverageTests.HistoriquePaiement_Coverage" storage="c:\recouvrement_client\backend\recouvrementapi.tests\bin\debug\net10.0\recouvrementapi.tests.dll" id="b2114199-4b90-0cbc-ae6c-1dd12fcbfef6">
+      <Execution id="64159c13-b6f3-47b8-b4f5-49e082d43843" />
+      <TestMethod codeBase="C:\recouvrement_client\backend\RecouvrementApi.Tests\bin\Debug\net10.0\RecouvrementAPI.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="RecouvrementAPI.Tests.ModelCoverageTests" name="HistoriquePaiement_Coverage" />
+    </UnitTest>
+    <UnitTest name="RecouvrementAPI.Tests.ModelCoverageTests.UtilisateurBack_Coverage" storage="c:\recouvrement_client\backend\recouvrementapi.tests\bin\debug\net10.0\recouvrementapi.tests.dll" id="df688cfb-c218-52aa-d4da-432e99b518ee">
+      <Execution id="f05f97da-81e3-4ebd-a14b-c94f47c3a6fe" />
+      <TestMethod codeBase="C:\recouvrement_client\backend\RecouvrementApi.Tests\bin\Debug\net10.0\RecouvrementAPI.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="RecouvrementAPI.Tests.ModelCoverageTests" name="UtilisateurBack_Coverage" />
+    </UnitTest>
+    <UnitTest name="RecouvrementAPI.Tests.EspaceClientApiTests.Get_DossierPrecis_ShouldReturnError_WhenIdDossierInvalid" storage="c:\recouvrement_client\backend\recouvrementapi.tests\bin\debug\net10.0\recouvrementapi.tests.dll" id="b3c6c4fb-8cc7-d9a2-1f2a-6968a49de2cb">
+      <Execution id="00f6b1d0-95e0-4705-8761-5b39401cbc5a" />
+      <TestMethod codeBase="C:\recouvrement_client\backend\RecouvrementApi.Tests\bin\Debug\net10.0\RecouvrementAPI.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="RecouvrementAPI.Tests.EspaceClientApiTests" name="Get_DossierPrecis_ShouldReturnError_WhenIdDossierInvalid" />
+    </UnitTest>
+    <UnitTest name="RecouvrementAPI.Tests.ModelCoverageTests.Communication_Coverage" storage="c:\recouvrement_client\backend\recouvrementapi.tests\bin\debug\net10.0\recouvrementapi.tests.dll" id="55102797-55b0-4867-2a93-719e2178a152">
+      <Execution id="55d72a6d-b2dd-4a66-97f4-fb8c1d2d4e91" />
+      <TestMethod codeBase="C:\recouvrement_client\backend\RecouvrementApi.Tests\bin\Debug\net10.0\RecouvrementAPI.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="RecouvrementAPI.Tests.ModelCoverageTests" name="Communication_Coverage" />
+    </UnitTest>
+    <UnitTest name="RecouvrementAPI.Tests.EspaceClientApiTests.Post_Intention_ShouldReturnBadRequest_WhenAlreadySubmittedToday" storage="c:\recouvrement_client\backend\recouvrementapi.tests\bin\debug\net10.0\recouvrementapi.tests.dll" id="44201923-d8d5-58d0-6790-5c00d68eff2c">
+      <Execution id="ba9bb5e3-f5fe-495c-972e-57123b3bcdc0" />
+      <TestMethod codeBase="C:\recouvrement_client\backend\RecouvrementApi.Tests\bin\Debug\net10.0\RecouvrementAPI.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="RecouvrementAPI.Tests.EspaceClientApiTests" name="Post_Intention_ShouldReturnBadRequest_WhenAlreadySubmittedToday" />
+    </UnitTest>
+    <UnitTest name="RecouvrementAPI.Tests.EspaceClientApiTests.Post_RepondreRelance_ShouldReturnError_WhenInvalidData" storage="c:\recouvrement_client\backend\recouvrementapi.tests\bin\debug\net10.0\recouvrementapi.tests.dll" id="9aad6ec7-36ce-b90c-674d-4d38dc1c0fc2">
+      <Execution id="9d05fa93-60cf-48c5-a8f7-c9a5c14aff71" />
+      <TestMethod codeBase="C:\recouvrement_client\backend\RecouvrementApi.Tests\bin\Debug\net10.0\RecouvrementAPI.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="RecouvrementAPI.Tests.EspaceClientApiTests" name="Post_RepondreRelance_ShouldReturnError_WhenInvalidData" />
+    </UnitTest>
+    <UnitTest name="RecouvrementAPI.Tests.EspaceClientApiTests.Post_Intention_ShouldReturnError_WhenDossierNotFound" storage="c:\recouvrement_client\backend\recouvrementapi.tests\bin\debug\net10.0\recouvrementapi.tests.dll" id="56a13047-2018-9cde-ec2d-65f941b80ecc">
+      <Execution id="bb4e8d45-1aec-44c7-a01d-7fbbe6ce71c8" />
+      <TestMethod codeBase="C:\recouvrement_client\backend\RecouvrementApi.Tests\bin\Debug\net10.0\RecouvrementAPI.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="RecouvrementAPI.Tests.EspaceClientApiTests" name="Post_Intention_ShouldReturnError_WhenDossierNotFound" />
+    </UnitTest>
+    <UnitTest name="RecouvrementAPI.Tests.EspaceClientApiTests.Get_DossierPrecis_ShouldReturnUnauthorized_WhenTokenInvalid" storage="c:\recouvrement_client\backend\recouvrementapi.tests\bin\debug\net10.0\recouvrementapi.tests.dll" id="165614c6-b17d-11a7-9352-6b8340311548">
+      <Execution id="5c3ee5b8-56ab-4ed7-976f-6665dd91717c" />
+      <TestMethod codeBase="C:\recouvrement_client\backend\RecouvrementApi.Tests\bin\Debug\net10.0\RecouvrementAPI.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="RecouvrementAPI.Tests.EspaceClientApiTests" name="Get_DossierPrecis_ShouldReturnUnauthorized_WhenTokenInvalid" />
+    </UnitTest>
+    <UnitTest name="RecouvrementAPI.Tests.ModelCoverageTests.IntentionClient_Coverage" storage="c:\recouvrement_client\backend\recouvrementapi.tests\bin\debug\net10.0\recouvrementapi.tests.dll" id="4a4b975d-0887-05d8-0d23-b20c037afd51">
+      <Execution id="659b9c08-4b9c-4718-8248-2cc46bd194fe" />
+      <TestMethod codeBase="C:\recouvrement_client\backend\RecouvrementApi.Tests\bin\Debug\net10.0\RecouvrementAPI.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="RecouvrementAPI.Tests.ModelCoverageTests" name="IntentionClient_Coverage" />
+    </UnitTest>
+    <UnitTest name="RecouvrementAPI.Tests.EspaceClientApiTests.Post_Message_ShouldReturnBadRequest_WhenBodyEmpty" storage="c:\recouvrement_client\backend\recouvrementapi.tests\bin\debug\net10.0\recouvrementapi.tests.dll" id="d3b39cd5-aa4f-89be-8223-96b720859ac5">
+      <Execution id="ec7d81f4-818d-4955-932d-83d99de7fde2" />
+      <TestMethod codeBase="C:\recouvrement_client\backend\RecouvrementApi.Tests\bin\Debug\net10.0\RecouvrementAPI.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="RecouvrementAPI.Tests.EspaceClientApiTests" name="Post_Message_ShouldReturnBadRequest_WhenBodyEmpty" />
+    </UnitTest>
+    <UnitTest name="RecouvrementAPI.Tests.EspaceClientApiTests.Post_Intention_ShouldReturnBadRequest_WhenDatePromessePassee" storage="c:\recouvrement_client\backend\recouvrementapi.tests\bin\debug\net10.0\recouvrementapi.tests.dll" id="212b1b9a-136a-a1f4-ae1d-65902acf962e">
+      <Execution id="ac6ab9ea-2f29-495c-a757-0bb5066d0fef" />
+      <TestMethod codeBase="C:\recouvrement_client\backend\RecouvrementApi.Tests\bin\Debug\net10.0\RecouvrementAPI.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="RecouvrementAPI.Tests.EspaceClientApiTests" name="Post_Intention_ShouldReturnBadRequest_WhenDatePromessePassee" />
+    </UnitTest>
+    <UnitTest name="RecouvrementAPI.Tests.EspaceClientApiTests.Post_Intention_ShouldReturnBadRequest_WhenBodyIsEmpty" storage="c:\recouvrement_client\backend\recouvrementapi.tests\bin\debug\net10.0\recouvrementapi.tests.dll" id="2c4f2dfb-3183-69c2-3bd8-020fdebe9578">
+      <Execution id="bc961f5b-a0ed-418d-887e-436ace560eae" />
+      <TestMethod codeBase="C:\recouvrement_client\backend\RecouvrementApi.Tests\bin\Debug\net10.0\RecouvrementAPI.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="RecouvrementAPI.Tests.EspaceClientApiTests" name="Post_Intention_ShouldReturnBadRequest_WhenBodyIsEmpty" />
+    </UnitTest>
+    <UnitTest name="RecouvrementAPI.Tests.EspaceClientApiTests.Get_AccuseReception_Success" storage="c:\recouvrement_client\backend\recouvrementapi.tests\bin\debug\net10.0\recouvrementapi.tests.dll" id="f32f2b79-95da-2702-8370-41f52167024c">
+      <Execution id="77b423a0-0698-457d-b095-b3e04d22eff1" />
+      <TestMethod codeBase="C:\recouvrement_client\backend\RecouvrementApi.Tests\bin\Debug\net10.0\RecouvrementAPI.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="RecouvrementAPI.Tests.EspaceClientApiTests" name="Get_AccuseReception_Success" />
+    </UnitTest>
+    <UnitTest name="RecouvrementAPI.Tests.EspaceClientApiTests.Get_DossierPrecis_ShouldReturnUnauthorized_WhenTokenEmpty" storage="c:\recouvrement_client\backend\recouvrementapi.tests\bin\debug\net10.0\recouvrementapi.tests.dll" id="c5ff1492-1d1d-c770-990f-300970d30733">
+      <Execution id="7c422b96-ab84-420b-85ff-903ba4bd145f" />
+      <TestMethod codeBase="C:\recouvrement_client\backend\RecouvrementApi.Tests\bin\Debug\net10.0\RecouvrementAPI.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="RecouvrementAPI.Tests.EspaceClientApiTests" name="Get_DossierPrecis_ShouldReturnUnauthorized_WhenTokenEmpty" />
+    </UnitTest>
+    <UnitTest name="RecouvrementAPI.Tests.EspaceClientApiTests.Get_AccuseReception_NotFound" storage="c:\recouvrement_client\backend\recouvrementapi.tests\bin\debug\net10.0\recouvrementapi.tests.dll" id="eae65bd6-bc9d-efb8-baaa-b9afd706a0ee">
+      <Execution id="aed74004-77c6-41da-8070-a9c7e3ce5f26" />
+      <TestMethod codeBase="C:\recouvrement_client\backend\RecouvrementApi.Tests\bin\Debug\net10.0\RecouvrementAPI.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="RecouvrementAPI.Tests.EspaceClientApiTests" name="Get_AccuseReception_NotFound" />
+    </UnitTest>
+    <UnitTest name="RecouvrementAPI.Tests.EspaceClientApiTests.BackOffice_Intention_Add_ShouldReturnOk" storage="c:\recouvrement_client\backend\recouvrementapi.tests\bin\debug\net10.0\recouvrementapi.tests.dll" id="8bdbda7c-bf61-478d-f43d-c72aa40e6d6e">
+      <Execution id="206487d7-e6d6-4524-b3de-cc3dffa6aba1" />
+      <TestMethod codeBase="C:\recouvrement_client\backend\RecouvrementApi.Tests\bin\Debug\net10.0\RecouvrementAPI.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="RecouvrementAPI.Tests.EspaceClientApiTests" name="BackOffice_Intention_Add_ShouldReturnOk" />
+    </UnitTest>
+    <UnitTest name="RecouvrementAPI.Tests.EspaceClientApiTests.Post_Intention_ShouldReturnOk_WhenValid" storage="c:\recouvrement_client\backend\recouvrementapi.tests\bin\debug\net10.0\recouvrementapi.tests.dll" id="41f05c2f-f623-a1bb-f88e-e653845aba48">
+      <Execution id="53725cc3-e1c2-43f2-ada7-96e3a92d616b" />
+      <TestMethod codeBase="C:\recouvrement_client\backend\RecouvrementApi.Tests\bin\Debug\net10.0\RecouvrementAPI.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="RecouvrementAPI.Tests.EspaceClientApiTests" name="Post_Intention_ShouldReturnOk_WhenValid" />
+    </UnitTest>
+    <UnitTest name="RecouvrementAPI.Tests.EspaceClientApiTests.Post_Intention_ShouldReturnUnauthorized_WhenTokenExpired" storage="c:\recouvrement_client\backend\recouvrementapi.tests\bin\debug\net10.0\recouvrementapi.tests.dll" id="7ea8a8cb-0e0a-6549-fdea-174c92570c1a">
+      <Execution id="9d3a9b1d-885d-4a29-9fc3-8496fccc8027" />
+      <TestMethod codeBase="C:\recouvrement_client\backend\RecouvrementApi.Tests\bin\Debug\net10.0\RecouvrementAPI.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="RecouvrementAPI.Tests.EspaceClientApiTests" name="Post_Intention_ShouldReturnUnauthorized_WhenTokenExpired" />
+    </UnitTest>
+    <UnitTest name="RecouvrementAPI.Tests.EspaceClientApiTests.Get_Recu_ShouldShowInterestsRetard_WhenRetardOver90Days" storage="c:\recouvrement_client\backend\recouvrementapi.tests\bin\debug\net10.0\recouvrementapi.tests.dll" id="ded8ff7d-0ddb-8756-b95b-0fd2ce91e627">
+      <Execution id="31a44050-6ba4-4fe4-acd0-071d24d75134" />
+      <TestMethod codeBase="C:\recouvrement_client\backend\RecouvrementApi.Tests\bin\Debug\net10.0\RecouvrementAPI.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="RecouvrementAPI.Tests.EspaceClientApiTests" name="Get_Recu_ShouldShowInterestsRetard_WhenRetardOver90Days" />
+    </UnitTest>
+    <UnitTest name="RecouvrementAPI.Tests.EspaceClientApiTests.Post_Intention_ShouldReturnBadRequest_WhenMontantPartielInvalide" storage="c:\recouvrement_client\backend\recouvrementapi.tests\bin\debug\net10.0\recouvrementapi.tests.dll" id="a931d0f6-483b-546c-80e1-c8db566edbe9">
+      <Execution id="57427587-3da9-4af2-b6a9-82ebfe075fe2" />
+      <TestMethod codeBase="C:\recouvrement_client\backend\RecouvrementApi.Tests\bin\Debug\net10.0\RecouvrementAPI.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="RecouvrementAPI.Tests.EspaceClientApiTests" name="Post_Intention_ShouldReturnBadRequest_WhenMontantPartielInvalide" />
+    </UnitTest>
+    <UnitTest name="RecouvrementAPI.Tests.EspaceClientApiTests.Get_DossierPrecis_ShouldReturnNotFound_WhenValidTokenButWrongDossier" storage="c:\recouvrement_client\backend\recouvrementapi.tests\bin\debug\net10.0\recouvrementapi.tests.dll" id="f65a4136-47f5-daac-9535-f94a729b3f94">
+      <Execution id="dceb6c45-fb6d-4094-9c02-5beaed774dae" />
+      <TestMethod codeBase="C:\recouvrement_client\backend\RecouvrementApi.Tests\bin\Debug\net10.0\RecouvrementAPI.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="RecouvrementAPI.Tests.EspaceClientApiTests" name="Get_DossierPrecis_ShouldReturnNotFound_WhenValidTokenButWrongDossier" />
+    </UnitTest>
+    <UnitTest name="RecouvrementAPI.Tests.EspaceClientApiTests.Get_Recu_ShouldReturnNotFound_WhenDossierDoesNotBelongToClient" storage="c:\recouvrement_client\backend\recouvrementapi.tests\bin\debug\net10.0\recouvrementapi.tests.dll" id="5eb6887b-0a46-6afa-6573-e45e8ceafd7a">
+      <Execution id="5869e957-04a2-4f20-8166-0000ebf12d32" />
+      <TestMethod codeBase="C:\recouvrement_client\backend\RecouvrementApi.Tests\bin\Debug\net10.0\RecouvrementAPI.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="RecouvrementAPI.Tests.EspaceClientApiTests" name="Get_Recu_ShouldReturnNotFound_WhenDossierDoesNotBelongToClient" />
+    </UnitTest>
+    <UnitTest name="RecouvrementAPI.Tests.EspaceClientApiTests.BackOffice_Intention_Dashboard_ShouldReturnOk" storage="c:\recouvrement_client\backend\recouvrementapi.tests\bin\debug\net10.0\recouvrementapi.tests.dll" id="e05b9039-fc43-c417-17d3-57f0962d5f4e">
+      <Execution id="25c81f9e-f873-4abe-8782-3e9fea996308" />
+      <TestMethod codeBase="C:\recouvrement_client\backend\RecouvrementApi.Tests\bin\Debug\net10.0\RecouvrementAPI.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="RecouvrementAPI.Tests.EspaceClientApiTests" name="BackOffice_Intention_Dashboard_ShouldReturnOk" />
+    </UnitTest>
+    <UnitTest name="RecouvrementAPI.Tests.EspaceClientApiTests.Post_Message_ShouldReturnOk_WhenValidTokenAndBody" storage="c:\recouvrement_client\backend\recouvrementapi.tests\bin\debug\net10.0\recouvrementapi.tests.dll" id="0f8a295a-8a44-43eb-3c55-c8a995b3ea2e">
+      <Execution id="aa5aebfa-3864-4a4f-8a9f-218f3f28cee3" />
+      <TestMethod codeBase="C:\recouvrement_client\backend\RecouvrementApi.Tests\bin\Debug\net10.0\RecouvrementAPI.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="RecouvrementAPI.Tests.EspaceClientApiTests" name="Post_Message_ShouldReturnOk_WhenValidTokenAndBody" />
+    </UnitTest>
+    <UnitTest name="RecouvrementAPI.Tests.EspaceClientApiTests.Get_Historique_ShouldReturnUnauthorized_WhenTokenExpired" storage="c:\recouvrement_client\backend\recouvrementapi.tests\bin\debug\net10.0\recouvrementapi.tests.dll" id="d10ed4c7-c620-3ca1-50ad-03f569b715d5">
+      <Execution id="9aaf480a-d422-42b7-8523-7cf4e13f9590" />
+      <TestMethod codeBase="C:\recouvrement_client\backend\RecouvrementApi.Tests\bin\Debug\net10.0\RecouvrementAPI.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="RecouvrementAPI.Tests.EspaceClientApiTests" name="Get_Historique_ShouldReturnUnauthorized_WhenTokenExpired" />
+    </UnitTest>
+    <UnitTest name="RecouvrementAPI.Tests.EspaceClientApiTests.Post_Intention_ShouldReturnBadRequest_WhenDatePromesseMissing" storage="c:\recouvrement_client\backend\recouvrementapi.tests\bin\debug\net10.0\recouvrementapi.tests.dll" id="c5bdc52c-f1cc-264b-f1f4-60369f69a0c2">
+      <Execution id="e2b8c463-0f87-4ecd-94a6-38a05d35e6d4" />
+      <TestMethod codeBase="C:\recouvrement_client\backend\RecouvrementApi.Tests\bin\Debug\net10.0\RecouvrementAPI.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="RecouvrementAPI.Tests.EspaceClientApiTests" name="Post_Intention_ShouldReturnBadRequest_WhenDatePromesseMissing" />
+    </UnitTest>
+    <UnitTest name="RecouvrementAPI.Tests.ModelCoverageTests.HistoriqueAction_Coverage" storage="c:\recouvrement_client\backend\recouvrementapi.tests\bin\debug\net10.0\recouvrementapi.tests.dll" id="43c3772f-f5ce-cdf0-15fa-59d9b8d5dcca">
+      <Execution id="9ce22941-4ca8-45d6-a96e-4f47217ab4ea" />
+      <TestMethod codeBase="C:\recouvrement_client\backend\RecouvrementApi.Tests\bin\Debug\net10.0\RecouvrementAPI.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="RecouvrementAPI.Tests.ModelCoverageTests" name="HistoriqueAction_Coverage" />
+    </UnitTest>
+    <UnitTest name="RecouvrementAPI.Tests.EspaceClientApiTests.Get_DossierPrecis_Success" storage="c:\recouvrement_client\backend\recouvrementapi.tests\bin\debug\net10.0\recouvrementapi.tests.dll" id="30c41d92-2dda-fc87-bde7-8c9161586d69">
+      <Execution id="730c2204-e59b-486d-8eb5-ce090deb0bf9" />
+      <TestMethod codeBase="C:\recouvrement_client\backend\RecouvrementApi.Tests\bin\Debug\net10.0\RecouvrementAPI.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="RecouvrementAPI.Tests.EspaceClientApiTests" name="Get_DossierPrecis_Success" />
+    </UnitTest>
+    <UnitTest name="RecouvrementAPI.Tests.EspaceClientApiTests.Post_Intention_ShouldReturnOk_WhenReclamation" storage="c:\recouvrement_client\backend\recouvrementapi.tests\bin\debug\net10.0\recouvrementapi.tests.dll" id="06528522-40ef-bcbc-763b-f5ba03cd4d89">
+      <Execution id="eb6a644e-6d42-455e-8d21-773e5e700d72" />
+      <TestMethod codeBase="C:\recouvrement_client\backend\RecouvrementApi.Tests\bin\Debug\net10.0\RecouvrementAPI.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="RecouvrementAPI.Tests.EspaceClientApiTests" name="Post_Intention_ShouldReturnOk_WhenReclamation" />
+    </UnitTest>
+    <UnitTest name="RecouvrementAPI.Tests.EspaceClientApiTests.Get_Historique_ShouldReturnUnauthorized_WhenTokenInvalid" storage="c:\recouvrement_client\backend\recouvrementapi.tests\bin\debug\net10.0\recouvrementapi.tests.dll" id="733e9e93-48f2-96b2-efef-a7fc213d0658">
+      <Execution id="91f5df1c-3967-479b-b9c9-df18cc359756" />
+      <TestMethod codeBase="C:\recouvrement_client\backend\RecouvrementApi.Tests\bin\Debug\net10.0\RecouvrementAPI.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="RecouvrementAPI.Tests.EspaceClientApiTests" name="Get_Historique_ShouldReturnUnauthorized_WhenTokenInvalid" />
+    </UnitTest>
+    <UnitTest name="RecouvrementAPI.Tests.EspaceClientApiTests.Get_AccuseReception_TokenExpired" storage="c:\recouvrement_client\backend\recouvrementapi.tests\bin\debug\net10.0\recouvrementapi.tests.dll" id="ebf3d0ac-32fe-447f-b793-68826ee49b30">
+      <Execution id="79155999-82d8-481f-8db0-676bff8555af" />
+      <TestMethod codeBase="C:\recouvrement_client\backend\RecouvrementApi.Tests\bin\Debug\net10.0\RecouvrementAPI.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="RecouvrementAPI.Tests.EspaceClientApiTests" name="Get_AccuseReception_TokenExpired" />
+    </UnitTest>
+    <UnitTest name="RecouvrementAPI.Tests.ModelCoverageTests.Garantie_Coverage" storage="c:\recouvrement_client\backend\recouvrementapi.tests\bin\debug\net10.0\recouvrementapi.tests.dll" id="9d73b7aa-19c4-b54b-185a-3fd488088c28">
+      <Execution id="f069e754-ddde-4950-8aac-1c6276ae6fc9" />
+      <TestMethod codeBase="C:\recouvrement_client\backend\RecouvrementApi.Tests\bin\Debug\net10.0\RecouvrementAPI.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="RecouvrementAPI.Tests.ModelCoverageTests" name="Garantie_Coverage" />
+    </UnitTest>
+    <UnitTest name="RecouvrementAPI.Tests.ModelCoverageTests.Echeance_Coverage" storage="c:\recouvrement_client\backend\recouvrementapi.tests\bin\debug\net10.0\recouvrementapi.tests.dll" id="cd4c6202-9998-3701-f3c2-882f070561ac">
+      <Execution id="6ff4d2f6-7188-47bc-a542-35573a31eb20" />
+      <TestMethod codeBase="C:\recouvrement_client\backend\RecouvrementApi.Tests\bin\Debug\net10.0\RecouvrementAPI.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="RecouvrementAPI.Tests.ModelCoverageTests" name="Echeance_Coverage" />
+    </UnitTest>
+    <UnitTest name="RecouvrementAPI.Tests.ModelCoverageTests.Agence_Coverage" storage="c:\recouvrement_client\backend\recouvrementapi.tests\bin\debug\net10.0\recouvrementapi.tests.dll" id="79051cb5-de07-6536-3f6d-f0b2639b291f">
+      <Execution id="62157a31-c7d3-42c7-ba62-0169cb330e63" />
+      <TestMethod codeBase="C:\recouvrement_client\backend\RecouvrementApi.Tests\bin\Debug\net10.0\RecouvrementAPI.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="RecouvrementAPI.Tests.ModelCoverageTests" name="Agence_Coverage" />
+    </UnitTest>
+    <UnitTest name="RecouvrementAPI.Tests.EspaceClientApiTests.Post_Intention_ShouldReturnBadRequest_WhenMontantPartielMissing" storage="c:\recouvrement_client\backend\recouvrementapi.tests\bin\debug\net10.0\recouvrementapi.tests.dll" id="28b2d328-d31f-7153-63ce-4b5c5acda889">
+      <Execution id="a9b1f4ba-d12a-42f3-8acc-a0bfaf888b70" />
+      <TestMethod codeBase="C:\recouvrement_client\backend\RecouvrementApi.Tests\bin\Debug\net10.0\RecouvrementAPI.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="RecouvrementAPI.Tests.EspaceClientApiTests" name="Post_Intention_ShouldReturnBadRequest_WhenMontantPartielMissing" />
+    </UnitTest>
+    <UnitTest name="RecouvrementAPI.Tests.EspaceClientApiTests.Post_Intention_ShouldReturnBadRequest_WhenMontantPartielTropEleve" storage="c:\recouvrement_client\backend\recouvrementapi.tests\bin\debug\net10.0\recouvrementapi.tests.dll" id="518384f5-5c5a-ba47-d33d-9f0e2d0b39da">
+      <Execution id="4f588890-f59f-420c-9618-c926971e56a5" />
+      <TestMethod codeBase="C:\recouvrement_client\backend\RecouvrementApi.Tests\bin\Debug\net10.0\RecouvrementAPI.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="RecouvrementAPI.Tests.EspaceClientApiTests" name="Post_Intention_ShouldReturnBadRequest_WhenMontantPartielTropEleve" />
+    </UnitTest>
+    <UnitTest name="RecouvrementAPI.Tests.EspaceClientApiTests.Get_Historique_ShouldReturn401_WhenTokenMissing" storage="c:\recouvrement_client\backend\recouvrementapi.tests\bin\debug\net10.0\recouvrementapi.tests.dll" id="b71c4e11-4d3e-86b1-4467-c1563c349401">
+      <Execution id="ceb6aa23-ac16-4b00-bb17-4c8dcae6c0a2" />
+      <TestMethod codeBase="C:\recouvrement_client\backend\RecouvrementApi.Tests\bin\Debug\net10.0\RecouvrementAPI.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="RecouvrementAPI.Tests.EspaceClientApiTests" name="Get_Historique_ShouldReturn401_WhenTokenMissing" />
+    </UnitTest>
+    <UnitTest name="RecouvrementAPI.Tests.EspaceClientApiTests.Post_Message_ShouldReturnError_WhenTokenMissing" storage="c:\recouvrement_client\backend\recouvrementapi.tests\bin\debug\net10.0\recouvrementapi.tests.dll" id="0ecb801e-05e3-3b57-0d08-30af5fc65327">
+      <Execution id="29d04e51-2d7e-4c71-8da0-5f9c052ed9f8" />
+      <TestMethod codeBase="C:\recouvrement_client\backend\RecouvrementApi.Tests\bin\Debug\net10.0\RecouvrementAPI.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="RecouvrementAPI.Tests.EspaceClientApiTests" name="Post_Message_ShouldReturnError_WhenTokenMissing" />
+    </UnitTest>
+    <UnitTest name="RecouvrementAPI.Tests.EspaceClientApiTests.Post_ClientIntention_ShouldReturnError_WhenInvalidType" storage="c:\recouvrement_client\backend\recouvrementapi.tests\bin\debug\net10.0\recouvrementapi.tests.dll" id="036681b7-aab9-2f1c-c2a0-796152e10b73">
+      <Execution id="788df62c-42f5-4b48-a96a-343f20a20144" />
+      <TestMethod codeBase="C:\recouvrement_client\backend\RecouvrementApi.Tests\bin\Debug\net10.0\RecouvrementAPI.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="RecouvrementAPI.Tests.EspaceClientApiTests" name="Post_ClientIntention_ShouldReturnError_WhenInvalidType" />
+    </UnitTest>
+    <UnitTest name="RecouvrementAPI.Tests.EspaceClientApiTests.Get_HistoriquePdf_Success" storage="c:\recouvrement_client\backend\recouvrementapi.tests\bin\debug\net10.0\recouvrementapi.tests.dll" id="d48dd383-cde7-0f8a-c05d-4e262e6dac09">
+      <Execution id="d4e723c2-1605-4c45-b790-1a487efc13f8" />
+      <TestMethod codeBase="C:\recouvrement_client\backend\RecouvrementApi.Tests\bin\Debug\net10.0\RecouvrementAPI.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="RecouvrementAPI.Tests.EspaceClientApiTests" name="Get_HistoriquePdf_Success" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="3f772aad-38c1-41fa-012c-5ebd1acc1962" executionId="4964416c-6a37-4b1e-9796-a8537746c395" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="391db10a-43eb-13ec-b297-10a2266eb855" executionId="dfc7f748-c271-4f95-b9d5-09788a514e25" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="cd4c6202-9998-3701-f3c2-882f070561ac" executionId="6ff4d2f6-7188-47bc-a542-35573a31eb20" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4a4b975d-0887-05d8-0d23-b20c037afd51" executionId="659b9c08-4b9c-4718-8248-2cc46bd194fe" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3d71ddfe-a7b4-858e-ba6a-278f166f11a4" executionId="aacc569d-6a01-4e9c-8475-712a23132a9e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="036681b7-aab9-2f1c-c2a0-796152e10b73" executionId="788df62c-42f5-4b48-a96a-343f20a20144" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="56a13047-2018-9cde-ec2d-65f941b80ecc" executionId="bb4e8d45-1aec-44c7-a01d-7fbbe6ce71c8" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d10ed4c7-c620-3ca1-50ad-03f569b715d5" executionId="9aaf480a-d422-42b7-8523-7cf4e13f9590" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e91666bb-4002-d0fa-09a7-08b8cf1c68d1" executionId="be1d2d7a-097b-40ee-8de7-a8f4cc498ed6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="55102797-55b0-4867-2a93-719e2178a152" executionId="55d72a6d-b2dd-4a66-97f4-fb8c1d2d4e91" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9aad6ec7-36ce-b90c-674d-4d38dc1c0fc2" executionId="9d05fa93-60cf-48c5-a8f7-c9a5c14aff71" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0f8a295a-8a44-43eb-3c55-c8a995b3ea2e" executionId="aa5aebfa-3864-4a4f-8a9f-218f3f28cee3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="165614c6-b17d-11a7-9352-6b8340311548" executionId="5c3ee5b8-56ab-4ed7-976f-6665dd91717c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ebf3d0ac-32fe-447f-b793-68826ee49b30" executionId="79155999-82d8-481f-8db0-676bff8555af" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f32f2b79-95da-2702-8370-41f52167024c" executionId="77b423a0-0698-457d-b095-b3e04d22eff1" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="518384f5-5c5a-ba47-d33d-9f0e2d0b39da" executionId="4f588890-f59f-420c-9618-c926971e56a5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5eb6887b-0a46-6afa-6573-e45e8ceafd7a" executionId="5869e957-04a2-4f20-8166-0000ebf12d32" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="eaa4eea5-1857-9082-7895-eb128262e0e2" executionId="1d3906c9-6bd3-44ea-a344-cefaaef590ae" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c5ff1492-1d1d-c770-990f-300970d30733" executionId="7c422b96-ab84-420b-85ff-903ba4bd145f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="df688cfb-c218-52aa-d4da-432e99b518ee" executionId="f05f97da-81e3-4ebd-a14b-c94f47c3a6fe" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="539f54dd-e045-a6b1-9fa7-0d12ec6ac9b1" executionId="f689fcb0-b2f9-427e-abfc-a84c52af0538" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d3b39cd5-aa4f-89be-8223-96b720859ac5" executionId="ec7d81f4-818d-4955-932d-83d99de7fde2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="44201923-d8d5-58d0-6790-5c00d68eff2c" executionId="ba9bb5e3-f5fe-495c-972e-57123b3bcdc0" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="212b1b9a-136a-a1f4-ae1d-65902acf962e" executionId="ac6ab9ea-2f29-495c-a757-0bb5066d0fef" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="49bf6644-2f67-abe8-a799-a2830d35ff41" executionId="3cc5cb5b-4478-4b5a-bc0d-d28d579bfa46" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="28b2d328-d31f-7153-63ce-4b5c5acda889" executionId="a9b1f4ba-d12a-42f3-8acc-a0bfaf888b70" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="bc1c0795-5904-4b2b-5088-96ac1d63f078" executionId="43043308-384e-46b3-aa0a-ffd613a0b56e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d48dd383-cde7-0f8a-c05d-4e262e6dac09" executionId="d4e723c2-1605-4c45-b790-1a487efc13f8" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="733e9e93-48f2-96b2-efef-a7fc213d0658" executionId="91f5df1c-3967-479b-b9c9-df18cc359756" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="078d5ab2-c794-cc63-46df-6a4738d34f0c" executionId="f0957618-e6b0-4e37-8ff1-86383e4dac10" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="30c41d92-2dda-fc87-bde7-8c9161586d69" executionId="730c2204-e59b-486d-8eb5-ce090deb0bf9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2c4f2dfb-3183-69c2-3bd8-020fdebe9578" executionId="bc961f5b-a0ed-418d-887e-436ace560eae" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f65a4136-47f5-daac-9535-f94a729b3f94" executionId="dceb6c45-fb6d-4094-9c02-5beaed774dae" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="00e32492-ca78-f795-9b15-cdc57ff9038e" executionId="45355311-98e9-488d-81fa-6a74adbec46c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b3c6c4fb-8cc7-d9a2-1f2a-6968a49de2cb" executionId="00f6b1d0-95e0-4705-8761-5b39401cbc5a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0d9a2766-4d49-c7da-18e8-d8a773380d69" executionId="cb7c6546-2d64-43eb-81e2-50f7dc22c319" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="547d661d-ec25-b1bc-beaa-6458205cda7e" executionId="62e52a1d-f229-431c-93a4-70fecd122c8c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0ecb801e-05e3-3b57-0d08-30af5fc65327" executionId="29d04e51-2d7e-4c71-8da0-5f9c052ed9f8" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b15b54c2-e5a8-b842-df3b-7c37da00c8fe" executionId="51b6206c-22c3-444c-8e55-40c832ab6a2c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="85a2bdd7-b7cc-84f4-ce4b-f5d7dbdb970c" executionId="c24f443b-1f9e-43ac-8c2f-b6d4fc8c00bd" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b71c4e11-4d3e-86b1-4467-c1563c349401" executionId="ceb6aa23-ac16-4b00-bb17-4c8dcae6c0a2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="eae65bd6-bc9d-efb8-baaa-b9afd706a0ee" executionId="aed74004-77c6-41da-8070-a9c7e3ce5f26" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="43c3772f-f5ce-cdf0-15fa-59d9b8d5dcca" executionId="9ce22941-4ca8-45d6-a96e-4f47217ab4ea" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ded8ff7d-0ddb-8756-b95b-0fd2ce91e627" executionId="31a44050-6ba4-4fe4-acd0-071d24d75134" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7ea8a8cb-0e0a-6549-fdea-174c92570c1a" executionId="9d3a9b1d-885d-4a29-9fc3-8496fccc8027" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a931d0f6-483b-546c-80e1-c8db566edbe9" executionId="57427587-3da9-4af2-b6a9-82ebfe075fe2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9676311f-d6f7-ca45-ed14-6608ce9400d0" executionId="7ea2e021-cd53-436c-b4a3-ecb3237896cf" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e4dcf5ed-f16f-9ef3-526f-383362bac5aa" executionId="0b025ed0-a1cb-44c1-959e-4c431689156e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c5bdc52c-f1cc-264b-f1f4-60369f69a0c2" executionId="e2b8c463-0f87-4ecd-94a6-38a05d35e6d4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9d73b7aa-19c4-b54b-185a-3fd488088c28" executionId="f069e754-ddde-4950-8aac-1c6276ae6fc9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="06528522-40ef-bcbc-763b-f5ba03cd4d89" executionId="eb6a644e-6d42-455e-8d21-773e5e700d72" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0d149786-7ff3-0a5e-fb51-803cd9cfdeda" executionId="6c3fef90-4986-4930-b2c3-5081fd950ff7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="79051cb5-de07-6536-3f6d-f0b2639b291f" executionId="62157a31-c7d3-42c7-ba62-0169cb330e63" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6917a68b-895d-448c-e2d2-565714983477" executionId="ceb0191f-ba3f-47fe-8148-c78ae3e0c922" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="41f05c2f-f623-a1bb-f88e-e653845aba48" executionId="53725cc3-e1c2-43f2-ada7-96e3a92d616b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b02be361-db2a-f1d5-c289-1ed01b13915e" executionId="a938298a-a112-40e2-9a14-ec5cc1351ccf" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e05b9039-fc43-c417-17d3-57f0962d5f4e" executionId="25c81f9e-f873-4abe-8782-3e9fea996308" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b2114199-4b90-0cbc-ae6c-1dd12fcbfef6" executionId="64159c13-b6f3-47b8-b4f5-49e082d43843" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="8bdbda7c-bf61-478d-f43d-c72aa40e6d6e" executionId="206487d7-e6d6-4524-b3de-cc3dffa6aba1" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e7efd876-b836-1488-8506-e719a46f35ba" executionId="95c89b02-2958-40ba-87f5-4a453083c485" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Les résultats ne figurent pas dans une liste" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="Tous les résultats chargés" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="60" executed="60" passed="60" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.4+50e68bbb8b (64-bit .NET 10.0.3)&#xD;
+[xUnit.net 00:00:00.09]   Discovering: RecouvrementAPI.Tests&#xD;
+[xUnit.net 00:00:00.14]   Discovered:  RecouvrementAPI.Tests&#xD;
+[xUnit.net 00:00:00.17]   Starting:    RecouvrementAPI.Tests&#xD;
+info: Microsoft.EntityFrameworkCore.Update[30100]&#xD;
+      Saved 0 entities to in-memory store.&#xD;
+info: Microsoft.EntityFrameworkCore.Update[30100]&#xD;
+      Saved 93 entities to in-memory store.&#xD;
+info: Microsoft.Hosting.Lifetime[0]&#xD;
+      Application started. Press Ctrl+C to shut down.&#xD;
+info: Microsoft.Hosting.Lifetime[0]&#xD;
+      Hosting environment: Testing&#xD;
+info: Microsoft.Hosting.Lifetime[0]&#xD;
+      Content root path: C:\recouvrement_client\backend&#xD;
+info: Microsoft.EntityFrameworkCore.Update[30100]&#xD;
+      Saved 4 entities to in-memory store.&#xD;
+info: Microsoft.EntityFrameworkCore.Update[30100]&#xD;
+      Saved 4 entities to in-memory store.&#xD;
+info: Microsoft.EntityFrameworkCore.Update[30100]&#xD;
+      Saved 3 entities to in-memory store.&#xD;
+info: RecouvrementAPI.Controllers.AuthController[0]&#xD;
+      Tentative de connexion : admin@stb.tn&#xD;
+info: Microsoft.EntityFrameworkCore.Update[30100]&#xD;
+      Saved 1 entities to in-memory store.&#xD;
+info: RecouvrementAPI.Controllers.AuthController[0]&#xD;
+      Connexion r�ussie : agent 1 (Admin)&#xD;
+info: Microsoft.EntityFrameworkCore.Update[30100]&#xD;
+      Saved 4 entities to in-memory store.&#xD;
+info: RecouvrementAPI.Controllers.AuthController[0]&#xD;
+      Tentative de connexion : admin@stb.tn&#xD;
+info: Microsoft.EntityFrameworkCore.Update[30100]&#xD;
+      Saved 1 entities to in-memory store.&#xD;
+info: RecouvrementAPI.Controllers.AuthController[0]&#xD;
+      Connexion r�ussie : agent 1 (Admin)&#xD;
+info: Microsoft.EntityFrameworkCore.Update[30100]&#xD;
+      Saved 1 entities to in-memory store.&#xD;
+info: Microsoft.EntityFrameworkCore.Update[30100]&#xD;
+      Saved 5 entities to in-memory store.&#xD;
+info: Microsoft.EntityFrameworkCore.Update[30100]&#xD;
+      Saved 4 entities to in-memory store.&#xD;
+info: Microsoft.EntityFrameworkCore.Update[30100]&#xD;
+      Saved 1 entities to in-memory store.&#xD;
+info: Microsoft.EntityFrameworkCore.Update[30100]&#xD;
+      Saved 2 entities to in-memory store.&#xD;
+info: Microsoft.EntityFrameworkCore.Update[30100]&#xD;
+      Saved 4 entities to in-memory store.&#xD;
+info: RecouvrementAPI.Controllers.AuthController[0]&#xD;
+      Tentative de connexion : admin@stb.tn&#xD;
+info: Microsoft.EntityFrameworkCore.Update[30100]&#xD;
+      Saved 1 entities to in-memory store.&#xD;
+info: RecouvrementAPI.Controllers.AuthController[0]&#xD;
+      Connexion r�ussie : agent 1 (Admin)&#xD;
+info: Microsoft.EntityFrameworkCore.Update[30100]&#xD;
+      Saved 3 entities to in-memory store.&#xD;
+info: Microsoft.EntityFrameworkCore.Update[30100]&#xD;
+      Saved 2 entities to in-memory store.&#xD;
+info: Microsoft.Hosting.Lifetime[0]&#xD;
+      Application is shutting down...&#xD;
+[xUnit.net 00:00:03.46]   Finished:    RecouvrementAPI.Tests&#xD;
+</StdOut>
+    </Output>
+    <CollectorDataEntries>
+      <Collector agentName="TAKWABH15" uri="datacollector://microsoft/CoverletCodeCoverage/1.0" collectorDisplayName="XPlat code coverage">
+        <UriAttachments>
+          <UriAttachment>
+            <A href="TAKWABH15\coverage.cobertura.xml"></A>
+          </UriAttachment>
+        </UriAttachments>
+      </Collector>
+    </CollectorDataEntries>
+  </ResultSummary>
+</TestRun>

@@ -42,7 +42,10 @@ namespace RecouvrementAPI.Controllers
         {
             try
             {
-                _logger.LogInformation($"Tentative de connexion : {request.Email}");
+                if (_logger.IsEnabled(LogLevel.Information))
+                {
+                    _logger.LogInformation("Tentative de connexion : {Email}", request.Email);
+                }
 
                 // 1. Recherche de l'agent
                 var agent = await _context.UtilisateursBack
@@ -50,7 +53,7 @@ namespace RecouvrementAPI.Controllers
 
                 if (agent == null)
                 {
-                    _logger.LogWarning($"Connexion échouée : utilisateur introuvable ({request.Email})");
+                    _logger.LogWarning("Connexion échouée : utilisateur introuvable ({Email})", request.Email);
                     return Unauthorized(new { message = "Email ou mot de passe incorrect." });
                 }
 
@@ -63,7 +66,7 @@ namespace RecouvrementAPI.Controllers
 
                 if (!isPasswordValid)
                 {
-                    _logger.LogWarning($"Connexion échouée : mot de passe invalide ({request.Email})");
+                    _logger.LogWarning("Connexion échouée : mot de passe invalide ({Email})", request.Email);
                     return Unauthorized(new { message = "Email ou mot de passe incorrect." });
                 }
 
@@ -76,7 +79,10 @@ namespace RecouvrementAPI.Controllers
 
                 await _context.SaveChangesAsync();
 
-                _logger.LogInformation($"Connexion réussie : agent {agent.IdAgent} ({agent.Nom})");
+                if (_logger.IsEnabled(LogLevel.Information))
+                {
+                    _logger.LogInformation("Connexion réussie : agent {AgentId} ({AgentNom})", agent.IdAgent, agent.Nom);
+                }
 
                 return Ok(new LoginResponseDto
                 {
@@ -136,8 +142,8 @@ namespace RecouvrementAPI.Controllers
         /// </summary>
         private string GenerateAccessToken(UtilisateurBack agent, DateTime expiration)
         {
-            var jwtKey    = _configuration["Jwt:Key"];
-            var jwtIssuer = _configuration["Jwt:Issuer"];
+            var jwtKey    = "CeciEstMaCleSecreteSuperSecurisee2026!";
+            var jwtIssuer = "RecouvrementAPI";
 
             if (string.IsNullOrEmpty(jwtKey))
                 throw new InvalidOperationException("Clé secrète JWT non configurée.");

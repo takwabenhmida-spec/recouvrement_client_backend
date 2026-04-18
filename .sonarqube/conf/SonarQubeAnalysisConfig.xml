@@ -158,13 +158,13 @@
     <Property Name="sonaranalyzer-vbnet.pluginKey">vbnet</Property>
     <Property Name="sonar.java.jvmframeworkconfig.activate">true</Property>
     <Property Name="sonar.updatecenter.url">https://downloads.sonarsource.com/sonarqube/update/update-center.properties</Property>
-    <Property Name="sonar.core.startTime">13/04/2026 00:19:05</Property>
     <Property Name="sonar.core.id">147B411E-AZ2D_edb5i8aj7FVRVZc</Property>
+    <Property Name="sonar.core.startTime">14/04/2026 23:59:56</Property>
   </ServerSettings>
   <LocalSettings>
     <Property Name="sonar.host.url">http://localhost:9000</Property>
-    <Property Name="sonar.cs.opencover.reportsPaths">RecouvrementAPI.Tests/coverage.opencover.xml</Property>
-    <Property Name="sonar.exclusions">appsettings.json,docker-compose.yml,RecouvrementAPI.Tests/coverage.opencover.xml</Property>
+    <Property Name="sonar.cs.opencover.reportsPaths">C:\recouvrement_client\backend\RecouvrementAPI.Tests\coverage.opencover.xml</Property>
+    <Property Name="sonar.exclusions">C:\recouvrement_client\backend\RecouvrementAPI.Tests\coverage.opencover.xml</Property>
   </LocalSettings>
   <ScannerOptsSettings />
   <AnalyzersSettings>

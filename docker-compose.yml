@@ -10,7 +10,7 @@ services:
     container_name: recouvrement_db
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: takwa2004
+      MYSQL_ROOT_PASSWORD: YOUR_SECURE_PASSWORD
       MYSQL_DATABASE: recouvrement
     ports:
       - "3307:3306"
@@ -18,7 +18,7 @@ services:
       - mysql_data:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-ptakwa2004"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-pYOUR_SECURE_PASSWORD"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -36,7 +36,7 @@ services:
       db:
         condition: service_healthy
     environment:
-      - ConnectionStrings__DefaultConnection=Server=db;Port=3306;Database=recouvrement;Uid=root;Pwd=takwa2004;
+      - ConnectionStrings__DefaultConnection=Server=db;Port=3306;Database=recouvrement;Uid=root;Pwd=YOUR_SECURE_PASSWORD;
       - Jwt__Key=STBBank_RecouvrementAPI_SecretKey_2026_PFE!
       - Jwt__Issuer=RecouvrementAPI
       - ASPNETCORE_URLS=http://+:5203

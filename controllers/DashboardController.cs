@@ -98,7 +98,7 @@ namespace RecouvrementAPI.Controllers
                 // Cartographie des règles métiers de risque associées au score IA
                 var result = dossiersWithScores.Select(x => 
                 {
-                    var scoreVal = x.Score?.Valeur ?? 0;
+                    var scoreVal = x.Score?.ScoreTotal ?? 0;
                     
                     // Règle de catégorisation du risque basée sur les limites requises (ajustable pr la soutenance)
                     string risque = "Faible";

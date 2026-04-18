@@ -18,47 +18,45 @@ namespace RecouvrementAPI.Models
         [Required]
         [MaxLength(100)]
         [Column("nom")]
-        public string Nom { get; set; }
+        public string Nom { get; set; } = null!;
         // Nom de l’agent
 
         [Required]
         [MaxLength(100)]
         [Column("prenom")]
-        public string Prenom { get; set; }
+        public string Prenom { get; set; } = null!;
         // Prénom de l’agent
 
         [Required]
         [MaxLength(150)]
         [EmailAddress]
         [Column("email")]
-        public string Email { get; set; }
+        public string Email { get; set; } = null!;
         // Email unique utilisé pour l’authentification
 
         [Required]
         [Column("mot_de_passe")]
-        public string MotDePasse { get; set; }
+        public string MotDePasse { get; set; } = null!;
         // Mot de passe (à stocker HASHÉ, jamais en clair)
 
         [Required]
         [MaxLength(50)]
         [Column("role")]
-        public string Role { get; set; }
+        public string Role { get; set; } = null!;
         // Rôle de l’agent (ex: admin, agent_recouvrement)
 
         [Column("telephone")]
-        [MaxLength(20)]
-        public string Telephone { get; set; }
+        public string Telephone { get; set; } = string.Empty;
 
         [Column("statut")]
-        [MaxLength(20)]
-        public string Statut { get; set; } = "Actif"; // Actif, Inactif
+        public string Statut { get; set; } = string.Empty;
 
         [Column("derniere_connexion")]
         public DateTime? DerniereConnexion { get; set; }
 
         // Relation avec Agence
-        [ForeignKey("IdAgence")]
-        public Agence Agence { get; set; }
+        [ForeignKey(nameof(IdAgence))]
+        public Agence Agence { get; set; } = null!;
         // Navigation : permet d’accéder à l’agence de l’agent
     }
 }

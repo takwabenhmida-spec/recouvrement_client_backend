@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using RecouvrementAPI.Data;
 using RecouvrementAPI.DTOs;
 using RecouvrementAPI.Models;
+using RecouvrementAPI.Helpers;
 using ClosedXML.Excel;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
@@ -16,16 +17,26 @@ namespace RecouvrementAPI.Controllers
     [Authorize]
     public class AdminClientController : ControllerBase
     {
+        // ✅ FIX S1192 — Constante pour le literal répété "Archivé"
+        private const string StatutArchive = "Archivé";
+
         private readonly ApplicationDbContext _context;
         private readonly ILogger<AdminClientController> _logger;
+        private readonly RecouvrementAPI.Services.IEmailService _emailService;
+        private readonly RecouvrementAPI.Services.ISmsService _smsService;
 
-        public AdminClientController(ApplicationDbContext context, ILogger<AdminClientController> logger)
+        public AdminClientController(
+            ApplicationDbContext context, 
+            ILogger<AdminClientController> logger,
+            RecouvrementAPI.Services.IEmailService emailService,
+            RecouvrementAPI.Services.ISmsService smsService)
         {
             _context = context;
             _logger = logger;
+            _emailService = emailService;
+            _smsService = smsService;
         }
 
-       
         /// Ajout d'un nouveau client STB avec un dossier par défaut.
         [HttpPost]
         public async Task<IActionResult> CreateClient([FromBody] CreateClientDto dto)
@@ -46,26 +57,40 @@ namespace RecouvrementAPI.Controllers
                     Adresse = dto.Adresse,
                     Email = dto.Email,
                     Telephone = dto.Telephone,
-                    IdAgence = dto.IdAgence ?? 1, // Direction Générale par défaut si non spécifié
+                    IdAgence = dto.IdAgence ?? 1,
                     TokenAcces = "stb_" + Guid.NewGuid().ToString("N"),
-                    TokenExpireLe = DateTime.Now.AddDays(7)
+                    // ✅ FIX S6561 — Utiliser DateTime.UtcNow au lieu de DateTime.Now
+                    TokenExpireLe = DateTime.UtcNow.AddDays(7)
                 };
 
                 _context.Clients.Add(client);
                 await _context.SaveChangesAsync();
 
-                // Création optionnelle du premier dossier de recouvrement
+                // ✅ ENVOI RÉEL : Email de bienvenue avec token (Non-bloquant)
+                if (!string.IsNullOrEmpty(client.Email))
+                {
+                    try 
+                    {
+                        await _emailService.SendWelcomeEmailAsync(client.Email, $"{client.Nom} {client.Prenom}", client.TokenAcces);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, "L'email n'a pas pu être envoyé, mais le client est créé.");
+                    }
+                }
+
                 if (dto.PremierDossier != null)
                 {
                     var dossier = new DossierRecouvrement
                     {
                         IdClient = client.IdClient,
-                        MontantInitial = dto.PremierDossier.MontantInitial,
-                        MontantImpaye = dto.PremierDossier.MontantInitial,
+                        MontantInitial = dto.PremierDossier.MontantInitial ?? 0,
+                        MontantImpaye = dto.PremierDossier.MontantInitial ?? 0,
                         TypeEmprunt = dto.PremierDossier.TypeEmprunt,
-                        TauxInteret = dto.PremierDossier.TauxInteret,
-                        StatutDossier = dto.PremierDossier.StatutDossier , 
-                        DateCreation = DateTime.Now
+                        TauxInteret = dto.PremierDossier.TauxInteret ?? 0,
+                        StatutDossier = dto.PremierDossier.StatutDossier,
+                        // ✅ FIX S6561
+                        DateCreation = DateTime.UtcNow
                     };
                     _context.Dossiers.Add(dossier);
                     await _context.SaveChangesAsync();
@@ -77,6 +102,38 @@ namespace RecouvrementAPI.Controllers
             {
                 _logger.LogError(ex, "Erreur création client.");
                 return StatusCode(500, new { message = "Erreur lors de la création du client." });
+            }
+        }
+
+        /// <summary>
+        /// Mise à jour des informations d'un client (Email, Téléphone, Adresse, etc.)
+        /// </summary>
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateClient(int id, [FromBody] UpdateClientDto dto)
+        {
+            try
+            {
+                var client = await _context.Clients.FindAsync(id);
+                if (client == null)
+                    return NotFound(new { message = "Client introuvable." });
+
+                // Mise à jour des champs si fournis
+                if (!string.IsNullOrEmpty(dto.Nom)) client.Nom = dto.Nom;
+                if (!string.IsNullOrEmpty(dto.Prenom)) client.Prenom = dto.Prenom;
+                if (!string.IsNullOrEmpty(dto.Email)) client.Email = dto.Email;
+                if (!string.IsNullOrEmpty(dto.Telephone)) client.Telephone = dto.Telephone;
+                if (!string.IsNullOrEmpty(dto.Adresse)) client.Adresse = dto.Adresse;
+                if (dto.IdAgence.HasValue) client.IdAgence = dto.IdAgence.Value;
+
+                await _context.SaveChangesAsync();
+
+                _logger.LogInformation("Client {IdClient} mis à jour avec succès.", id);
+                return Ok(new { message = "Informations client mises à jour.", client });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erreur lors de la mise à jour du client {IdClient}.", id);
+                return StatusCode(500, new { message = "Une erreur est survenue lors de la mise à jour." });
             }
         }
 
@@ -99,7 +156,6 @@ namespace RecouvrementAPI.Controllers
                 {
                     var worksheet = workbook.Worksheets.Add("Dossiers Impayés STB");
 
-                    // En-tête
                     worksheet.Cell(1, 1).Value = "ID Dossier";
                     worksheet.Cell(1, 2).Value = "Client";
                     worksheet.Cell(1, 3).Value = "CIN";
@@ -116,9 +172,11 @@ namespace RecouvrementAPI.Controllers
                     headerRange.Style.Font.FontColor = XLColor.White;
 
                     int row = 2;
+                    // ✅ FIX S6561 — Utiliser DateTime.UtcNow
+                    var maintenant = DateTime.UtcNow;
                     foreach (var d in dossiers)
                     {
-                        int retard = (int)(DateTime.Now - (d.Echeances.Where(e => e.Statut == "impaye").Min(e => (DateTime?)e.DateEcheance) ?? DateTime.Now)).TotalDays;
+                        int retard = (int)(maintenant - (d.Echeances.Where(e => e.Statut == "impaye").Min(e => (DateTime?)e.DateEcheance) ?? maintenant)).TotalDays;
                         if (retard < 0) retard = 0;
 
                         worksheet.Cell(row, 1).Value = d.IdDossier;
@@ -131,7 +189,6 @@ namespace RecouvrementAPI.Controllers
                         worksheet.Cell(row, 8).Value = d.StatutDossier;
                         worksheet.Cell(row, 9).Value = d.Client.Agence?.Ville ?? "Siège";
 
-                        // Couleur si retard critique (> 90 jours)
                         if (retard > 90)
                         {
                             worksheet.Cell(row, 7).Style.Font.FontColor = XLColor.Red;
@@ -147,7 +204,8 @@ namespace RecouvrementAPI.Controllers
                     {
                         workbook.SaveAs(stream);
                         var content = stream.ToArray();
-                        return File(content, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"Impayes_STB_{DateTime.Now:yyyyMMdd}.xlsx");
+                        // ✅ FIX S6561
+                        return File(content, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"Impayes_STB_{DateTime.UtcNow:yyyyMMdd}.xlsx");
                     }
                 }
             }
@@ -173,6 +231,9 @@ namespace RecouvrementAPI.Controllers
 
                 if (dossier == null) return NotFound();
 
+                // ✅ FIX S6561
+                var dateNow = DateTime.UtcNow;
+
                 var document = Document.Create(container =>
                 {
                     container.Page(page =>
@@ -190,8 +251,8 @@ namespace RecouvrementAPI.Controllers
 
                         page.Content().PaddingVertical(30).Column(col =>
                         {
-                            col.Item().AlignRight().Text($"{dossier.Client.Agence?.Ville ?? "Tunis"}, le {DateTime.Now:dd/MM/yyyy}").Italic();
-                            
+                            col.Item().AlignRight().Text($"{dossier.Client.Agence?.Ville ?? "Tunis"}, le {dateNow:dd/MM/yyyy}").Italic();
+
                             col.Item().PaddingTop(20).Column(dest => {
                                 dest.Item().Text("À l'attention de :").Bold();
                                 dest.Item().Text($"{dossier.Client.Nom} {dossier.Client.Prenom}");
@@ -241,7 +302,6 @@ namespace RecouvrementAPI.Controllers
 
         /// <summary>
         /// Vérifie et archive automatiquement les clients qui ont payé la totalité de leurs dettes.
-        /// Un client est archivé si TOUS ses dossiers sont au statut 'regularise'.
         /// </summary>
         [HttpPost("archiver-soldes")]
         public async Task<IActionResult> ArchiverClientsSoldes()
@@ -250,19 +310,21 @@ namespace RecouvrementAPI.Controllers
             {
                 var clients = await _context.Clients
                     .Include(c => c.Dossiers)
-                    .Where(c => c.Statut != "Archivé")
+                    // ✅ FIX S1192 — Utilisation de la constante
+                    .Where(c => c.Statut != StatutArchive)
                     .ToListAsync();
 
                 int archivesCount = 0;
 
                 foreach (var client in clients)
                 {
-                    if (client.Dossiers != null && client.Dossiers.Any())
+                    if (client.Dossiers != null && client.Dossiers.Count > 0)
                     {
                         bool toutSolder = client.Dossiers.All(d => d.StatutDossier == "regularise" || d.MontantImpaye <= 0);
                         if (toutSolder)
                         {
-                            client.Statut = "Archivé";
+                            // ✅ FIX S1192
+                            client.Statut = StatutArchive;
                             archivesCount++;
                         }
                     }
@@ -271,9 +333,9 @@ namespace RecouvrementAPI.Controllers
                 if (archivesCount > 0)
                     await _context.SaveChangesAsync();
 
-                return Ok(new { 
+                return Ok(new {
                     message = $"{archivesCount} client(s) ont été archivés avec succès car leurs comptes sont soldés.",
-                    count = archivesCount 
+                    count = archivesCount
                 });
             }
             catch (Exception ex)
@@ -284,9 +346,7 @@ namespace RecouvrementAPI.Controllers
         }
 
         /// <summary>
-        /// 🟡 BOUTON "ARCHIVER" DE LA MAQUETTE — Archive UN seul client par son ID.
-        /// Appelé quand l'agent clique sur le bouton "Archiver" sur la fiche client.
-        /// Route API : PUT http://localhost:5203/api/AdminClient/{idClient}/archiver
+        /// Archive UN seul client par son ID.
         /// </summary>
         [HttpPut("{idClient}/archiver")]
         public async Task<IActionResult> ArchiverClient(int idClient)
@@ -300,10 +360,12 @@ namespace RecouvrementAPI.Controllers
                 if (client == null)
                     return NotFound(new { message = "Client introuvable." });
 
-                if (client.Statut == "Archivé")
+                // ✅ FIX S1192
+                if (client.Statut == StatutArchive)
                     return BadRequest(new { message = "Ce client est déjà archivé." });
 
-                client.Statut = "Archivé";
+                // ✅ FIX S1192
+                client.Statut = StatutArchive;
                 await _context.SaveChangesAsync();
 
                 return Ok(new
@@ -315,14 +377,14 @@ namespace RecouvrementAPI.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Erreur lors de l'archivage du client {idClient}.");
+                // ✅ FIX S2629 — Utiliser le message template au lieu de l'interpolation
+                _logger.LogError(ex, "Erreur lors de l'archivage du client {IdClient}.", idClient);
                 return StatusCode(500, new { message = "Une erreur est survenue lors de l'archivage." });
             }
         }
 
         /// <summary>
-        /// 🔵 BOUTON "DÉSARCHIVER" — Réactive un client archivé par son ID.
-        /// Route API : PUT http://localhost:5203/api/AdminClient/{idClient}/desarchiver
+        /// Désarchive un client archivé par son ID.
         /// </summary>
         [HttpPut("{idClient}/desarchiver")]
         public async Task<IActionResult> DesarchiverClient(int idClient)
@@ -334,7 +396,8 @@ namespace RecouvrementAPI.Controllers
                 if (client == null)
                     return NotFound(new { message = "Client introuvable." });
 
-                if (client.Statut != "Archivé")
+                // ✅ FIX S1192
+                if (client.Statut != StatutArchive)
                     return BadRequest(new { message = "Ce client n'est pas archivé." });
 
                 client.Statut = "Actif";
@@ -349,33 +412,32 @@ namespace RecouvrementAPI.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Erreur lors de la désarchivation du client {idClient}.");
+                // ✅ FIX S2629
+                _logger.LogError(ex, "Erreur lors de la désarchivation du client {IdClient}.", idClient);
                 return StatusCode(500, new { message = "Une erreur est survenue." });
             }
         }
 
         /// <summary>
-        /// 🔴 Liste les clients dont le token d'accès est EXPIRÉ.
-        /// L'admin utilise cette liste pour savoir à qui renvoyer un nouveau token.
-        /// Route API : GET http://localhost:5203/api/AdminClient/tokens-expires
+        /// Liste les clients dont le token d'accès est expiré.
         /// </summary>
         [HttpGet("tokens-expires")]
         public async Task<IActionResult> GetClientsTokenExpires()
         {
             try
             {
-                var maintenant = DateTime.Now;
+                // ✅ FIX S6561
+                var maintenant = DateTime.UtcNow;
 
-                // Chargement en base (EF Core) — comparaison directe sur nullable
                 var clientsRaw = await _context.Clients
                     .Include(c => c.Dossiers)
                     .Where(c =>
-                        c.Statut != "Archivé" &&
+                        // ✅ FIX S1192
+                        c.Statut != StatutArchive &&
                         c.TokenExpireLe.HasValue &&
                         c.TokenExpireLe.Value < maintenant)
                     .ToListAsync();
 
-                // Projection en mémoire (C#) — TotalDays n'est pas traduisible en SQL
                 var clientsExpires = clientsRaw
                     .Select(c => new
                     {
@@ -404,10 +466,7 @@ namespace RecouvrementAPI.Controllers
         }
 
         /// <summary>
-        /// 🔁 RENOUVELLEMENT MANUEL DU TOKEN CLIENT par l'admin.
-        /// Génère un nouveau token et remet l'expiration à +7 jours.
-        /// L'admin doit ensuite envoyer le lien manuellement au client (SMS ou email).
-        /// Route API : POST http://localhost:5203/api/AdminClient/{idClient}/renouveler-token
+        /// Renouvellement manuel du token client par l'admin.
         /// </summary>
         [HttpPost("{idClient}/renouveler-token")]
         public async Task<IActionResult> RenouvelerTokenClient(int idClient)
@@ -419,21 +478,38 @@ namespace RecouvrementAPI.Controllers
                 if (client == null)
                     return NotFound(new { message = "Client introuvable." });
 
-                if (client.Statut == "Archivé")
+                // ✅ FIX S1192
+                if (client.Statut == StatutArchive)
                     return BadRequest(new { message = "Impossible de renouveler le token d'un client archivé." });
 
-                // Génération d'un nouveau token UUID unique
                 string nouveauToken = "stb_" + Guid.NewGuid().ToString("N");
 
                 client.TokenAcces    = nouveauToken;
-                client.TokenExpireLe = DateTime.Now.AddDays(7);
+                // ✅ FIX S6561
+                client.TokenExpireLe = DateTime.UtcNow.AddDays(7);
 
                 await _context.SaveChangesAsync();
 
-                // Lien à envoyer au client
                 string lien = $"https://stbbank.tn/portail/{nouveauToken}";
 
-                _logger.LogInformation($"Token renouvelé manuellement pour le client {client.IdClient} ({client.Nom} {client.Prenom}). Nouveau lien : {lien}");
+                // ✅ ENVOI RÉEL : Email de renouvellement
+                if (!string.IsNullOrEmpty(client.Email))
+                {
+                    await _emailService.SendRenewalEmailAsync(client.Email, $"{client.Nom} {client.Prenom}", nouveauToken);
+                }
+
+                // ✅ ENVOI RÉEL : SMS (Simulation log pour le moment)
+                if (!string.IsNullOrEmpty(client.Telephone))
+                {
+                    await _smsService.SendTokenSmsAsync(client.Telephone, client.Nom, nouveauToken);
+                }
+
+                if (_logger.IsEnabled(LogLevel.Information))
+                {
+                    _logger.LogInformation(
+                        "Token renouvelé manuellement pour le client {IdClient} ({Nom} {Prenom}). Nouveau lien : {Lien}",
+                        client.IdClient, client.Nom, client.Prenom, lien);
+                }
 
                 return Ok(new
                 {
@@ -441,22 +517,20 @@ namespace RecouvrementAPI.Controllers
                     lienClient   = lien,
                     tokenGenere  = nouveauToken,
                     expireLe     = client.TokenExpireLe,
-                    // Message prêt à copier-coller pour l'envoi SMS ou email
                     messageSms   = $"[STB BANK] Cher(e) {client.Nom}, accédez à votre espace client sécurisé : {lien} (valable 7 jours)",
                     messageEmail = $"Bonjour {client.Nom} {client.Prenom},\n\nVotre accès à l'espace client STB a été renouvelé.\nCliquez sur le lien suivant pour accéder à votre dossier :\n{lien}\n\nCe lien est valable 7 jours.\n\nCordialement,\nSTB BANK"
                 });
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Erreur renouvellement token client {idClient}.");
+                // ✅ FIX S2629
+                _logger.LogError(ex, "Erreur renouvellement token client {IdClient}.", idClient);
                 return StatusCode(500, new { message = "Erreur lors du renouvellement du token." });
             }
         }
 
         /// <summary>
-        /// ✅ L'ADMIN/AGENT ACCEPTE OU REFUSE UNE INTENTION
-        /// Endpoint ajouté ici pour éviter de modifier le IntentionController.
-        /// Route API : PUT http://localhost:5203/api/AdminClient/intention/{id}/decision
+        /// L'admin accepte ou refuse une intention.
         /// </summary>
         [HttpPut("intention/{id}/decision")]
         public async Task<IActionResult> MakeDecision(int id, [FromBody] IntentionDecisionDto decisionDto)
@@ -477,12 +551,13 @@ namespace RecouvrementAPI.Controllers
                     IdDossier    = intention.IdDossier,
                     ActionDetail = $"[ADMIN] L'intention (ID: {id}) de type '{intention.TypeIntention}' a été {intention.Statut.ToLower()}.",
                     Acteur       = "agent",
-                    DateAction   = DateTime.Now
+                    // ✅ FIX S6561
+                    DateAction   = DateTime.UtcNow
                 });
 
                 await _context.SaveChangesAsync();
 
-                return Ok(new { 
+                return Ok(new {
                     message = $"Intention traitée par l'admin ({intention.Statut}).",
                     idIntention = id,
                     nouveauStatut = intention.Statut
@@ -490,7 +565,8 @@ namespace RecouvrementAPI.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Erreur lors de la décision sur l'intention {id}.");
+                
+                _logger.LogError(ex, "Erreur lors de la décision sur l'intention {Id}.", id);
                 return StatusCode(500, new { message = "Impossible d'appliquer la décision." });
             }
         }

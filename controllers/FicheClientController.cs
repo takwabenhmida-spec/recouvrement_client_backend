@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using RecouvrementAPI.Data;
 using RecouvrementAPI.DTOs;
 using RecouvrementAPI.Models;
+using RecouvrementAPI.Helpers;
 
 namespace RecouvrementAPI.Controllers
 {
@@ -67,7 +68,7 @@ namespace RecouvrementAPI.Controllers
                 // Le pire score (IA risk tolerance)
                 var scoresTousDossiers = client.Dossiers
                     .SelectMany(d => d.ScoresRisque)
-                    .OrderByDescending(s => s.Valeur)
+                    .OrderByDescending(s => s.ScoreTotal)
                     .FirstOrDefault();
 
                 var infos = new FicheClientInfoDto
@@ -78,9 +79,9 @@ namespace RecouvrementAPI.Controllers
                     Email = client.Email,
                     Agence = client.Agence?.Ville ?? "Siège",
                     Adresse = client.Adresse ?? "Inconnue",
-                    ClientDepuis = client.Dossiers.Any() ? client.Dossiers.Min(d => d.DateCreation).Year.ToString() : "N/A",
+                    ClientDepuis = client.Dossiers.Count > 0 ? client.Dossiers.Min(d => d.DateCreation).Year.ToString() : "N/A",
                     PireStatut = char.ToUpper(pireStatut[0]) + pireStatut.Substring(1).ToLower(),
-                    PireScore = scoresTousDossiers?.Valeur ?? 0
+                    PireScore = scoresTousDossiers?.ScoreTotal ?? 0
                 };
 
                 // 2. Score de Risque IA (Haut Droite) -> Panel IA Repris 
@@ -93,7 +94,7 @@ namespace RecouvrementAPI.Controllers
                         PtsHistorique = scoresTousDossiers.PointsHistorique,
                         PtsGarantie = scoresTousDossiers.PointsGarantie,
                         PtsIntention = scoresTousDossiers.PointsIntention,
-                        ScoreTotal = scoresTousDossiers.Valeur
+                        ScoreTotal = scoresTousDossiers.ScoreTotal
                     };
                 }
 
@@ -106,7 +107,7 @@ namespace RecouvrementAPI.Controllers
                     MontantDu = d.MontantImpaye,
                     Frais = d.FraisDossier,
                     Taux = d.TauxInteret,
-                    RetardJours = CalculerRetard(d.Echeances),
+                    RetardJours = RecouvrementHelper.CalculerJoursRetard(d.Echeances),
                     Statut = d.StatutDossier
                 }).ToList();
 
@@ -146,7 +147,7 @@ namespace RecouvrementAPI.Controllers
                 {
                     EnvoyéLe = "Sur événement dynamique", // Déterminé par la campagne de relance
                     Canal = "Email + SMS",
-                    FormulaireSoumis = listeIntentions.Any() ? "Oui" : "Non",
+                    FormulaireSoumis = listeIntentions.Count > 0 ? "Oui" : "Non",
                     LienUrl = $"https://recouvrement.stb.tn/formulaire/{client.TokenAcces ?? "NON-GENERE"}"
                 };
 
@@ -167,11 +168,6 @@ namespace RecouvrementAPI.Controllers
             }
         }
 
-        private int CalculerRetard(IEnumerable<Echeance> echeances)
-        {
-            var impayees = echeances.Where(e => e.Statut == "impaye" && e.DateEcheance < DateTime.Now).ToList();
-            if (!impayees.Any()) return 0;
-            return (int)(DateTime.Now - impayees.Min(e => e.DateEcheance)).TotalDays;
-        }
+        // Logic moved to RecouvrementHelper
     }
 }
